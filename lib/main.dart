@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import './sections/home.dart';
+import './sections/compare.dart';
+import './sections/more.dart';
+import './sections/reporting.dart';
 
 void main() {
   runApp(MyApp());
@@ -20,7 +24,7 @@ class MyApp extends StatelessWidget {
         // or simply save your changes to "hot reload" in a Flutter IDE).
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.green,
       ),
       home: MyHomePage(title: 'UNICEF SAR Data Pocketbook'),
     );
@@ -48,17 +52,6 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
-
   int _selectedIndex = 0;
 
   void _onItemTapped(int index) {
@@ -67,19 +60,11 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  static const List<Widget> _pages = <Widget>[
-    Icon(
-      Icons.call,
-      size: 150,
-    ),
-    Icon(
-      Icons.camera,
-      size: 150,
-    ),
-    Icon(
-      Icons.chat,
-      size: 150,
-    ),
+  static List<Widget> _pages = <Widget>[
+    HomePage(),
+    ComparePage(),
+    ReportPage(),
+    MorePage(),
   ];
 
   @override
@@ -103,18 +88,24 @@ class _MyHomePageState extends State<MyHomePage> {
         child: _pages.elementAt(_selectedIndex),
       ),
       bottomNavigationBar: BottomNavigationBar(
+        unselectedItemColor: Colors.black,
+        selectedItemColor: Colors.green,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.call),
-            label: 'Calls',
+            icon: Icon(Icons.home),
+            label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.camera),
-            label: 'Camera',
+            icon: Icon(Icons.query_stats),
+            label: 'Compare',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.chat),
-            label: 'Chats',
+            icon: Icon(Icons.folder_open),
+            label: 'Reporting',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.more),
+            label: 'More',
           ),
         ],
         currentIndex: _selectedIndex,
