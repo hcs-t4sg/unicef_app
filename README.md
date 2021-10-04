@@ -2,15 +2,24 @@
 
 A new Flutter project.
 
-## Getting Started
+## Creating a new feature branch
 
-This project is a starting point for a Flutter application.
+First check out the main branch:
 
-A few resources to get you started if this is your first Flutter project:
+      git checkout main
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+then pull recent changes:
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+      git pull
+
+Then create your new branch as follows:
+
+      git checkout -b "[your-name]/[name-that-describes-feature]"
+
+(ex: "kayla/homepage-indicators")
+
+You can now make commits. The first time you push after creating a new branch, you'll have to run the following command:
+
+      git push --set-upstream origin "[SAME NAME AS ABOVE]"
+
+This creates a remote branch (visible to everyone on github) that matches your local branch. When you are ready to merge your code into main, create a pull request here. Matthew and Kayla will then look over and approve your changes.
