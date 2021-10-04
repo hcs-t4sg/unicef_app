@@ -22,4 +22,4 @@ You can now make commits. The first time you push after creating a new branch, y
 
       git push --set-upstream origin "[SAME NAME AS ABOVE]"
 
-This creates a remote branch (visible to everyone on github) that matches your local branch. When you are ready to merge your code into main, create a pull request here. Mia and Isaac will then look over and approve your changes.
+This creates a remote branch (visible to everyone on github) that matches your local branch. When you are ready to merge your code into main, create a pull request here. Matthew and Kayla will then look over and approve your changes.
