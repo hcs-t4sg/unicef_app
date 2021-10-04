@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
+// Home Page widget, stateless and holds country tags
 class HomePage extends StatelessWidget {
+  // Return container with list of countries
   Widget build(BuildContext context) {
     return Container(
         child: Center(
@@ -14,7 +16,11 @@ class HomePage extends StatelessWidget {
   }
 }
 
+// Tag with name and flag of country
+// Wanted stateless, couldn't really get navigator to work with that, unsure why
+// TODO: COnvert to stateless if possible
 class CountryTag extends StatefulWidget {
+  // Image as string to file for now
   String _country = "";
   String _image = "";
 
@@ -23,11 +29,13 @@ class CountryTag extends StatefulWidget {
     this._image = image;
   }
 
+  // State
   @override
   _CountryTagState createState() =>
       _CountryTagState(this._country, this._image);
 }
 
+// State for country tag
 class _CountryTagState extends State<CountryTag> {
   String _country = "", _image = "";
 
@@ -36,21 +44,22 @@ class _CountryTagState extends State<CountryTag> {
     this._image = image;
   }
 
+  // Push page to categories using navigator
   void _pushInfo() {
     Navigator.of(context)
         .push(MaterialPageRoute<void>(builder: (BuildContext context) {
+      // Return scaffold of the app
       return Scaffold(
         appBar: AppBar(
-          // Here we take the value from the MyHomePage object that was created by
-          // the App.build method, and use it to set our appbar title.
+          // Title is the country
           title: Text(_country),
           centerTitle: true,
         ),
         body: Center(
-          // Center is a layout widget. It takes a single child and positions it
-          // in the middle of the parent.
+          // Category page is centered on the page
           child: CategoryPage(),
         ),
+        // Bottom nav bar
         bottomNavigationBar: BottomNavigationBar(
           unselectedItemColor: Colors.black,
           selectedItemColor: Colors.green,
@@ -72,6 +81,8 @@ class _CountryTagState extends State<CountryTag> {
               label: 'More',
             ),
           ],
+
+          // TODO: implement indices back in for the navbar
           // currentIndex: _selectedIndex,
           // onTap: _onItemTapped,
         ),
@@ -109,7 +120,9 @@ class _CountryTagState extends State<CountryTag> {
   }
 }
 
+// List of categories (eg. population)
 class CategoryPage extends StatelessWidget {
+  // No state (like list of countries), return list of tags
   Widget build(BuildContext context) {
     return Container(
         child: Center(
@@ -119,6 +132,8 @@ class CategoryPage extends StatelessWidget {
   }
 }
 
+// Create tag listing a category
+// TODO: Convert to stateless if possible
 class CategoryTag extends StatefulWidget {
   String _category = "";
 
@@ -130,6 +145,7 @@ class CategoryTag extends StatefulWidget {
   _CategoryTagState createState() => _CategoryTagState(this._category);
 }
 
+// State for category tag
 class _CategoryTagState extends State<CategoryTag> {
   String _category = "";
 
@@ -137,24 +153,25 @@ class _CategoryTagState extends State<CategoryTag> {
     this._category = category;
   }
 
+  // Function to push section for category
   void _pushInfo() {
     Navigator.of(context)
         .push(MaterialPageRoute<void>(builder: (BuildContext context) {
       return Scaffold(
         appBar: AppBar(
-          // Here we take the value from the MyHomePage object that was created by
-          // the App.build method, and use it to set our appbar title.
           title: Text(_category),
           centerTitle: true,
         ),
         body: Center(
-          // Center is a layout widget. It takes a single child and positions it
-          // in the middle of the parent.
+          // Container with info on category
           child: Container(
             child: Text(_category, textScaleFactor: 2),
-             color: Colors.lightGreen,
-              padding: const EdgeInsets.symmetric(horizontal: 80.0, vertical: 80.0),),
+            color: Colors.lightGreen,
+            padding:
+                const EdgeInsets.symmetric(horizontal: 80.0, vertical: 80.0),
+          ),
         ),
+        // Navbar
         bottomNavigationBar: BottomNavigationBar(
           unselectedItemColor: Colors.black,
           selectedItemColor: Colors.green,
@@ -176,6 +193,7 @@ class _CategoryTagState extends State<CategoryTag> {
               label: 'More',
             ),
           ],
+          // TODO: fix navbar if possible
           // currentIndex: _selectedIndex,
           // onTap: _onItemTapped,
         ),
@@ -183,6 +201,7 @@ class _CategoryTagState extends State<CategoryTag> {
     }));
   }
 
+  // Tag with name of category, detects tap
   Widget build(BuildContext context) {
     return GestureDetector(
         onTap: () {
