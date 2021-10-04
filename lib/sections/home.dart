@@ -137,10 +137,56 @@ class _CategoryTagState extends State<CategoryTag> {
     this._category = category;
   }
 
+  void _pushInfo() {
+    Navigator.of(context)
+        .push(MaterialPageRoute<void>(builder: (BuildContext context) {
+      return Scaffold(
+        appBar: AppBar(
+          // Here we take the value from the MyHomePage object that was created by
+          // the App.build method, and use it to set our appbar title.
+          title: Text(_category),
+          centerTitle: true,
+        ),
+        body: Center(
+          // Center is a layout widget. It takes a single child and positions it
+          // in the middle of the parent.
+          child: Container(
+            child: Text(_category, textScaleFactor: 2),
+             color: Colors.lightGreen,
+              padding: const EdgeInsets.symmetric(horizontal: 80.0, vertical: 80.0),),
+        ),
+        bottomNavigationBar: BottomNavigationBar(
+          unselectedItemColor: Colors.black,
+          selectedItemColor: Colors.green,
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.query_stats),
+              label: 'Compare',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.folder_open),
+              label: 'Reporting',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.more),
+              label: 'More',
+            ),
+          ],
+          // currentIndex: _selectedIndex,
+          // onTap: _onItemTapped,
+        ),
+      );
+    }));
+  }
+
   Widget build(BuildContext context) {
     return GestureDetector(
         onTap: () {
-          print("TAPPED");
+          _pushInfo();
         },
         child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
