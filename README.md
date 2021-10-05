@@ -23,7 +23,7 @@ then pull recent changes:
 
 Then create your new branch as follows:
 
-      git checkout -b "[your-name]/[name-that-describes-feature]"
+      git checkout -b "[your-name]/[frontend or backend]/[name-that-describes-feature]"
 
 (ex: "kayla/homepage-indicators")
 
