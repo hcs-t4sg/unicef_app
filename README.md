@@ -1,5 +1,9 @@
 # unicef_app
 
+## UNICEF App Codebase
+
+Codebase for the existing UNICEF app can be found [here](https://github.com/UNICEF-ROSA-ICT/Data-Pocketbook-Redesign).
+
 ## Figma Mockups
 Figma mockup can be found [here](https://www.figma.com/file/Fu0rd7YgJZuLIQ1PTGI24X/UNICEF-UX-Mock?node-id=0%3A1).
 
