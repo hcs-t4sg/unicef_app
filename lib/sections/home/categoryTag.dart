@@ -34,33 +34,10 @@ class _CategoryTagState extends State<CategoryTag> {
               centerTitle: true,
             ),
             body: Center(
-                // Container with info on category
-                child: CategoryInfoPage()),
-            // Navbar
-            bottomNavigationBar: BottomNavigationBar(
-              unselectedItemColor: Colors.black,
-              selectedItemColor: Colors.green,
-              items: const <BottomNavigationBarItem>[
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.home),
-                  label: 'Home',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.query_stats),
-                  label: 'Compare',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.folder_open),
-                  label: 'Reporting',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.more),
-                  label: 'More',
-                ),
-              ],
-              // TODO: fix navbar if possible
-              // currentIndex: _selectedIndex,
-              // onTap: _onItemTapped,
+              // Container with info on category
+              child: Container(
+                child: CategoryInfoPage(),
+              ),
             ),
           );
         },

@@ -42,32 +42,6 @@ class _CategoryInfoState extends State<CategoryInfo> {
                     horizontal: 80.0, vertical: 80.0),
               ),
             ),
-            // Navbar
-            bottomNavigationBar: BottomNavigationBar(
-              unselectedItemColor: Colors.black,
-              selectedItemColor: Colors.green,
-              items: const <BottomNavigationBarItem>[
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.home),
-                  label: 'Home',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.query_stats),
-                  label: 'Compare',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.folder_open),
-                  label: 'Reporting',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.more),
-                  label: 'More',
-                ),
-              ],
-              // TODO: fix navbar if possible
-              // currentIndex: _selectedIndex,
-              // onTap: _onItemTapped,
-            ),
           );
         },
       ),

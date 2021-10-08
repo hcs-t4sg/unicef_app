@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import './countryTag.dart';
+import 'package:unicef_app/sections/home/categoryInfoPage.dart';
+import 'package:unicef_app/sections/home/categoryPage.dart';
+import './countryPage.dart';
 
 // State for Home Page
 class HomePage extends StatefulWidget {
@@ -20,51 +22,54 @@ class _HomePageState extends State<HomePage> {
         actions: [
           IconButton(
             onPressed: () {
-              setState(
-                () {
-                  if (searchBarIcon.icon == Icons.search) {
-                    searchBarIcon = const Icon(Icons.cancel);
-                    searchBar = const ListTile(
-                      leading: Icon(
-                        Icons.search,
-                        color: Colors.white,
-                        size: 28,
-                      ),
-                      title: TextField(
-                        decoration: InputDecoration(
-                          hintText: 'Search country by name',
-                          hintStyle: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                            fontStyle: FontStyle.italic,
-                          ),
-                          border: InputBorder.none,
-                        ),
-                        style: TextStyle(
+              setState(() {
+                if (searchBarIcon.icon == Icons.search) {
+                  searchBarIcon = const Icon(Icons.cancel);
+                  searchBar = const ListTile(
+                    leading: Icon(
+                      Icons.search,
+                      color: Colors.white,
+                      size: 28,
+                    ),
+                    title: TextField(
+                      decoration: InputDecoration(
+                        hintText: 'Search for country',
+                        hintStyle: TextStyle(
                           color: Colors.white,
+                          fontSize: 18,
+                          fontStyle: FontStyle.italic,
                         ),
+                        border: InputBorder.none,
                       ),
-                    );
-                  } else {
-                    searchBarIcon = const Icon(Icons.search);
-                    searchBar = const Text('Search country by name');
-                  }
-                },
-              );
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                  );
+                } else {
+                  searchBarIcon = const Icon(Icons.search);
+                  searchBar = const Text('Search country by name');
+                }
+              });
             },
             icon: searchBarIcon,
-          ),
+          )
         ],
         centerTitle: true,
       ),
       body: Container(
         child: Center(
-          child: ListView(
-            children: [
-              CountryTag("Afghanistan", 'assets/flags/Afghanistan.jpg'),
-              CountryTag("Bangladesh", 'assets/flags/Bangladesh.png'),
-              CountryTag("Bhutan", 'assets/flags/Bhutan.png')
-            ],
+          child: MaterialApp(
+            debugShowCheckedModeBanner: false,
+            theme: ThemeData(
+              primarySwatch: Colors.green,
+            ),
+            initialRoute: 'CountryList',
+            routes: {
+              'CountryList': (context) => CountryPage(),
+              'CategoryList': (context) => CategoryPage(),
+              'CategoryInfo': (context) => CategoryInfoPage(),
+            },
           ),
         ),
       ),
