@@ -1,25 +1,8 @@
 import 'package:flutter/material.dart';
 
-// HOME PAGE
-// Home Page widget, stateless and holds country tags
-class HomePage extends StatelessWidget {
-  // Return container with list of countries
-  Widget build(BuildContext context) {
-    return Container(
-        child: Center(
-            child: ListView(
-      children: [
-        CountryTag("Bhutan", 'assets/flags/Bhutan.png'),
-        CountryTag("Bangladesh", 'assets/flags/Bangladesh.png'),
-        CountryTag("Afghanistan", 'assets/flags/Afghanistan.jpg'),
-      ],
-    )));
-  }
-}
-
 // Tag with name and flag of country
 // Wanted stateless, couldn't really get navigator to work with that, unsure why
-// TODO: COnvert to stateless if possible
+// TODO: Convert to stateless if possible
 class CountryTag extends StatefulWidget {
   // Image as string to file for now
   String _country = "";
@@ -30,10 +13,77 @@ class CountryTag extends StatefulWidget {
     this._image = image;
   }
 
-  // State
+  // State for Country Tag
   @override
   _CountryTagState createState() =>
       _CountryTagState(this._country, this._image);
+}
+
+// State for Home Page
+class HomePage extends StatefulWidget {
+  const HomePage({Key? key}) : super(key: key);
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  Icon searchBarIcon = const Icon(Icons.search);
+  Widget searchBar = const Text('Search country by name');
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: searchBar,
+        automaticallyImplyLeading: false,
+        actions: [
+          IconButton(
+            onPressed: () {
+              setState(() {
+                if (searchBarIcon.icon == Icons.search) {
+                  searchBarIcon = const Icon(Icons.cancel);
+                  searchBar = const ListTile(
+                    leading: Icon(
+                      Icons.search,
+                      color: Colors.white,
+                      size: 28,
+                    ),
+                    title: TextField(
+                      decoration: InputDecoration(
+                        hintText: 'Search country by name',
+                        hintStyle: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                          fontStyle: FontStyle.italic,
+                        ),
+                        border: InputBorder.none,
+                      ),
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                  );
+                } else {
+                  searchBarIcon = const Icon(Icons.search);
+                  searchBar = const Text('Search country by name');
+                }
+              });
+            },
+            icon: searchBarIcon,
+          )
+        ],
+        centerTitle: true,
+      ),
+      body: Container(
+          child: Center(
+              child: ListView(
+        children: [
+          CountryTag("Afghanistan", 'assets/flags/Afghanistan.jpg'),
+          CountryTag("Bangladesh", 'assets/flags/Bangladesh.png'),
+          CountryTag("Bhutan", 'assets/flags/Bhutan.png')
+        ],
+      ))),
+    );
+  }
 }
 
 // State for country tag
@@ -121,16 +171,67 @@ class _CountryTagState extends State<CountryTag> {
   }
 }
 
-// FIRST LAYER
-// List of categories (eg. population)
-class CategoryPage extends StatelessWidget {
-  // No state (like list of countries), return list of tags
+//State for Category Page
+// State for Home Page
+class CategoryPage extends StatefulWidget {
+  const CategoryPage({Key? key}) : super(key: key);
+  @override
+  _CategoryPageState createState() => _CategoryPageState();
+}
+
+class _CategoryPageState extends State<CategoryPage> {
+  Icon searchBarIcon = const Icon(Icons.search);
+  Widget searchBar = const Text('Search category by name');
+  @override
   Widget build(BuildContext context) {
-    return Container(
-        child: Center(
-            child: ListView(
-      children: [CategoryTag("Population"), CategoryTag("Mortality")],
-    )));
+    return Scaffold(
+      appBar: AppBar(
+        title: searchBar,
+        automaticallyImplyLeading: false,
+        actions: [
+          IconButton(
+            onPressed: () {
+              setState(() {
+                if (searchBarIcon.icon == Icons.search) {
+                  searchBarIcon = const Icon(Icons.cancel);
+                  searchBar = const ListTile(
+                    leading: Icon(
+                      Icons.search,
+                      color: Colors.white,
+                      size: 28,
+                    ),
+                    title: TextField(
+                      decoration: InputDecoration(
+                        hintText: 'Search for category',
+                        hintStyle: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                          fontStyle: FontStyle.italic,
+                        ),
+                        border: InputBorder.none,
+                      ),
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                  );
+                } else {
+                  searchBarIcon = const Icon(Icons.search);
+                  searchBar = const Text('Search category by name');
+                }
+              });
+            },
+            icon: searchBarIcon,
+          )
+        ],
+        centerTitle: true,
+      ),
+      body: Container(
+          child: Center(
+              child: ListView(
+        children: [CategoryTag("Population"), CategoryTag("Mortality")],
+      ))),
+    );
   }
 }
 
