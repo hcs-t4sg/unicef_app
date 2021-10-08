@@ -1,0 +1,110 @@
+import 'package:flutter/material.dart';
+import 'categoryPage.dart';
+
+// Tag with name and flag of country
+// Wanted stateless, couldn't really get navigator to work with that, unsure why
+// TODO: Convert to stateless if possible
+class CountryTag extends StatefulWidget {
+  // Image as string to file for now
+  String _country = "";
+  String _image = "";
+
+  CountryTag(String country, String image) {
+    this._country = country;
+    this._image = image;
+  }
+
+  // State for Country Tag
+  @override
+  _CountryTagState createState() =>
+      _CountryTagState(this._country, this._image);
+}
+
+// State for country tag
+class _CountryTagState extends State<CountryTag> {
+  String _country = "", _image = "";
+
+  _CountryTagState(String country, String image) {
+    this._country = country;
+    this._image = image;
+  }
+
+  // Push page to categories using navigator
+  void _pushInfo() {
+    Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        builder: (BuildContext context) {
+          // Return scaffold of the app
+          return Scaffold(
+            appBar: AppBar(
+              // Title is the country
+              title: Text(_country),
+              centerTitle: true,
+            ),
+            body: Center(
+              // Category page is centered on the page
+              child: CategoryPage(),
+            ),
+            // Bottom nav bar
+            bottomNavigationBar: BottomNavigationBar(
+              unselectedItemColor: Colors.black,
+              selectedItemColor: Colors.green,
+              items: const <BottomNavigationBarItem>[
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.home),
+                  label: 'Home',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.query_stats),
+                  label: 'Compare',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.folder_open),
+                  label: 'Reporting',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.more),
+                  label: 'More',
+                ),
+              ],
+
+              // TODO: implement indices back in for the navbar
+              // currentIndex: _selectedIndex,
+              // onTap: _onItemTapped,
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        _pushInfo();
+      },
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
+        margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
+        height: 100,
+        decoration: BoxDecoration(
+            border: Border.all(
+          color: Colors.black,
+        )),
+        child: Align(
+          alignment: Alignment.center,
+          child: Row(
+            children: [
+              Container(
+                child: Image.asset(_image, fit: BoxFit.fitHeight, width: 90),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 30.0, vertical: 0.0),
+              ),
+              Text(_country, textScaleFactor: 1.8, textAlign: TextAlign.center)
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}

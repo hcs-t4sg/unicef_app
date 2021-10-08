@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import './sections/home.dart';
+import 'sections/home/home.dart';
 import './sections/compare.dart';
 import './sections/more.dart';
 import './sections/reporting.dart';
