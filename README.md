@@ -1,6 +1,15 @@
 # unicef_app
 
-A new Flutter project.
+## UNICEF App Codebase
+
+Codebase for the existing UNICEF app can be found [here](https://github.com/UNICEF-ROSA-ICT/Data-Pocketbook-Redesign).
+
+## Figma Mockups
+Figma mockup can be found [here](https://www.figma.com/file/Fu0rd7YgJZuLIQ1PTGI24X/UNICEF-UX-Mock?node-id=0%3A1).
+
+## Wiki
+
+Check the [wiki](https://github.com/kaylanhua/unicef_app/wiki) for important documentation/instructions regarding the app, setup, Flutter/Dart/SQLite, etc.
 
 ## Creating a new feature branch
 
@@ -14,7 +23,7 @@ then pull recent changes:
 
 Then create your new branch as follows:
 
-      git checkout -b "[your-name]/[name-that-describes-feature]"
+      git checkout -b "[your-name]/[frontend or backend]/[name-that-describes-feature]"
 
 (ex: "kayla/homepage-indicators")
 
