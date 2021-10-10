@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import './categoryInfo.dart';
+import './categoryInfoModal.dart';
 
 //State for CategoryInfo Page
 // State for Home Page
@@ -19,7 +20,12 @@ class _CategoryInfoPageState extends State<CategoryInfoPage> {
         child: Center(
           child: ListView(
             children: [
-              CategoryInfo("Population Over 65"),
+              ElevatedButton(
+                onPressed: () {
+                  _showModalData(context);
+                },
+                child: Text('Population Over 65'),
+              ),
               CategoryInfo("Population Under 18"),
             ],
           ),
@@ -27,4 +33,15 @@ class _CategoryInfoPageState extends State<CategoryInfoPage> {
       ),
     );
   }
+}
+
+_showModalData(context) {
+  showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        CategoryModal(
+          detailedInfo: "Population --",
+        );
+        throw '';
+      });
 }
