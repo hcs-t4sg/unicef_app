@@ -133,16 +133,23 @@ void main() async {
   print(await getAllIndicators()); // Prints findic with value 32897.
 
   // Delete findic from the database.
-  await deleteIndicator(findic.id);
+  //await deleteIndicator(findic.id);
+
+  List<Indicator> data = await getAllIndicators();
 
   // Print the list of indicators (empty).
-  print(await getAllIndicators());
-
-  runApp(MyApp());
+  print(data);
+  runApp(MyApp(data));
 }
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
+  List<Indicator> _data = [];
+
+  MyApp(List<Indicator> data) {
+    this._data = data;
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -159,7 +166,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.green,
       ),
-      home: MyHomePage(title: 'UNICEF SAR Data Pocketbook'),
+      home: MyHomePage(title: this._data[0].region),
     );
   }
 }
