@@ -4,7 +4,6 @@ import './sections/compare.dart';
 import './sections/more.dart';
 import './sections/reporting.dart';
 
-typedef TitleCallback = void Function(String t);
 void main() {
   runApp(MyApp());
 }

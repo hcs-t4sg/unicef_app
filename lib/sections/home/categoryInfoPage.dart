@@ -16,7 +16,7 @@ class CategoryInfoPage extends StatefulWidget {
 
 class _CategoryInfoPageState extends State<CategoryInfoPage> {
   Icon searchBarIcon = const Icon(Icons.search);
-  Widget searchBar = const Text('Search country by name');
+  Widget searchBar = const Text('Search information by name');
   @override
   Widget build(BuildContext context) {
     return Scaffold(
