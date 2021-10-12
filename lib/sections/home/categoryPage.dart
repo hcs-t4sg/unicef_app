@@ -17,7 +17,6 @@ class _CategoryPageState extends State<CategoryPage> {
   Widget searchBar = const Text('Search category by name');
   @override
   Widget build(BuildContext context) {
-    // widget.callback(widget.country);
     return Scaffold(
       appBar: AppBar(
         title: Row(children: [

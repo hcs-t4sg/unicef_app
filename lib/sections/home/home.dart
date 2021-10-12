@@ -1,7 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:unicef_app/sections/home/categoryInfoPage.dart';
-import 'package:unicef_app/sections/home/categoryPage.dart';
 import './countryPage.dart';
 
 // State for Home Page
@@ -15,25 +13,24 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  Icon searchBarIcon = const Icon(Icons.search);
-  Widget searchBar = const Text('Search country by name');
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        child: Center(
-          child: MaterialApp(
-            debugShowCheckedModeBanner: false,
-            theme: ThemeData(
-              primarySwatch: Colors.green,
-            ),
-            initialRoute: 'CountryList',
-            routes: {
-              'CountryList': (context) =>
-                  CountryPage(callback: widget.callback),
-            },
-          ),
+    return Container(
+      alignment: Alignment.topCenter,
+      child: Center(
+        child: Navigator(
+          initialRoute: 'CountryList',
+          onGenerateRoute: (RouteSettings settings) {
+            WidgetBuilder builder = (BuildContext context) =>
+                CountryPage(callback: widget.callback);
+            switch (settings.name) {
+              case "CountryList":
+                builder = (BuildContext context) =>
+                    CountryPage(callback: widget.callback);
+                break;
+            }
+            return MaterialPageRoute(builder: builder, settings: settings);
+          },
         ),
       ),
     );

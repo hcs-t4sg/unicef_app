@@ -69,6 +69,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     List<Widget> _pages = <Widget>[
+      HomePage(callback: this.callback, title: this._title),
       ComparePage(),
       ReportPage(),
       MorePage(),
@@ -89,7 +90,7 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
-        child: HomePage(callback: this.callback, title: this._title),
+        child: _pages[_selectedIndex],
       ),
       bottomNavigationBar: BottomNavigationBar(
         unselectedItemColor: Colors.black,
