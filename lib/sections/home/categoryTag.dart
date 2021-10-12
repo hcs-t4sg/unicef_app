@@ -6,9 +6,13 @@ import './categoryInfoPage.dart';
 // ignore: must_be_immutable
 class CategoryTag extends StatefulWidget {
   String _category = "";
+  Function _callback = () => {};
+  String _country = "";
 
-  CategoryTag(String category) {
+  CategoryTag(String category, Function callback, String country) {
     this._category = category;
+    this._callback = callback;
+    this._country = country;
   }
 
   @override
@@ -29,14 +33,11 @@ class _CategoryTagState extends State<CategoryTag> {
       MaterialPageRoute<void>(
         builder: (BuildContext context) {
           return Scaffold(
-            appBar: AppBar(
-              title: Text(_category),
-              centerTitle: true,
-            ),
             body: Center(
               // Container with info on category
               child: Container(
-                child: CategoryInfoPage(),
+                child: CategoryInfoPage(
+                    country: widget._country, callback: widget._callback),
               ),
             ),
           );
@@ -49,6 +50,7 @@ class _CategoryTagState extends State<CategoryTag> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
+        widget._callback(_category);
         _pushInfo();
       },
       child: Container(

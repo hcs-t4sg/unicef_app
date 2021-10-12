@@ -9,10 +9,12 @@ class CountryTag extends StatefulWidget {
   // Image as string to file for now
   String _country = "";
   String _image = "";
+  Function _callback = () => {};
 
-  CountryTag(String country, String image) {
+  CountryTag(String country, String image, Function callback) {
     this._country = country;
     this._image = image;
+    this._callback = callback;
   }
 
   // State for Country Tag
@@ -36,13 +38,10 @@ class _CountryTagState extends State<CountryTag> {
       MaterialPageRoute<void>(
         builder: (BuildContext context) {
           return Scaffold(
-            appBar: AppBar(
-              title: Text(_country),
-              centerTitle: true,
-            ),
             body: Center(
               // Container with info on category
-              child: CategoryPage(),
+              child:
+                  CategoryPage(country: _country, callback: widget._callback),
             ),
           );
         },
@@ -53,7 +52,8 @@ class _CountryTagState extends State<CountryTag> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(context, 'CategoryList');
+        widget._callback(_country);
+        _pushInfo();
       },
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
