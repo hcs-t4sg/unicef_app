@@ -75,11 +75,16 @@ class _CategoryInfoPageState extends State<CategoryInfoPage> {
             children: [
               ElevatedButton(
                 onPressed: () {
-                  _showModalData(context);
+                  _showSimpleModalDialog(context);
                 },
                 child: Text('Population Over 65'),
               ),
-              CategoryInfo("Population Under 18"),
+              ElevatedButton(
+                onPressed: () {
+                  _showSimpleModalDialog(context);
+                },
+                child: Text('Population Under 18'),
+              ),
             ],
           ),
         ),
@@ -88,13 +93,34 @@ class _CategoryInfoPageState extends State<CategoryInfoPage> {
   }
 }
 
-_showModalData(context) {
+_showSimpleModalDialog(context) {
   showDialog(
       context: context,
       builder: (BuildContext context) {
-        CategoryModal(
-          detailedInfo: "Population --",
+        return Dialog(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+          child: Container(
+            constraints: BoxConstraints(maxHeight: 350),
+            child: Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  RichText(
+                    textAlign: TextAlign.justify,
+                    text: TextSpan(
+                        text: "More Info Here",
+                        style: TextStyle(
+                            fontWeight: FontWeight.w400,
+                            fontSize: 14,
+                            color: Colors.black,
+                            wordSpacing: 1)),
+                  ),
+                ],
+              ),
+            ),
+          ),
         );
-        throw '';
       });
 }
