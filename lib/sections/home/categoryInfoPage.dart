@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import './categoryInfo.dart';
-import './categoryInfoModal.dart';
 
 //State for CategoryInfo Page
 // State for Home Page
@@ -16,7 +14,7 @@ class CategoryInfoPage extends StatefulWidget {
 
 class _CategoryInfoPageState extends State<CategoryInfoPage> {
   Icon searchBarIcon = const Icon(Icons.search);
-  Widget searchBar = const Text('Search information by name');
+  Widget searchBar = const Text('Search');
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -72,18 +70,24 @@ class _CategoryInfoPageState extends State<CategoryInfoPage> {
       body: Container(
         child: Center(
           child: ListView(
-            children: [
-              ElevatedButton(
-                onPressed: () {
-                  _showSimpleModalDialog(context);
-                },
-                child: Text('Population Over 65'),
+            children: <Widget>[
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 50),
+                child: ElevatedButton(
+                  onPressed: () {
+                    _showSimpleModalDialog(context);
+                  },
+                  child: Text('Population Over 65'),
+                ),
               ),
-              ElevatedButton(
-                onPressed: () {
-                  _showSimpleModalDialog(context);
-                },
-                child: Text('Population Under 18'),
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 50),
+                child: ElevatedButton(
+                  onPressed: () {
+                    _showSimpleModalDialog(context);
+                  },
+                  child: Text('Population Under 18'),
+                ),
               ),
             ],
           ),
