@@ -7,6 +7,7 @@ import 'dart:async';
 import 'package:flutter/widgets.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
+import 'model.dart';
 
 void main() async {
   // Avoid errors caused by flutter upgrade.
@@ -20,29 +21,13 @@ void main() async {
     onCreate: (db, version) {
       // Run the CREATE TABLE statement on the database.
       return db.execute(
-        'CREATE TABLE indicators(id INTEGER PRIMARY KEY ASC, region TEXT, country TEXT, indicator TEXT, indexes TEXT, value REAL, units STRING, source STRING, url STRING);',
+        'CREATE TABLE indicators2(id INTEGER PRIMARY KEY ASC, region TEXT, country TEXT, indicator TEXT, indexes TEXT, value NUMERIC, units STRING, source STRING, url STRING);',
       );
     },
     // Set the version. This executes the onCreate function and provides a
     // path to perform database upgrades and downgrades.
     version: 1,
   );
-
-  // Define a function that inserts indicators into the database
-  Future<void> insertIndicator(Indicator indic) async {
-    // Get a reference to the database.
-    final db = await database;
-
-    // Insert the Indicator into the correct table. You might also specify the
-    // `conflictAlgorithm` to use in case the same indicator is inserted twice.
-    //
-    // In this case, replace any previous data.
-    await db.insert(
-      'indicators',
-      indic.toMap(),
-      conflictAlgorithm: ConflictAlgorithm.replace,
-    );
-  }
 
   // A method that retrieves all the indicators from the indicators table.
   Future<List<Indicator>> getAllIndicators() async {
@@ -58,87 +43,18 @@ void main() async {
         id: maps[i]['id'],
         region: maps[i]['region'],
         country: maps[i]['country'],
-        indicator: maps[i]['indicator'],
-        indexes: maps[i]['indexes'],
+        category: maps[i]['category'],
+        index: maps[i]['index'],
         value: maps[i]['value'],
         units: maps[i]['units'],
         source: maps[i]['source'],
-        url: maps[i]['url'],
+        link: maps[i]['link'],
+        percentage: maps[i]['percentage']
       );
     });
   }
 
-  Future<void> updateIndicator(Indicator indic) async {
-    // Get a reference to the database.
-    final db = await database;
-
-    // Update the given Indicator.
-    await db.update(
-      'indicators',
-      indic.toMap(),
-      // Ensure that the Indicator has a matching id.
-      where: 'id = ?',
-      // Pass the Indicator's id as a whereArg to prevent SQL injection.
-      whereArgs: [indic.id],
-    );
-  }
-
-  Future<void> deleteIndicator(int id) async {
-    // Get a reference to the database.
-    final db = await database;
-
-    // Remove the Indicator from the database.
-    await db.delete(
-      'indicators',
-      // Use a `where` clause to delete a specific indicator.
-      where: 'id = ?',
-      // Pass the Indicator's id as a whereArg to prevent SQL injection.
-      whereArgs: [id],
-    );
-  }
-
-  // Create a Indicator and add it to the indics table
-  var findic = Indicator(
-    id: 0,
-    region: 'South Asia',
-    country: 'Afghanistan',
-    indicator: 'Population',
-    indexes: 'Total Population, 2020',
-    value: 32890,
-    units: 'thousands',
-    source: 'NSIA',
-    url: 'unicef.org',
-  );
-
-  await insertIndicator(findic);
-
-  // Now, use the method above to retrieve all the indicators.
-  print(await getAllIndicators()); // Prints a list that include findic.
-
-  // Update findic's value and save it to the database.
-  findic = Indicator(
-    id: findic.id,
-    region: findic.region,
-    country: findic.country,
-    indicator: findic.indicator,
-    indexes: findic.indexes,
-    value: findic.value + 7,
-    units: findic.units,
-    source: findic.source,
-    url: findic.url,
-  );
-  await updateIndicator(findic);
-
-  // Print the updated results.
-  print(await getAllIndicators()); // Prints findic with value 32897.
-
-  // Delete findic from the database.
-  //await deleteIndicator(findic.id);
-
   List<Indicator> data = await getAllIndicators();
-
-  // Print the list of indicators (empty).
-  print(data);
   runApp(MyApp(data));
 }
 
@@ -260,53 +176,6 @@ class _MyHomePageState extends State<MyHomePage> {
         onTap: _onItemTapped,
       ),
     );
-  }
-}
-
-class Indicator {
-  final int id;
-  final String region;
-  final String country;
-  final String indicator;
-  final String indexes;
-  final num value;
-  final String units;
-  final String source;
-  final String url;
-
-  Indicator({
-    required this.id,
-    required this.region,
-    required this.country,
-    required this.indicator,
-    required this.indexes,
-    required this.value,
-    required this.units,
-    required this.source,
-    required this.url,
-  });
-
-  // Convert an Indicator into a Map. The keys must correspond to the names of the
-  // columns in the database.
-  Map<String, dynamic> toMap() {
-    return {
-      'id': id,
-      'region': region,
-      'country': country,
-      'indicator': indicator,
-      'indexes': indexes,
-      'value': value,
-      'units': units,
-      'source': source,
-      'url': url,
-    };
-  }
-
-  // Implement toString to make it easier to see information about
-  // each indicator when using the print statement.
-  @override
-  String toString() {
-    return 'Indicator{id: $id, region: $region, country: $country, indicator: $indicator, indexes: $indexes, value: $value, units: $units, source: $source, url: $url}';
   }
 }
 
