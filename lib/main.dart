@@ -14,7 +14,9 @@ void main() async {
   // Importing 'package:flutter/widgets.dart' is required.
   WidgetsFlutterBinding.ensureInitialized();
   // Open the database and store the reference.
-  List<Indicator>data = await SQLiteDbProvider.db.getAllIndicators();
+  
+  List<Indicator> data = await SQLiteDbProvider.db.getAllIndicators();
+  print(data[100]);
   runApp(MyApp(data));
 }
 
@@ -42,7 +44,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.green,
       ),
-      home: MyHomePage(title: this._data[0].country),
+      home: MyHomePage(title: this._data[100].country),
     );
   }
 }
