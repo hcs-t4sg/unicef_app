@@ -14,47 +14,7 @@ void main() async {
   // Importing 'package:flutter/widgets.dart' is required.
   WidgetsFlutterBinding.ensureInitialized();
   // Open the database and store the reference.
-  final database = openDatabase(
-    // Set the path to the database.
-    join(await getDatabasesPath(), 'indicator_database.db'),
-    // When the database is first created, create a table to store indicators.
-    onCreate: (db, version) {
-      // Run the CREATE TABLE statement on the database.
-      return db.execute(
-        'CREATE TABLE indicators2(id INTEGER PRIMARY KEY ASC, region TEXT, country TEXT, indicator TEXT, indexes TEXT, value NUMERIC, units STRING, source STRING, url STRING);',
-      );
-    },
-    // Set the version. This executes the onCreate function and provides a
-    // path to perform database upgrades and downgrades.
-    version: 1,
-  );
-
-  // A method that retrieves all the indicators from the indicators table.
-  Future<List<Indicator>> getAllIndicators() async {
-    // Get a reference to the database.
-    final db = await database;
-
-    // Query the table for all The Indicators.
-    final List<Map<String, dynamic>> maps = await db.query('indicators');
-
-    // Convert the List<Map<String, dynamic> into a List<Indicator>.
-    return List.generate(maps.length, (i) {
-      return Indicator(
-        id: maps[i]['id'],
-        region: maps[i]['region'],
-        country: maps[i]['country'],
-        category: maps[i]['category'],
-        index: maps[i]['index'],
-        value: maps[i]['value'],
-        units: maps[i]['units'],
-        source: maps[i]['source'],
-        link: maps[i]['link'],
-        percentage: maps[i]['percentage']
-      );
-    });
-  }
-
-  List<Indicator> data = await getAllIndicators();
+  List<Indicator>data = await SQLiteDbProvider.db.getAllIndicators();
   runApp(MyApp(data));
 }
 
@@ -82,7 +42,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.green,
       ),
-      home: MyHomePage(title: this._data[0].region),
+      home: MyHomePage(title: this._data[0].country),
     );
   }
 }
