@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
-import './sections/home.dart';
+import 'sections/home/home.dart';
 import './sections/compare.dart';
 import './sections/more.dart';
 import './sections/reporting.dart';
-import 'dart:async';
 import 'package:flutter/widgets.dart';
-import 'package:path/path.dart';
-import 'package:sqflite/sqflite.dart';
 import 'model.dart';
 
 void main() async {
@@ -14,7 +11,7 @@ void main() async {
   // Importing 'package:flutter/widgets.dart' is required.
   WidgetsFlutterBinding.ensureInitialized();
   // Open the database and store the reference.
-  List<Indicator>data = await SQLiteDbProvider.db.getAllIndicators();
+  List<Indicator> data = await SQLiteDbProvider.db.getAllIndicators();
   runApp(MyApp(data));
 }
 
@@ -28,6 +25,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(_data);
     return MaterialApp(
       title: 'UNICEF Pocketbook',
       theme: ThemeData(
@@ -62,11 +60,16 @@ class MyHomePage extends StatefulWidget {
   final String title;
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _MyHomePageState createState() => _MyHomePageState(title);
 }
 
 class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0;
+  String _title = "UNICEF SAR Data Pocketbook";
+
+  _MyHomePageState(String title) {
+    this._title = title;
+  }
 
   void _onItemTapped(int indexes) {
     setState(() {
@@ -74,24 +77,20 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  static List<Widget> _pages = <Widget>[
-    HomePage(),
-    Icon(
-      Icons.insights,
-      size: 150,
-    ),
-    Icon(
-      Icons.summarize,
-      size: 150,
-    ),
-    Icon(
-      Icons.more_horiz,
-      size: 150,
-    ),
-  ];
+  callback(newValue) {
+    setState(() {
+      _title = newValue;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    List<Widget> _pages = <Widget>[
+      HomePage(callback: this.callback, title: widget.title),
+      ComparePage(),
+      ReportPage(),
+      MorePage(),
+    ];
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
     //
@@ -102,13 +101,13 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
+        title: Text(_title),
         centerTitle: true,
       ),
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
-        child: _pages.elementAt(_selectedIndex),
+        child: _pages[_selectedIndex],
       ),
       bottomNavigationBar: BottomNavigationBar(
         unselectedItemColor: Colors.black,
@@ -138,36 +137,3 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
-
-// child: Column(
-//           // Column is also a layout widget. It takes a list of children and
-//           // arranges them vertically. By default, it sizes itself to fit its
-//           // children horizontally, and tries to be as tall as its parent.
-//           //
-//           // Invoke "debug painting" (press "p" in the console, choose the
-//           // "Toggle Debug Paint" action from the Flutter Inspector in Android
-//           // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-//           // to see the wireframe for each widget.
-//           //
-//           // Column has various properties to control how it sizes itself and
-//           // how it positions its children. Here we use mainAxisAlignment to
-//           // center the children vertically; the main axis here is the vertical
-//           // axis because Columns are vertical (the cross axis would be
-//           // horizontal).
-//           mainAxisAlignment: MainAxisAlignment.center,
-//           children: <Widget>[
-//             Text(
-//               'You have clicked the button this many times:',
-//             ),
-//             Text(
-//               '$_counter',
-//               style: Theme.of(context).textTheme.headline4,
-//             ),
-//           ],
-//         ),
-//       ),
-//       floatingActionButton: FloatingActionButton(
-//         onPressed: _incrementCounter,
-//         tooltip: 'Increment',
-//         child: Icon(Icons.add),
-//       ), // This trailing comma makes auto-formatting nicer for build methods.
