@@ -40,13 +40,14 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.green,
       ),
-      home: MyHomePage(title: this._data[0].country),
+      home: MyHomePage(title: this._data[0].country, data: this._data),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key, required this.title}) : super(key: key);
+  MyHomePage({Key? key, required this.title, required this.data})
+      : super(key: key);
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -58,6 +59,7 @@ class MyHomePage extends StatefulWidget {
   // always marked "final".
 
   final String title;
+  final List<Indicator> data;
 
   @override
   _MyHomePageState createState() => _MyHomePageState(title);
@@ -86,7 +88,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     List<Widget> _pages = <Widget>[
-      HomePage(callback: this.callback, title: widget.title),
+      HomePage(callback: this.callback, title: widget.title, data: widget.data),
       ComparePage(),
       ReportPage(),
       MorePage(),
