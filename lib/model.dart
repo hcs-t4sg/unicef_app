@@ -69,7 +69,6 @@ class Indicator {
 class SQLiteDbProvider {
   SQLiteDbProvider._();
   static final SQLiteDbProvider db = SQLiteDbProvider._();
-
   // Future<Database> get database async {
   //   _database = await initDB();
   //   return _database;
@@ -87,11 +86,13 @@ class SQLiteDbProvider {
 
   Future<Database> get database async {
     var databasesPath = await getDatabasesPath();
+    print(databasesPath);
     var path = join(databasesPath, "indicator_database.db");
-
+    print(path);
+    deleteDatabase(path);
     // Check if the database exists
     var exists = await databaseExists(path);
-
+    
     if (!exists) {
       // Should happen only the first time you launch your application
       print("Creating new copy from asset");
