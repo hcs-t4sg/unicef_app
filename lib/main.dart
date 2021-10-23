@@ -14,18 +14,29 @@ void main() async {
   // Importing 'package:flutter/widgets.dart' is required.
   WidgetsFlutterBinding.ensureInitialized();
   // Open the database and store the reference.
+
   
-  List<Indicator> data = await SQLiteDbProvider.db.getAllIndicators();
-  print(data[100]);
-  runApp(MyApp(data));
+  // Sample code for accessing, querying, and reading values from resulting map
+  // Perform inside an async function
+  // vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+
+  // Opens instance of database
+  Database db = await SQLiteDbProvider.db.database;
+  // Stores result from db query
+  List<Map> res = await db.rawQuery(
+      "SELECT DISTINCT category FROM indicators WHERE country = 'Afghanistan'");
+  // Results are stored in a List of Maps; access each list using an index and access the values in each map like a dictionary (keys found in db schema)
+  print(res[0]['category']);
+
+  runApp(MyApp(db));
 }
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
-  List<Indicator> _data = [];
+  late Database _db;
 
-  MyApp(List<Indicator> data) {
-    this._data = data;
+  MyApp(Database db) {
+    this._db = db;
   }
 
   @override
@@ -44,7 +55,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.green,
       ),
-      home: MyHomePage(title: this._data[100].country),
+      home: MyHomePage(title: 'this._data[100].country'),
     );
   }
 }
