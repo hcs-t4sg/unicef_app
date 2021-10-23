@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import './categoryInfoPage.dart';
 
+import './../../model.dart';
+import "package:collection/collection.dart";
+
 // Create tag listing a category
 // TODO: Convert to stateless if possible
 // ignore: must_be_immutable
@@ -8,11 +11,14 @@ class CategoryTag extends StatefulWidget {
   String _category = "";
   Function _callback = () => {};
   String _country = "";
+  List<Indicator> _indicators = [];
 
-  CategoryTag(String category, Function callback, String country) {
+  CategoryTag(String category, Function callback, String country,
+      List<Indicator> indicators) {
     this._category = category;
     this._callback = callback;
     this._country = country;
+    this._indicators = indicators;
   }
 
   @override
@@ -37,7 +43,9 @@ class _CategoryTagState extends State<CategoryTag> {
               // Container with info on category
               child: Container(
                 child: CategoryInfoPage(
-                    country: widget._country, callback: widget._callback),
+                    country: widget._country,
+                    callback: widget._callback,
+                    indicators: widget._indicators),
               ),
             ),
           );

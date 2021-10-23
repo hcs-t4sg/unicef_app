@@ -11,13 +11,17 @@ class CategoryPage extends StatefulWidget {
       required this.country,
       required this.callback,
       required this.indicators})
-      : this.categoryData =
+      : this.categoryData = groupBy(indicators, (Indicator obj) => obj.category)
+            .values
+            .toList(),
+        this.categoryNames =
             groupBy(indicators, (Indicator obj) => obj.category).keys.toList(),
         super(key: key);
   final String country;
   final Function callback;
   final List<Indicator> indicators;
-  List categoryData;
+  final List categoryNames;
+  final List categoryData;
 
   @override
   _CategoryPageState createState() => _CategoryPageState();
@@ -81,8 +85,9 @@ class _CategoryPageState extends State<CategoryPage> {
       body: Container(
         child: Center(
           child: ListView(
-            children: widget.categoryData
-                .map((obj) => CategoryTag(obj, widget.callback, widget.country))
+            children: widget.categoryNames
+                .map((obj) => CategoryTag(obj, widget.callback, widget.country,
+                    widget.categoryData[widget.categoryNames.indexOf(obj)]))
                 .toList(),
           ),
         ),

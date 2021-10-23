@@ -1,13 +1,20 @@
 import 'package:flutter/material.dart';
+import './../../model.dart';
+import "package:collection/collection.dart";
 
 //State for CategoryInfo Page
 // State for Home Page
 class CategoryInfoPage extends StatefulWidget {
   const CategoryInfoPage(
-      {Key? key, required this.country, required this.callback})
+      {Key? key,
+      required this.country,
+      required this.callback,
+      required this.indicators})
       : super(key: key);
   final Function callback;
   final String country;
+  final List<Indicator> indicators;
+
   @override
   _CategoryInfoPageState createState() => _CategoryInfoPageState();
 }
@@ -70,26 +77,20 @@ class _CategoryInfoPageState extends State<CategoryInfoPage> {
       body: Container(
         child: Center(
           child: ListView(
-            children: <Widget>[
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 50),
-                child: ElevatedButton(
-                  onPressed: () {
-                    _showSimpleModalDialog(context);
-                  },
-                  child: Text('Population Over 65'),
-                ),
-              ),
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 50),
-                child: ElevatedButton(
-                  onPressed: () {
-                    _showSimpleModalDialog(context);
-                  },
-                  child: Text('Population Under 18'),
-                ),
-              ),
-            ],
+            children: widget.indicators
+                .map(
+                  (indicator) => Container(
+                    padding: EdgeInsets.symmetric(horizontal: 50),
+                    child: ElevatedButton(
+                      onPressed: () {
+                        _showSimpleModalDialog(context, indicator.value,
+                            indicator.index, indicator.units);
+                      },
+                      child: Text(indicator.index),
+                    ),
+                  ),
+                )
+                .toList(),
           ),
         ),
       ),
@@ -97,7 +98,7 @@ class _CategoryInfoPageState extends State<CategoryInfoPage> {
   }
 }
 
-_showSimpleModalDialog(context) {
+_showSimpleModalDialog(context, String value, String index, String units) {
   showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -112,14 +113,27 @@ _showSimpleModalDialog(context) {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   RichText(
-                    textAlign: TextAlign.justify,
+                    textAlign: TextAlign.center,
                     text: TextSpan(
-                        text: "More Info Here",
-                        style: TextStyle(
-                            fontWeight: FontWeight.w400,
-                            fontSize: 14,
-                            color: Colors.black,
-                            wordSpacing: 1)),
+                      text: index,
+                      style: TextStyle(
+                        fontWeight: FontWeight.w400,
+                        fontSize: 20,
+                        color: Colors.black,
+                        wordSpacing: 1,
+                      ),
+                    ),
+                  ),
+                  RichText(
+                    textAlign: TextAlign.center,
+                    text: TextSpan(
+                      text: units == "N/A" ? value : value + " " + units,
+                      style: TextStyle(
+                          fontWeight: FontWeight.w400,
+                          fontSize: 50,
+                          color: Colors.black,
+                          wordSpacing: 1),
+                    ),
                   ),
                 ],
               ),
