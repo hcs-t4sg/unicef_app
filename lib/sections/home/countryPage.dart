@@ -1,14 +1,22 @@
 import 'package:flutter/material.dart';
 import './countryTag.dart';
 import './../../model.dart';
+import "package:collection/collection.dart";
 
 //State for Country Page
 // State for Home Page
 class CountryPage extends StatefulWidget {
-  const CountryPage({Key? key, required this.callback, required this.data})
-      : super(key: key);
+  CountryPage({Key? key, required this.callback, required this.data})
+      : this.countryData =
+            groupBy(data, (Indicator obj) => obj.country).values.toList(),
+        this.countries =
+            groupBy(data, (Indicator obj) => obj.country).keys.toList(),
+        super(key: key);
   final Function callback;
   final List<Indicator> data;
+  final List countries;
+  final List countryData;
+
   @override
   _CountryPageState createState() => _CountryPageState();
 }
@@ -64,9 +72,12 @@ class _CountryPageState extends State<CountryPage> {
       body: Container(
         child: Center(
           child: ListView(
-            children: widget.data
-                .map((country) => CountryTag(country.country,
-                    'assets/flags/Afghanistan.jpg', widget.callback))
+            children: widget.countries
+                .map((country) => CountryTag(
+                    country,
+                    'assets/flags/' + country + '.png',
+                    widget.callback,
+                    widget.countryData[widget.countries.indexOf(country)]))
                 .toList(),
           ),
         ),

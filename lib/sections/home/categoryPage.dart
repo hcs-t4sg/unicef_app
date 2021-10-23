@@ -1,13 +1,24 @@
 import 'package:flutter/material.dart';
 import './categoryTag.dart';
+import './../../model.dart';
+import "package:collection/collection.dart";
 
 //State for Category Page
 // State for Home Page
 class CategoryPage extends StatefulWidget {
-  const CategoryPage({Key? key, required this.country, required this.callback})
-      : super(key: key);
+  CategoryPage(
+      {Key? key,
+      required this.country,
+      required this.callback,
+      required this.indicators})
+      : this.categoryData =
+            groupBy(indicators, (Indicator obj) => obj.category).keys.toList(),
+        super(key: key);
   final String country;
   final Function callback;
+  final List<Indicator> indicators;
+  List categoryData;
+
   @override
   _CategoryPageState createState() => _CategoryPageState();
 }
@@ -70,10 +81,9 @@ class _CategoryPageState extends State<CategoryPage> {
       body: Container(
         child: Center(
           child: ListView(
-            children: [
-              CategoryTag("Population", widget.callback, widget.country),
-              CategoryTag("Mortality", widget.callback, widget.country),
-            ],
+            children: widget.categoryData
+                .map((obj) => CategoryTag(obj, widget.callback, widget.country))
+                .toList(),
           ),
         ),
       ),

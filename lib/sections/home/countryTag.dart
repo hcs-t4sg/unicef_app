@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'categoryPage.dart';
+import './../../model.dart';
 
 // Tag with name and flag of country
 // Wanted stateless, couldn't really get navigator to work with that, unsure why
@@ -10,11 +11,14 @@ class CountryTag extends StatefulWidget {
   String _country = "";
   String _image = "";
   Function _callback = () => {};
+  List<Indicator> _data = [];
 
-  CountryTag(String country, String image, Function callback) {
+  CountryTag(
+      String country, String image, Function callback, List<Indicator> data) {
     this._country = country;
     this._image = image;
     this._callback = callback;
+    this._data = data;
   }
 
   // State for Country Tag
@@ -40,8 +44,10 @@ class _CountryTagState extends State<CountryTag> {
           return Scaffold(
             body: Center(
               // Container with info on category
-              child:
-                  CategoryPage(country: _country, callback: widget._callback),
+              child: CategoryPage(
+                  country: _country,
+                  callback: widget._callback,
+                  indicators: widget._data),
             ),
           );
         },
