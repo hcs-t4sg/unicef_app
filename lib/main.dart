@@ -13,7 +13,7 @@ void main() async {
   // Open the database and store the reference.
 
   List<Indicator> data = await SQLiteDbProvider.db.getAllIndicators();
-  print(data[100]);
+  print(data[98]);
   runApp(MyApp(data));
 }
 
@@ -27,7 +27,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(_data);
     return MaterialApp(
       title: 'UNICEF Pocketbook',
       theme: ThemeData(
