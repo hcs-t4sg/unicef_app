@@ -26,7 +26,7 @@ class _CategoryPageState extends State<CategoryPage> {
                 widget.callback("UNICEF SAR Data Pocketbook");
                 Navigator.pop(context);
               }),
-          searchBar,
+          Text(widget.country),
         ]),
         automaticallyImplyLeading: false,
         actions: [
@@ -58,7 +58,7 @@ class _CategoryPageState extends State<CategoryPage> {
                   );
                 } else {
                   searchBarIcon = const Icon(Icons.search);
-                  searchBar = const Text('Search country by name');
+                  searchBar = Text(widget.country);
                 }
               });
             },

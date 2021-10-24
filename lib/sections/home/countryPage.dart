@@ -12,7 +12,7 @@ class CountryPage extends StatefulWidget {
 
 class _CountryPageState extends State<CountryPage> {
   Icon searchBarIcon = const Icon(Icons.search);
-  Widget searchBar = const Text('Search country by name');
+  Widget searchBar = const Text('UNICEF SAR Pocketbook');
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +49,7 @@ class _CountryPageState extends State<CountryPage> {
                   );
                 } else {
                   searchBarIcon = const Icon(Icons.search);
-                  searchBar = const Text('Search country by name');
+                  searchBar = const Text('UNICEF SAR Pocketbook');
                 }
               });
             },
