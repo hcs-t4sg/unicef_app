@@ -33,7 +33,7 @@ class _CategoryInfoPageState extends State<CategoryInfoPage> {
                 widget.callback(widget.country);
                 Navigator.pop(context);
               }),
-          searchBar,
+          Text(widget.country),
         ]),
         automaticallyImplyLeading: false,
         actions: [
@@ -65,7 +65,7 @@ class _CategoryInfoPageState extends State<CategoryInfoPage> {
                   );
                 } else {
                   searchBarIcon = const Icon(Icons.search);
-                  searchBar = const Text('Search country by name');
+                  searchBar = Text(widget.country);
                 }
               });
             },
