@@ -81,6 +81,7 @@ class _CategoryInfoPageState extends State<CategoryInfoPage> {
                 .map(
                   (indicator) => Container(
                     padding: EdgeInsets.symmetric(horizontal: 50),
+                    margin: EdgeInsets.symmetric(vertical: 5),
                     child: ElevatedButton(
                       onPressed: () {
                         _showSimpleModalDialog(context, indicator.value,

@@ -22,12 +22,13 @@ class _CategoryModalState extends State<CategoryModal> {
               RichText(
                 textAlign: TextAlign.justify,
                 text: TextSpan(
-                    text: widget.detailedInfo,
-                    style: TextStyle(
-                        fontWeight: FontWeight.w400,
-                        fontSize: 14,
-                        color: Colors.black,
-                        wordSpacing: 1)),
+                  text: widget.detailedInfo,
+                  style: TextStyle(
+                      fontWeight: FontWeight.w400,
+                      fontSize: 14,
+                      color: Colors.black,
+                      wordSpacing: 1),
+                ),
               ),
             ],
           ),

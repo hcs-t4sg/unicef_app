@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.green,
       ),
-      home: MyHomePage(title: this._data[100].country, data: this._data),
+      home: MyHomePage(title: "UNICEF SAR Data Pocketbook", data: this._data),
     );
   }
 }
