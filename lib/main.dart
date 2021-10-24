@@ -3,13 +3,28 @@ import 'sections/home/home.dart';
 import './sections/compare.dart';
 import './sections/more.dart';
 import './sections/reporting.dart';
+import 'package:flutter/widgets.dart';
+import 'model.dart';
 
-void main() {
-  runApp(MyApp());
+void main() async {
+  // Avoid errors caused by flutter upgrade.
+  // Importing 'package:flutter/widgets.dart' is required.
+  WidgetsFlutterBinding.ensureInitialized();
+  // Open the database and store the reference.
+
+  List<Indicator> data = await SQLiteDbProvider.db.getAllIndicators();
+  print(data[98]);
+  runApp(MyApp(data));
 }
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
+  List<Indicator> _data = [];
+
+  MyApp(List<Indicator> data) {
+    this._data = data;
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -26,13 +41,14 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.green,
       ),
-      home: MyHomePage(title: 'UNICEF SAR Data Pocketbook'),
+      home: MyHomePage(title: this._data[100].country, data: this._data),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key, required this.title}) : super(key: key);
+  MyHomePage({Key? key, required this.title, required this.data})
+      : super(key: key);
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -44,18 +60,23 @@ class MyHomePage extends StatefulWidget {
   // always marked "final".
 
   final String title;
+  final List<Indicator> data;
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _MyHomePageState createState() => _MyHomePageState(title);
 }
 
 class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0;
   String _title = "UNICEF SAR Data Pocketbook";
 
-  void _onItemTapped(int index) {
+  _MyHomePageState(String title) {
+    this._title = title;
+  }
+
+  void _onItemTapped(int indexes) {
     setState(() {
-      _selectedIndex = index;
+      _selectedIndex = indexes;
     });
   }
 
@@ -68,7 +89,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     List<Widget> _pages = <Widget>[
-      HomePage(callback: this.callback, title: this._title),
+      HomePage(callback: this.callback, title: widget.title, data: widget.data),
       ComparePage(),
       ReportPage(),
       MorePage(),
@@ -94,19 +115,20 @@ class _MyHomePageState extends State<MyHomePage> {
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.query_stats),
+            icon: Icon(Icons.insights),
             label: 'Compare',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.folder_open),
+            icon: Icon(Icons.summarize),
             label: 'Reporting',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.more),
+            icon: Icon(Icons.more_horiz),
             label: 'More',
           ),
         ],
         currentIndex: _selectedIndex,
+        showUnselectedLabels: true,
         onTap: _onItemTapped,
       ),
     );

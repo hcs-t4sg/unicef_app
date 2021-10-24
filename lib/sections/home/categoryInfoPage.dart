@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
+import './../../model.dart';
+import "package:collection/collection.dart";
 
 //State for CategoryInfo Page
 // State for Home Page
 class CategoryInfoPage extends StatefulWidget {
   const CategoryInfoPage(
       {Key? key,
-      required this.category,
       required this.country,
-      required this.callback})
+      required this.callback,
+      required this.indicators})
       : super(key: key);
-  final String category;
   final Function callback;
   final String country;
+  final List<Indicator> indicators;
+
   @override
   _CategoryInfoPageState createState() => _CategoryInfoPageState();
 }
@@ -74,47 +77,20 @@ class _CategoryInfoPageState extends State<CategoryInfoPage> {
       body: Container(
         child: Center(
           child: ListView(
-            children: <Widget>[
-              Container(
-                child: AppBar(
-                  toolbarHeight: 40,
-                  backgroundColor: Colors.lightGreen[900],
-                  title: Text(
-                    widget.category,
-                    style: TextStyle(
-                      fontSize: 15,
+            children: widget.indicators
+                .map(
+                  (indicator) => Container(
+                    padding: EdgeInsets.symmetric(horizontal: 50),
+                    child: ElevatedButton(
+                      onPressed: () {
+                        _showSimpleModalDialog(context, indicator.value,
+                            indicator.index, indicator.units);
+                      },
+                      child: Text(indicator.index),
                     ),
                   ),
-                  automaticallyImplyLeading: false,
-                ),
-              ),
-              Container(
-                padding: EdgeInsets.fromLTRB(50, 20, 50, 10),
-                child: ElevatedButton(
-                  onPressed: () {
-                    _showSimpleModalDialog(context);
-                  },
-                  child: Text(
-                    'Population Over 65',
-                    style: TextStyle(height: 2.5, fontSize: 20),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-              ),
-              Container(
-                padding: EdgeInsets.fromLTRB(50, 10, 50, 20),
-                child: ElevatedButton(
-                  onPressed: () {
-                    _showSimpleModalDialog(context);
-                  },
-                  child: Text(
-                    'Population Over 18',
-                    style: TextStyle(height: 2.5, fontSize: 20),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-              ),
-            ],
+                )
+                .toList(),
           ),
         ),
       ),
@@ -122,7 +98,7 @@ class _CategoryInfoPageState extends State<CategoryInfoPage> {
   }
 }
 
-_showSimpleModalDialog(context) {
+_showSimpleModalDialog(context, String value, String index, String units) {
   showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -136,75 +112,27 @@ _showSimpleModalDialog(context) {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  AppBar(
-                    title: Text("Afghanistan"),
-                    leading: Icon(
-                      Icons.cancel,
-                    ),
-                  ),
-                  AppBar(
-                    toolbarHeight: 40,
-                    backgroundColor: Colors.lightGreen[900],
-                    title: Text(
-                      "Population",
+                  RichText(
+                    textAlign: TextAlign.center,
+                    text: TextSpan(
+                      text: index,
                       style: TextStyle(
-                        fontSize: 15,
-                      ),
-                    ),
-                    automaticallyImplyLeading: false,
-                  ),
-                  Container(
-                    padding: EdgeInsets.all(8.0),
-                    child: RichText(
-                      textAlign: TextAlign.justify,
-                      text: TextSpan(
-                          text: "Population under 18",
-                          style: TextStyle(
-                              fontWeight: FontWeight.w400,
-                              fontSize: 20,
-                              color: Colors.black,
-                              wordSpacing: 1)),
-                    ),
-                  ),
-                  Container(
-                    padding: EdgeInsets.all(10.0),
-                    child: Center(
-                      child: RichText(
-                        textAlign: TextAlign.center,
-                        text: TextSpan(
-                            text: "17,767",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w400,
-                                fontSize: 30,
-                                color: Colors.black,
-                                wordSpacing: 1)),
+                        fontWeight: FontWeight.w400,
+                        fontSize: 20,
+                        color: Colors.black,
+                        wordSpacing: 1,
                       ),
                     ),
                   ),
-                  Container(
-                    padding: EdgeInsets.all(8.0),
-                    child: RichText(
-                      textAlign: TextAlign.justify,
-                      text: TextSpan(
-                          text: "thousands of people",
-                          style: TextStyle(
-                              fontWeight: FontWeight.w400,
-                              fontSize: 15,
-                              color: Colors.grey[800],
-                              wordSpacing: 1)),
-                    ),
-                  ),
-                  Container(
-                    padding: EdgeInsets.all(8.0),
-                    child: RichText(
-                      textAlign: TextAlign.left,
-                      text: TextSpan(
-                          text: "Source: NSIA",
-                          style: TextStyle(
-                              fontWeight: FontWeight.w400,
-                              fontSize: 12,
-                              color: Colors.grey[800],
-                              wordSpacing: 1)),
+                  RichText(
+                    textAlign: TextAlign.center,
+                    text: TextSpan(
+                      text: units == "N/A" ? value : value + " " + units,
+                      style: TextStyle(
+                          fontWeight: FontWeight.w400,
+                          fontSize: 50,
+                          color: Colors.black,
+                          wordSpacing: 1),
                     ),
                   ),
                 ],
