@@ -7,10 +7,12 @@ import "package:collection/collection.dart";
 class CategoryInfoPage extends StatefulWidget {
   const CategoryInfoPage(
       {Key? key,
+      required this.category,
       required this.country,
       required this.callback,
       required this.indicators})
       : super(key: key);
+  final String category;
   final Function callback;
   final String country;
   final List<Indicator> indicators;
@@ -33,7 +35,7 @@ class _CategoryInfoPageState extends State<CategoryInfoPage> {
                 widget.callback(widget.country);
                 Navigator.pop(context);
               }),
-          searchBar,
+          Text(widget.category),
         ]),
         automaticallyImplyLeading: false,
         actions: [
@@ -65,7 +67,7 @@ class _CategoryInfoPageState extends State<CategoryInfoPage> {
                   );
                 } else {
                   searchBarIcon = const Icon(Icons.search);
-                  searchBar = const Text('Search country by name');
+                  searchBar = Text(widget.category);
                 }
               });
             },

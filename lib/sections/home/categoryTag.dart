@@ -43,6 +43,7 @@ class _CategoryTagState extends State<CategoryTag> {
               // Container with info on category
               child: Container(
                 child: CategoryInfoPage(
+                    category: widget._category,
                     country: widget._country,
                     callback: widget._callback,
                     indicators: widget._indicators),
