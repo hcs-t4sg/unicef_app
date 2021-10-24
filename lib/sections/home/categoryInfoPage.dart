@@ -80,6 +80,7 @@ class _CategoryInfoPageState extends State<CategoryInfoPage> {
             children: widget.indicators
                 .map(
                   (indicator) => Container(
+                    height: 30,
                     padding: EdgeInsets.symmetric(horizontal: 50),
                     child: ElevatedButton(
                       onPressed: () {
