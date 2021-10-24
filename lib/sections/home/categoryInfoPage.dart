@@ -33,7 +33,7 @@ class _CategoryInfoPageState extends State<CategoryInfoPage> {
                 widget.callback(widget.country);
                 Navigator.pop(context);
               }),
-          Text(widget.country),
+          searchBar,
         ]),
         automaticallyImplyLeading: false,
         actions: [
@@ -65,7 +65,7 @@ class _CategoryInfoPageState extends State<CategoryInfoPage> {
                   );
                 } else {
                   searchBarIcon = const Icon(Icons.search);
-                  searchBar = Text(widget.country);
+                  searchBar = const Text('Search country by name');
                 }
               });
             },
@@ -80,8 +80,8 @@ class _CategoryInfoPageState extends State<CategoryInfoPage> {
             children: widget.indicators
                 .map(
                   (indicator) => Container(
-                    padding: EdgeInsets.symmetric(horizontal: 50),
-                    margin: EdgeInsets.symmetric(vertical: 5),
+                    margin: EdgeInsets.symmetric(horizontal: 50, vertical: 5),
+                    height: 50,
                     child: ElevatedButton(
                       onPressed: () {
                         _showSimpleModalDialog(context, indicator.value,
