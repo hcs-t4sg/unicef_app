@@ -35,7 +35,7 @@ class _CategoryInfoPageState extends State<CategoryInfoPage> {
                 widget.callback(widget.country);
                 Navigator.pop(context);
               }),
-          Text(widget.category),
+          Text(widget.country),
         ]),
         automaticallyImplyLeading: false,
         actions: [
@@ -67,7 +67,7 @@ class _CategoryInfoPageState extends State<CategoryInfoPage> {
                   );
                 } else {
                   searchBarIcon = const Icon(Icons.search);
-                  searchBar = Text(widget.category);
+                  searchBar = Text(widget.country);
                 }
               });
             },
@@ -76,25 +76,44 @@ class _CategoryInfoPageState extends State<CategoryInfoPage> {
         ],
         centerTitle: true,
       ),
-      body: Container(
-        child: Center(
-          child: ListView(
-            children: widget.indicators
-                .map(
-                  (indicator) => Container(
-                    margin: EdgeInsets.symmetric(horizontal: 50, vertical: 5),
-                    height: 50,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        _showSimpleModalDialog(context, indicator.value,
-                            indicator.index, indicator.units);
-                      },
-                      child: Text(indicator.index),
-                    ),
+      body: Center(
+        child: ListView(
+          children: [
+            Container(
+                decoration: BoxDecoration(
+                  color: Colors.green[100],
+                ),
+                margin: EdgeInsets.only(bottom: 10),
+                height: 30,
+                alignment: Alignment.center,
+                child: Text(
+                  widget.category,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15,
                   ),
-                )
-                .toList(),
-          ),
+                )),
+            Container(
+                child: ListView(
+              scrollDirection: Axis.vertical,
+              shrinkWrap: true,
+              children: widget.indicators
+                  .map(
+                    (indicator) => Container(
+                      margin: EdgeInsets.symmetric(horizontal: 50, vertical: 5),
+                      height: 50,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          _showSimpleModalDialog(context, indicator.value,
+                              indicator.index, indicator.units);
+                        },
+                        child: Text(indicator.index),
+                      ),
+                    ),
+                  )
+                  .toList(),
+            ))
+          ],
         ),
       ),
     );
