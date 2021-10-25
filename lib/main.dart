@@ -1,15 +1,30 @@
 import 'package:flutter/material.dart';
-import './sections/home.dart';
+import 'sections/home/home.dart';
 import './sections/compare.dart';
 import './sections/more.dart';
 import './sections/reporting.dart';
+import 'package:flutter/widgets.dart';
+import 'model.dart';
 
-void main() {
-  runApp(MyApp());
+void main() async {
+  // Avoid errors caused by flutter upgrade.
+  // Importing 'package:flutter/widgets.dart' is required.
+  WidgetsFlutterBinding.ensureInitialized();
+  // Open the database and store the reference.
+
+  List<Indicator> data = await SQLiteDbProvider.db.getAllIndicators();
+  print(data[98]);
+  runApp(MyApp(data));
 }
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
+  List<Indicator> _data = [];
+
+  MyApp(List<Indicator> data) {
+    this._data = data;
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -26,13 +41,14 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.green,
       ),
-      home: MyHomePage(title: 'UNICEF SAR Data Pocketbook'),
+      home: MyHomePage(title: "UNICEF SAR Data Pocketbook", data: this._data),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key, required this.title}) : super(key: key);
+  MyHomePage({Key? key, required this.title, required this.data})
+      : super(key: key);
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -44,31 +60,40 @@ class MyHomePage extends StatefulWidget {
   // always marked "final".
 
   final String title;
+  final List<Indicator> data;
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _MyHomePageState createState() => _MyHomePageState(title);
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
   int _selectedIndex = 0;
+  String _title = "UNICEF SAR Data Pocketbook";
 
-  void _onItemTapped(int index) {
+  _MyHomePageState(String title) {
+    this._title = title;
+  }
+
+  void _onItemTapped(int indexes) {
     setState(() {
-      _selectedIndex = index;
+      _selectedIndex = indexes;
     });
   }
 
-  static List<Widget> _pages = <Widget>[
-    HomePage(),
-    ComparePage(),
-    ReportPage(),
-    MorePage(),
-  ];
+  callback(newValue) {
+    setState(() {
+      _title = newValue;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    List<Widget> _pages = <Widget>[
+      HomePage(callback: this.callback, title: widget.title, data: widget.data),
+      ComparePage(),
+      ReportPage(),
+      MorePage(),
+    ];
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
     //
@@ -76,16 +101,10 @@ class _MyHomePageState extends State<MyHomePage> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-        centerTitle: true,
-      ),
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
-        child: _pages.elementAt(_selectedIndex),
+        child: _pages[_selectedIndex],
       ),
       bottomNavigationBar: BottomNavigationBar(
         unselectedItemColor: Colors.black,
@@ -96,54 +115,22 @@ class _MyHomePageState extends State<MyHomePage> {
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.query_stats),
+            icon: Icon(Icons.insights),
             label: 'Compare',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.folder_open),
+            icon: Icon(Icons.summarize),
             label: 'Reporting',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.more),
+            icon: Icon(Icons.more_horiz),
             label: 'More',
           ),
         ],
         currentIndex: _selectedIndex,
+        showUnselectedLabels: true,
         onTap: _onItemTapped,
       ),
     );
   }
 }
-
-// child: Column(
-//           // Column is also a layout widget. It takes a list of children and
-//           // arranges them vertically. By default, it sizes itself to fit its
-//           // children horizontally, and tries to be as tall as its parent.
-//           //
-//           // Invoke "debug painting" (press "p" in the console, choose the
-//           // "Toggle Debug Paint" action from the Flutter Inspector in Android
-//           // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-//           // to see the wireframe for each widget.
-//           //
-//           // Column has various properties to control how it sizes itself and
-//           // how it positions its children. Here we use mainAxisAlignment to
-//           // center the children vertically; the main axis here is the vertical
-//           // axis because Columns are vertical (the cross axis would be
-//           // horizontal).
-//           mainAxisAlignment: MainAxisAlignment.center,
-//           children: <Widget>[
-//             Text(
-//               'You have clicked the button this many times:',
-//             ),
-//             Text(
-//               '$_counter',
-//               style: Theme.of(context).textTheme.headline4,
-//             ),
-//           ],
-//         ),
-//       ),
-//       floatingActionButton: FloatingActionButton(
-//         onPressed: _incrementCounter,
-//         tooltip: 'Increment',
-//         child: Icon(Icons.add),
-//       ), // This trailing comma makes auto-formatting nicer for build methods.

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../main.dart';
 
 // HOME PAGE
 // Home Page widget, stateless and holds country tags
