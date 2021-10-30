@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import './categoryInfoPage.dart';
 
 import './../../model.dart';
-import "package:collection/collection.dart";
+
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 // Create tag listing a category
 // TODO: Convert to stateless if possible
@@ -63,20 +64,44 @@ class _CategoryTagState extends State<CategoryTag> {
         _pushInfo();
       },
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
-        margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
+        padding: const EdgeInsets.fromLTRB(30.0, 8.0, 0, 8),
+        margin: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 8.0),
         height: 100,
         decoration: BoxDecoration(
-            border: Border.all(
-          color: Colors.black,
-        )),
+          color: Colors.white,
+          border: Border.all(
+            color: Colors.grey,
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.4),
+              spreadRadius: 2,
+              blurRadius: 2,
+              offset: Offset(0, 1), // changes position of shadow
+            ),
+          ],
+          borderRadius: BorderRadius.all(Radius.circular(10)),
+        ),
         child: Align(
           alignment: Alignment.center,
           child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Flexible(
-                child: Text(_category,
-                    textScaleFactor: 1.8, textAlign: TextAlign.left),
+              Text(
+                _category,
+                textScaleFactor: 1.6,
+                textAlign: TextAlign.center,
+                style: TextStyle(fontWeight: FontWeight.w600),
+              ),
+              Container(
+                child: Align(
+                  child: Icon(
+                    MdiIcons.menuRight,
+                    size: 30,
+                  ),
+                  alignment: Alignment.centerRight,
+                ),
+                alignment: Alignment.centerRight,
               ),
             ],
           ),

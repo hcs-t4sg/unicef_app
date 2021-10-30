@@ -81,7 +81,7 @@ class _CategoryInfoPageState extends State<CategoryInfoPage> {
           children: [
             Container(
                 decoration: BoxDecoration(
-                  color: Colors.green[100],
+                  color: Colors.blue[100],
                 ),
                 margin: EdgeInsets.only(bottom: 10),
                 height: 30,
@@ -100,14 +100,65 @@ class _CategoryInfoPageState extends State<CategoryInfoPage> {
               children: widget.indicators
                   .map(
                     (indicator) => Container(
-                      margin: EdgeInsets.symmetric(horizontal: 50, vertical: 5),
-                      height: 50,
+                      margin: const EdgeInsets.symmetric(
+                          horizontal: 20.0, vertical: 8.0),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        border: Border.all(
+                          color: Colors.grey,
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.2),
+                            spreadRadius: 4,
+                            blurRadius: 3,
+                            offset: Offset(0, 1), // changes position of shadow
+                          ),
+                        ],
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                      ),
+                      height: 100,
                       child: ElevatedButton(
+                        style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all(Colors.white),
+                            padding: MaterialStateProperty.all(
+                                EdgeInsets.symmetric(
+                                    horizontal: 15.0, vertical: 10.0))),
                         onPressed: () {
                           _showSimpleModalDialog(context, indicator.value,
                               indicator.index, indicator.units);
                         },
-                        child: Text(indicator.index),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              indicator.category,
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
+                                color: Colors.black,
+                              ),
+                            ),
+                            Text(
+                              indicator.index,
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            Text(
+                              (indicator.units == "N/A")
+                                  ? indicator.value + " " + indicator.units
+                                  : indicator.value,
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   )
