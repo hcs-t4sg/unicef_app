@@ -87,11 +87,13 @@ class _CategoryTagState extends State<CategoryTag> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                _category,
-                textScaleFactor: 1.6,
-                textAlign: TextAlign.center,
-                style: TextStyle(fontWeight: FontWeight.w600),
+              Flexible(
+                child: Text(
+                  _category,
+                  textScaleFactor: 1.6,
+                  textAlign: TextAlign.left,
+                  style: TextStyle(fontWeight: FontWeight.w600),
+                ),
               ),
               Container(
                 child: Align(
