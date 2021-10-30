@@ -24,6 +24,7 @@ class CategoryInfoPage extends StatefulWidget {
 class _CategoryInfoPageState extends State<CategoryInfoPage> {
   Icon searchBarIcon = const Icon(Icons.search);
   Widget searchBar = const Text('Search');
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -115,19 +116,26 @@ class _CategoryInfoPageState extends State<CategoryInfoPage> {
                             offset: Offset(0, 1), // changes position of shadow
                           ),
                         ],
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                        borderRadius: BorderRadius.all(Radius.circular(20)),
                       ),
-                      height: 100,
                       child: ElevatedButton(
                         style: ButtonStyle(
-                            backgroundColor:
-                                MaterialStateProperty.all(Colors.white),
-                            padding: MaterialStateProperty.all(
-                                EdgeInsets.symmetric(
-                                    horizontal: 15.0, vertical: 10.0))),
+                          backgroundColor:
+                              MaterialStateProperty.all(Colors.white),
+                          padding: MaterialStateProperty.all(
+                            EdgeInsets.symmetric(
+                                horizontal: 30.0, vertical: 10.0),
+                          ),
+                        ),
                         onPressed: () {
-                          _showSimpleModalDialog(context, indicator.value,
-                              indicator.index, indicator.units);
+                          _showSimpleModalDialog(
+                              context,
+                              indicator.value,
+                              indicator.index,
+                              indicator.units,
+                              indicator.category,
+                              indicator.country,
+                              indicator.source);
                         },
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -136,8 +144,9 @@ class _CategoryInfoPageState extends State<CategoryInfoPage> {
                               indicator.category,
                               textAlign: TextAlign.left,
                               style: TextStyle(
-                                color: Colors.black,
-                              ),
+                                  color: Colors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400),
                             ),
                             Text(
                               indicator.index,
@@ -148,14 +157,14 @@ class _CategoryInfoPageState extends State<CategoryInfoPage> {
                                   fontWeight: FontWeight.bold),
                             ),
                             Text(
-                              (indicator.units == "N/A")
+                              (indicator.units != "N/A")
                                   ? indicator.value + " " + indicator.units
                                   : indicator.value,
                               textAlign: TextAlign.left,
                               style: TextStyle(
                                   color: Colors.black,
                                   fontSize: 16,
-                                  fontWeight: FontWeight.w400),
+                                  fontWeight: FontWeight.w500),
                             ),
                           ],
                         ),
@@ -171,47 +180,109 @@ class _CategoryInfoPageState extends State<CategoryInfoPage> {
   }
 }
 
-_showSimpleModalDialog(context, String value, String index, String units) {
+_showSimpleModalDialog(context, String value, String index, String units,
+    String category, String country, String source) {
   showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return Dialog(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
-          child: Container(
-            constraints: BoxConstraints(maxHeight: 350),
-            child: Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  RichText(
+    context: context,
+    builder: (BuildContext context) {
+      return Dialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0.0)),
+        child: Container(
+          constraints: BoxConstraints(maxHeight: 350),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                width: 350,
+                child: Align(
+                  alignment: Alignment.center,
+                  child: Text(
+                    country,
                     textAlign: TextAlign.center,
-                    text: TextSpan(
-                      text: index,
-                      style: TextStyle(
-                        fontWeight: FontWeight.w400,
-                        fontSize: 20,
-                        color: Colors.black,
-                        wordSpacing: 1,
-                      ),
-                    ),
+                    style: TextStyle(fontSize: 20, color: Colors.white),
                   ),
-                  RichText(
-                    textAlign: TextAlign.center,
-                    text: TextSpan(
-                      text: units == "N/A" ? value : value + " " + units,
-                      style: TextStyle(
-                          fontWeight: FontWeight.w400,
-                          fontSize: 50,
-                          color: Colors.black,
-                          wordSpacing: 1),
-                    ),
-                  ),
-                ],
+                ),
+                padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+                color: Colors.blue,
               ),
-            ),
+              Container(
+                width: 350,
+                child: Align(
+                  alignment: Alignment.center,
+                  child: Text(
+                    category,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 16, color: Colors.white),
+                  ),
+                ),
+                padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+                margin: EdgeInsets.fromLTRB(0, 0, 0, 12),
+                color: Colors.blue[400],
+              ),
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+                child: RichText(
+                  textAlign: TextAlign.left,
+                  text: TextSpan(
+                    text: index,
+                    style: TextStyle(
+                      fontWeight: FontWeight.w400,
+                      fontSize: 20,
+                      color: Colors.black,
+                      wordSpacing: 1,
+                    ),
+                  ),
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                width: 350,
+                child: RichText(
+                  textAlign: TextAlign.center,
+                  text: TextSpan(
+                    text: value,
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 45,
+                        color: Colors.black,
+                        wordSpacing: 1),
+                  ),
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+                child: RichText(
+                  textAlign: TextAlign.left,
+                  text: TextSpan(
+                    text: units == "N/A" ? "" : units,
+                    style: TextStyle(
+                      fontWeight: FontWeight.w400,
+                      fontSize: 20,
+                      color: Colors.black,
+                      wordSpacing: 1,
+                    ),
+                  ),
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.fromLTRB(20, 20, 20, 0),
+                child: RichText(
+                  textAlign: TextAlign.left,
+                  text: TextSpan(
+                    text: "Source: " + source,
+                    style: TextStyle(
+                      fontWeight: FontWeight.w300,
+                      fontSize: 16,
+                      color: Colors.black,
+                      wordSpacing: 1,
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
-        );
-      });
+        ),
+      );
+    },
+  );
 }
