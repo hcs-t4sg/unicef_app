@@ -1,7 +1,18 @@
 import 'package:flutter/material.dart';
 import 'dropDownData.dart';
+import './../../model.dart';
 
-class ComparePage extends StatelessWidget {
+class ComparePage extends StatefulWidget {
+  ComparePage({required this.title, required this.data});
+
+  String title;
+  List<Indicator> data;
+
+  @override
+  _ComparePageState createState() => _ComparePageState();
+}
+
+class _ComparePageState extends State<ComparePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Compare')),
