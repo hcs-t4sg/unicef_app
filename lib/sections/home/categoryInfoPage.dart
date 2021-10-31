@@ -96,6 +96,7 @@ class _CategoryInfoPageState extends State<CategoryInfoPage> {
                 )),
             Container(
                 child: ListView(
+              physics: ClampingScrollPhysics(),
               scrollDirection: Axis.vertical,
               shrinkWrap: true,
               children: widget.indicators
