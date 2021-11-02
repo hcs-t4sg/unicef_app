@@ -48,7 +48,7 @@ class _CountryPageState extends State<CountryPage> {
               _filteredCountries = _countries
                   .where((country) => country
                       .toLowerCase()
-                      .startsWith(_searchText.toLowerCase()))
+                      .startsWith(_controller.text.toLowerCase()))
                   .toList();
             },
           );
