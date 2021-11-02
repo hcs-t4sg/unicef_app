@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dropDownData.dart';
 import './../../model.dart';
+import 'package:charts_flutter/flutter.dart';
 
 class ComparePage extends StatefulWidget {
   ComparePage({required this.title, required this.data});
