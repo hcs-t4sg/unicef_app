@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dropDownData.dart';
 import './../../model.dart';
+import 'package:charts_flutter/flutter.dart' as charts;
 
 class ComparePage extends StatefulWidget {
   ComparePage({required this.title, required this.data});
@@ -22,14 +23,8 @@ class _ComparePageState extends State<ComparePage> {
             children: <Widget>[
               Container(child: DropDownData()),
               Container(child: DropDownData()),
-              Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
-                child: ElevatedButton(
-                  onPressed: () {},
-                  child: Text('Select Countries'),
-                ),
-              )
+              Container(child: DropDownData()),
+              Container(child: DropDownData()),
             ],
           ),
         ),
