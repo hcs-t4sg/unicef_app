@@ -22,8 +22,9 @@ class CountryPage extends StatefulWidget {
 }
 
 class _CountryPageState extends State<CountryPage> {
-  Icon searchBarIcon = const Icon(Icons.search);
-  Widget searchBar = const Text('UNICEF SAR Pocketbook');
+  Icon searchBarIcon = Icon(Icons.search);
+  Widget searchBar = Text('UNICEF SAR Pocketbook');
+  String _searchValue = "";
 
   @override
   Widget build(BuildContext context) {
@@ -37,13 +38,16 @@ class _CountryPageState extends State<CountryPage> {
               setState(() {
                 if (searchBarIcon.icon == Icons.search) {
                   searchBarIcon = const Icon(Icons.cancel);
-                  searchBar = const ListTile(
+                  searchBar = ListTile(
                     leading: Icon(
                       Icons.search,
                       color: Colors.white,
                       size: 28,
                     ),
                     title: TextField(
+                      onChanged: (text) {
+                        setState(() => {_searchValue = text});
+                      },
                       decoration: InputDecoration(
                         hintText: 'Search for country',
                         hintStyle: TextStyle(
@@ -72,13 +76,25 @@ class _CountryPageState extends State<CountryPage> {
       body: Container(
         child: Center(
           child: ListView(
-            children: widget.countries
-                .map((country) => CountryTag(
-                    country,
-                    'assets/flags/' + country + '.png',
-                    widget.callback,
-                    widget.countryData[widget.countries.indexOf(country)]))
-                .toList(),
+            children: _searchValue != ""
+                ? widget.countries
+                    .where((country) => country
+                        .toLowerCase()
+                        .startsWith(_searchValue.toLowerCase()))
+                    .toList()
+                    .map((country) => CountryTag(
+                        country,
+                        'assets/flags/' + country + '.png',
+                        widget.callback,
+                        widget.countryData[widget.countries.indexOf(country)]))
+                    .toList()
+                : widget.countries
+                    .map((country) => CountryTag(
+                        country,
+                        'assets/flags/' + country + '.png',
+                        widget.callback,
+                        widget.countryData[widget.countries.indexOf(country)]))
+                    .toList(),
           ),
         ),
       ),
