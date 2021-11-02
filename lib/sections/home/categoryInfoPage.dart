@@ -95,85 +95,119 @@ class _CategoryInfoPageState extends State<CategoryInfoPage> {
                   ),
                 )),
             Container(
-                child: ListView(
-              physics: ClampingScrollPhysics(),
-              scrollDirection: Axis.vertical,
-              shrinkWrap: true,
-              children: widget.indicators
-                  .map(
-                    (indicator) => Container(
-                      margin: const EdgeInsets.symmetric(
-                          horizontal: 20.0, vertical: 8.0),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        border: Border.all(
-                          color: Colors.grey,
-                        ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.2),
-                            spreadRadius: 4,
-                            blurRadius: 3,
-                            offset: Offset(0, 1), // changes position of shadow
+              child: ListView(
+                physics: ClampingScrollPhysics(),
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                children: widget.indicators
+                    .map(
+                      (indicator) => Container(
+                        margin: const EdgeInsets.symmetric(
+                            horizontal: 15.0, vertical: 8.0),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          border: Border.all(
+                            color: Colors.grey,
                           ),
-                        ],
-                        borderRadius: BorderRadius.all(Radius.circular(20)),
-                      ),
-                      child: ElevatedButton(
-                        style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStateProperty.all(Colors.white),
-                          padding: MaterialStateProperty.all(
-                            EdgeInsets.symmetric(
-                                horizontal: 30.0, vertical: 10.0),
-                          ),
-                        ),
-                        onPressed: () {
-                          _showSimpleModalDialog(
-                              context,
-                              indicator.value,
-                              indicator.index,
-                              indicator.units,
-                              indicator.category,
-                              indicator.country,
-                              indicator.source);
-                        },
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              indicator.category,
-                              textAlign: TextAlign.left,
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400),
-                            ),
-                            Text(
-                              indicator.index,
-                              textAlign: TextAlign.left,
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            Text(
-                              (indicator.units != "N/A")
-                                  ? indicator.value + " " + indicator.units
-                                  : indicator.value,
-                              textAlign: TextAlign.left,
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w500),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.2),
+                              spreadRadius: 4,
+                              blurRadius: 3,
+                              offset:
+                                  Offset(0, 1), // changes position of shadow
                             ),
                           ],
+                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                        ),
+                        child: ElevatedButton(
+                          style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all(Colors.white),
+                            padding: MaterialStateProperty.all(
+                              EdgeInsets.fromLTRB(30.0, 0.0, 0, 0),
+                            ),
+                          ),
+                          onPressed: () {
+                            _showSimpleModalDialog(
+                                context,
+                                indicator.value,
+                                indicator.index,
+                                indicator.units,
+                                indicator.category,
+                                indicator.country,
+                                indicator.source);
+                          },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Container(
+                                padding: EdgeInsets.fromLTRB(0, 8, 6, 8),
+                                width: 180,
+                                alignment: Alignment.centerLeft,
+                                child: Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Column(
+                                    children: [
+                                      SizedBox(
+                                        width: double.infinity,
+                                        child: Text(
+                                          indicator.category,
+                                          textAlign: TextAlign.left,
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w400),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: double.infinity,
+                                        child: Text(
+                                          indicator.index,
+                                          textAlign: TextAlign.left,
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: double.infinity,
+                                        child: Text(
+                                          (indicator.units != "N/A")
+                                              ? indicator.units
+                                              : "",
+                                          textAlign: TextAlign.left,
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w500),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                child: Container(
+                                  child: Text(
+                                    indicator.value,
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 30,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                  )
-                  .toList(),
-            ))
+                    )
+                    .toList(),
+              ),
+            )
           ],
         ),
       ),
@@ -195,15 +229,30 @@ _showSimpleModalDialog(context, String value, String index, String units,
             children: [
               Container(
                 width: 350,
-                child: Align(
-                  alignment: Alignment.center,
-                  child: Text(
-                    country,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 20, color: Colors.white),
-                  ),
+                child: Row(
+                  children: [
+                    Positioned(
+                      left: 0.0,
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: Align(
+                          alignment: Alignment.topLeft,
+                          child: Icon(Icons.close, color: Colors.white),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: Text(
+                        country,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontSize: 20, color: Colors.white),
+                      ),
+                    ),
+                  ],
                 ),
-                padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                 color: Colors.blue,
               ),
               Container(
