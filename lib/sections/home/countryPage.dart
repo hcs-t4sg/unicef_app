@@ -18,13 +18,44 @@ class CountryPage extends StatefulWidget {
   final List countryData;
 
   @override
-  _CountryPageState createState() => _CountryPageState();
+  _CountryPageState createState() => _CountryPageState(countries);
 }
 
 class _CountryPageState extends State<CountryPage> {
   Icon searchBarIcon = Icon(Icons.search);
   Widget searchBar = Text('UNICEF SAR Pocketbook');
-  String _searchValue = "";
+  TextEditingController _controller = new TextEditingController();
+  String _searchText = "";
+  List _countries = [];
+  List _filteredCountries = [];
+
+  _CountryPageState(countries) {
+    _countries = countries;
+    _filteredCountries = countries;
+    _controller.addListener(
+      () {
+        if (_controller.text.isEmpty) {
+          setState(
+            () {
+              _searchText = "";
+              _filteredCountries = countries;
+            },
+          );
+        } else {
+          setState(
+            () {
+              _searchText = _controller.text;
+              _filteredCountries = _countries
+                  .where((country) => country
+                      .toLowerCase()
+                      .startsWith(_searchText.toLowerCase()))
+                  .toList();
+            },
+          );
+        }
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,9 +76,7 @@ class _CountryPageState extends State<CountryPage> {
                       size: 28,
                     ),
                     title: TextField(
-                      onChanged: (text) {
-                        setState(() => {_searchValue = text});
-                      },
+                      controller: _controller,
                       decoration: InputDecoration(
                         hintText: 'Search for country',
                         hintStyle: TextStyle(
@@ -65,6 +94,7 @@ class _CountryPageState extends State<CountryPage> {
                 } else {
                   searchBarIcon = const Icon(Icons.search);
                   searchBar = const Text('UNICEF SAR Pocketbook');
+                  _controller.clear();
                 }
               });
             },
@@ -76,25 +106,13 @@ class _CountryPageState extends State<CountryPage> {
       body: Container(
         child: Center(
           child: ListView(
-            children: _searchValue != ""
-                ? widget.countries
-                    .where((country) => country
-                        .toLowerCase()
-                        .startsWith(_searchValue.toLowerCase()))
-                    .toList()
-                    .map((country) => CountryTag(
-                        country,
-                        'assets/flags/' + country + '.png',
-                        widget.callback,
-                        widget.countryData[widget.countries.indexOf(country)]))
-                    .toList()
-                : widget.countries
-                    .map((country) => CountryTag(
-                        country,
-                        'assets/flags/' + country + '.png',
-                        widget.callback,
-                        widget.countryData[widget.countries.indexOf(country)]))
-                    .toList(),
+            children: _filteredCountries
+                .map((country) => CountryTag(
+                    country,
+                    'assets/flags/' + country + '.png',
+                    widget.callback,
+                    widget.countryData[widget.countries.indexOf(country)]))
+                .toList(),
           ),
         ),
       ),
