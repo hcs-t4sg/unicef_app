@@ -24,6 +24,7 @@ class CategoryInfoPage extends StatefulWidget {
 class _CategoryInfoPageState extends State<CategoryInfoPage> {
   Icon searchBarIcon = const Icon(Icons.search);
   Widget searchBar = const Text('Search');
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -81,7 +82,7 @@ class _CategoryInfoPageState extends State<CategoryInfoPage> {
           children: [
             Container(
                 decoration: BoxDecoration(
-                  color: Colors.green[100],
+                  color: Colors.blue[100],
                 ),
                 margin: EdgeInsets.only(bottom: 10),
                 height: 30,
@@ -94,25 +95,119 @@ class _CategoryInfoPageState extends State<CategoryInfoPage> {
                   ),
                 )),
             Container(
-                child: ListView(
-              scrollDirection: Axis.vertical,
-              shrinkWrap: true,
-              children: widget.indicators
-                  .map(
-                    (indicator) => Container(
-                      margin: EdgeInsets.symmetric(horizontal: 50, vertical: 5),
-                      height: 50,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          _showSimpleModalDialog(context, indicator.value,
-                              indicator.index, indicator.units);
-                        },
-                        child: Text(indicator.index),
+              child: ListView(
+                physics: ClampingScrollPhysics(),
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                children: widget.indicators
+                    .map(
+                      (indicator) => Container(
+                        margin: const EdgeInsets.symmetric(
+                            horizontal: 15.0, vertical: 8.0),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          border: Border.all(
+                            color: Colors.grey,
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.2),
+                              spreadRadius: 4,
+                              blurRadius: 3,
+                              offset:
+                                  Offset(0, 1), // changes position of shadow
+                            ),
+                          ],
+                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                        ),
+                        child: ElevatedButton(
+                          style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all(Colors.white),
+                            padding: MaterialStateProperty.all(
+                              EdgeInsets.fromLTRB(30.0, 0.0, 0, 0),
+                            ),
+                          ),
+                          onPressed: () {
+                            _showSimpleModalDialog(
+                                context,
+                                indicator.value,
+                                indicator.index,
+                                indicator.units,
+                                indicator.category,
+                                indicator.country,
+                                indicator.source);
+                          },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Container(
+                                padding: EdgeInsets.fromLTRB(0, 8, 6, 8),
+                                width: 180,
+                                alignment: Alignment.centerLeft,
+                                child: Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Column(
+                                    children: [
+                                      SizedBox(
+                                        width: double.infinity,
+                                        child: Text(
+                                          indicator.category,
+                                          textAlign: TextAlign.left,
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w400),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: double.infinity,
+                                        child: Text(
+                                          indicator.index,
+                                          textAlign: TextAlign.left,
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: double.infinity,
+                                        child: Text(
+                                          (indicator.units != "N/A")
+                                              ? indicator.units
+                                              : "",
+                                          textAlign: TextAlign.left,
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w500),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                child: Container(
+                                  child: Text(
+                                    indicator.value,
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 30,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
-                    ),
-                  )
-                  .toList(),
-            ))
+                    )
+                    .toList(),
+              ),
+            )
           ],
         ),
       ),
@@ -120,47 +215,124 @@ class _CategoryInfoPageState extends State<CategoryInfoPage> {
   }
 }
 
-_showSimpleModalDialog(context, String value, String index, String units) {
+_showSimpleModalDialog(context, String value, String index, String units,
+    String category, String country, String source) {
   showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return Dialog(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
-          child: Container(
-            constraints: BoxConstraints(maxHeight: 350),
-            child: Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  RichText(
-                    textAlign: TextAlign.center,
-                    text: TextSpan(
-                      text: index,
-                      style: TextStyle(
-                        fontWeight: FontWeight.w400,
-                        fontSize: 20,
-                        color: Colors.black,
-                        wordSpacing: 1,
+    context: context,
+    builder: (BuildContext context) {
+      return Dialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0.0)),
+        child: Container(
+          constraints: BoxConstraints(maxHeight: 350),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                width: 350,
+                child: Row(
+                  children: [
+                    Positioned(
+                      left: 0.0,
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: Align(
+                          alignment: Alignment.topLeft,
+                          child: Icon(Icons.close, color: Colors.white),
+                        ),
                       ),
                     ),
-                  ),
-                  RichText(
+                    Expanded(
+                      child: Text(
+                        country,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontSize: 20, color: Colors.white),
+                      ),
+                    ),
+                  ],
+                ),
+                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                color: Colors.blue,
+              ),
+              Container(
+                width: 350,
+                child: Align(
+                  alignment: Alignment.center,
+                  child: Text(
+                    category,
                     textAlign: TextAlign.center,
-                    text: TextSpan(
-                      text: units == "N/A" ? value : value + " " + units,
-                      style: TextStyle(
-                          fontWeight: FontWeight.w400,
-                          fontSize: 50,
-                          color: Colors.black,
-                          wordSpacing: 1),
+                    style: TextStyle(fontSize: 16, color: Colors.white),
+                  ),
+                ),
+                padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+                margin: EdgeInsets.fromLTRB(0, 0, 0, 12),
+                color: Colors.blue[400],
+              ),
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+                child: RichText(
+                  textAlign: TextAlign.left,
+                  text: TextSpan(
+                    text: index,
+                    style: TextStyle(
+                      fontWeight: FontWeight.w400,
+                      fontSize: 20,
+                      color: Colors.black,
+                      wordSpacing: 1,
                     ),
                   ),
-                ],
+                ),
               ),
-            ),
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                width: 350,
+                child: RichText(
+                  textAlign: TextAlign.center,
+                  text: TextSpan(
+                    text: value,
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 45,
+                        color: Colors.black,
+                        wordSpacing: 1),
+                  ),
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+                child: RichText(
+                  textAlign: TextAlign.left,
+                  text: TextSpan(
+                    text: units == "N/A" ? "" : units,
+                    style: TextStyle(
+                      fontWeight: FontWeight.w400,
+                      fontSize: 20,
+                      color: Colors.black,
+                      wordSpacing: 1,
+                    ),
+                  ),
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.fromLTRB(20, 20, 20, 0),
+                child: RichText(
+                  textAlign: TextAlign.left,
+                  text: TextSpan(
+                    text: "Source: " + source,
+                    style: TextStyle(
+                      fontWeight: FontWeight.w300,
+                      fontSize: 16,
+                      color: Colors.black,
+                      wordSpacing: 1,
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
-        );
-      });
+        ),
+      );
+    },
+  );
 }
