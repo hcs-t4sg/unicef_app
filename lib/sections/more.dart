@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class MorePage extends StatelessWidget {
   Widget build(BuildContext context) {
@@ -8,7 +9,7 @@ class MorePage extends StatelessWidget {
             child: Column(
           children: [
             Text("This is the page with extra info", textScaleFactor: 2),
-            Icon(Icons.more, size: 150, color: Colors.blue),
+            Icon(MdiIcons.helpCircleOutline, size: 150, color: Colors.blue),
           ],
         )));
   }

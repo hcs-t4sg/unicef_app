@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class ReportPage extends StatelessWidget {
   Widget build(BuildContext context) {
@@ -8,7 +9,7 @@ class ReportPage extends StatelessWidget {
             child: Column(
           children: [
             Text("This is the Reporting Page Page", textScaleFactor: 2),
-            Icon(Icons.query_stats, size: 150, color: Colors.blue),
+            Icon(MdiIcons.pin, size: 150, color: Colors.blue),
           ],
         )));
   }
