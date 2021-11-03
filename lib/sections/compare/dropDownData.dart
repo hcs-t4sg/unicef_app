@@ -4,8 +4,11 @@ import 'package:flutter/material.dart';
 
 /// This is the stateful widget that the main application instantiates.
 class DropDownData extends StatefulWidget {
-  const DropDownData({Key? key}) : super(key: key);
+  const DropDownData({Key? key, required this.list, required this.hint})
+      : super(key: key);
 
+  final List list;
+  final String hint;
   @override
   State<DropDownData> createState() => _DropDownDataState();
 }
@@ -26,7 +29,7 @@ class _DropDownDataState extends State<DropDownData> {
         height: 2,
         color: Colors.green,
       ),
-      hint: Text("SELECT DATA:",
+      hint: Text(widget.hint,
           style: TextStyle(
               color: Colors.black, fontSize: 14, fontWeight: FontWeight.w500)),
       onChanged: (String? newValue) {
@@ -34,8 +37,7 @@ class _DropDownDataState extends State<DropDownData> {
           dropdownValue = newValue!;
         });
       },
-      items: <String>['One', 'Two', 'Free', 'Four']
-          .map<DropdownMenuItem<String>>((String value) {
+      items: widget.list.map<DropdownMenuItem<String>>((value) {
         return DropdownMenuItem<String>(
           value: value,
           child: Text(value),
