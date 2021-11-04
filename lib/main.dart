@@ -22,9 +22,20 @@ void main() async {
   List<Indicator> data = await SQLiteDbProvider.db.getAllIndicators();
   print(data[98]);
   runApp(MyApp(data));
+
+  // Note: From Kevin's branch:
+  // Database db = await SQLiteDbProvider.db.database;
+  // runApp(MyApp(db));
 }
 
 class MyApp extends StatelessWidget {
+  // Note: From Kevin's branch:
+  // late Database _db;
+
+  // MyApp(Database db) {
+  //   this._db = db;
+  // }
+
   // This widget is the root of your application.
   List<Indicator> _data = [];
 
