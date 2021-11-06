@@ -106,12 +106,15 @@ class _CountryPageState extends State<CountryPage> {
       body: Container(
         child: Center(
           child: ListView(
+            key: Key(_filteredCountries.length.toString()),
             children: _filteredCountries
-                .map((country) => CountryTag(
-                    country,
-                    'assets/flags/' + country + '.png',
-                    widget.callback,
-                    widget.countryData[widget.countries.indexOf(country)]))
+                .map(
+                  (country) => CountryTag(
+                      country,
+                      'assets/flags/' + country + '.png',
+                      widget.callback,
+                      widget.countryData[widget.countries.indexOf(country)]),
+                )
                 .toList(),
           ),
         ),
