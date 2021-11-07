@@ -3,7 +3,7 @@ import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:unicef_app/sections/compare/multiCountryChart.dart';
 import 'birth_attendance_series.dart';
 
-class ComparePage2 extends StatelessWidget {
+class ComparePage extends StatelessWidget {
   final List<BirthSeries> data = [
     BirthSeries(
         country: "Afghanistan",

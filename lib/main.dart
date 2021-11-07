@@ -92,7 +92,7 @@ class _MyHomePageState extends State<MyHomePage> {
     List<Widget> _pages = <Widget>[
       HomePage(callback: this.callback, title: widget.title, data: widget.data),
       // ComparePage(title: widget.title, data: widget.data),
-      ComparePage2(),
+      ComparePage(),
       ReportPage(),
       MorePage(),
     ];
