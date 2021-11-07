@@ -59,63 +59,71 @@ class _CountryPageState extends State<CountryPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: searchBar,
-        automaticallyImplyLeading: false,
-        actions: [
-          IconButton(
-            onPressed: () {
-              setState(() {
-                if (searchBarIcon.icon == Icons.search) {
-                  searchBarIcon = const Icon(Icons.cancel);
-                  searchBar = ListTile(
-                    leading: Icon(
-                      Icons.search,
-                      color: Colors.white,
-                      size: 28,
-                    ),
-                    title: TextField(
-                      controller: _controller,
-                      decoration: InputDecoration(
-                        hintText: 'Search for country',
-                        hintStyle: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
-                          fontStyle: FontStyle.italic,
-                        ),
-                        border: InputBorder.none,
-                      ),
-                      style: TextStyle(
+    return GestureDetector(
+      onTap: () {
+        FocusScopeNode currentFocus = FocusScope.of(context);
+        if (!currentFocus.hasPrimaryFocus) {
+          currentFocus.unfocus();
+        }
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: searchBar,
+          automaticallyImplyLeading: false,
+          actions: [
+            IconButton(
+              onPressed: () {
+                setState(() {
+                  if (searchBarIcon.icon == Icons.search) {
+                    searchBarIcon = const Icon(Icons.cancel);
+                    searchBar = ListTile(
+                      leading: Icon(
+                        Icons.search,
                         color: Colors.white,
+                        size: 28,
                       ),
-                    ),
-                  );
-                } else {
-                  searchBarIcon = const Icon(Icons.search);
-                  searchBar = const Text('UNICEF SAR Pocketbook');
-                  _controller.clear();
-                }
-              });
-            },
-            icon: searchBarIcon,
-          )
-        ],
-        centerTitle: true,
-      ),
-      body: Container(
-        child: Center(
-          child: ListView(
-            key: Key(_filteredCountries.length.toString()),
-            children: _filteredCountries
-                .map(
-                  (country) => CountryTag(
-                      country,
-                      'assets/flags/' + country + '.png',
-                      widget.callback,
-                      widget.countryData[widget.countries.indexOf(country)]),
-                )
-                .toList(),
+                      title: TextField(
+                        controller: _controller,
+                        decoration: InputDecoration(
+                          hintText: 'Search for country',
+                          hintStyle: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                            fontStyle: FontStyle.italic,
+                          ),
+                          border: InputBorder.none,
+                        ),
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
+                    );
+                  } else {
+                    searchBarIcon = const Icon(Icons.search);
+                    searchBar = const Text('UNICEF SAR Pocketbook');
+                    _controller.clear();
+                  }
+                });
+              },
+              icon: searchBarIcon,
+            )
+          ],
+          centerTitle: true,
+        ),
+        body: Container(
+          child: Center(
+            child: ListView(
+              key: Key(_filteredCountries.length.toString()),
+              children: _filteredCountries
+                  .map(
+                    (country) => CountryTag(
+                        country,
+                        'assets/flags/' + country + '.png',
+                        widget.callback,
+                        widget.countryData[widget.countries.indexOf(country)]),
+                  )
+                  .toList(),
+            ),
           ),
         ),
       ),
