@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:unicef_app/sections/compare/multiCountryChart.dart';
-import 'birth_attendance_series.dart';
+import 'bar_series.dart';
 import 'dropDownData.dart';
 import './../../model.dart';
 import "package:collection/collection.dart";
@@ -20,14 +20,14 @@ class _ComparePageState extends State<ComparePage> {
   List _indicators = [];
   List<Indicator> _data = [];
 
-  final List<BirthSeries> graphData = [
-    BirthSeries(
+  final List<BarSeries> graphData = [
+    BarSeries(
         country: "Afghanistan",
-        birthAttendance: 23,
+        dataValue: 23,
         barColor: charts.ColorUtil.fromDartColor(Colors.red)),
-    BirthSeries(
+    BarSeries(
         country: "Nepal",
-        birthAttendance: 33,
+        dataValue: 33,
         barColor: charts.ColorUtil.fromDartColor(Colors.orange)),
   ];
 
