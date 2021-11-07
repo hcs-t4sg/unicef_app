@@ -48,7 +48,8 @@ class _ComparePageState extends State<ComparePage> {
                 child: DropDownData(list: _countries, hint: "SELECT COUNTRIES"),
               ),
               Container(
-                child: DropDownData(list: _countries, hint: "SELECT INDICATOR"),
+                child:
+                    DropDownData(list: _indicators, hint: "SELECT INDICATOR"),
               ),
               Container(
                 child: DropDownData(list: _countries, hint: "COMPARE BY"),

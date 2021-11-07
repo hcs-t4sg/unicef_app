@@ -20,6 +20,7 @@ class _DropDownDataState extends State<DropDownData> {
   @override
   Widget build(BuildContext context) {
     return DropdownButton<String>(
+      isExpanded: true,
       value: dropdownValue,
       icon: const Icon(Icons.arrow_downward),
       iconSize: 24,
