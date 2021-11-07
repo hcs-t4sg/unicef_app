@@ -11,7 +11,7 @@ class _CategoryModalState extends State<CategoryModal> {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0.0)),
       child: Container(
         constraints: BoxConstraints(maxHeight: 500),
         child: Padding(

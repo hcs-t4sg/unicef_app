@@ -6,6 +6,7 @@ import './sections/more.dart';
 import './sections/reporting.dart';
 import 'package:flutter/widgets.dart';
 import 'model.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 void main() async {
   // Avoid errors caused by flutter upgrade.
@@ -40,7 +41,7 @@ class MyApp extends StatelessWidget {
         // or simply save your changes to "hot reload" in a Flutter IDE).
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
-        primarySwatch: Colors.green,
+        primarySwatch: Colors.blue,
       ),
       home: MyHomePage(title: "UNICEF SAR Data Pocketbook", data: this._data),
     );
@@ -91,7 +92,6 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     List<Widget> _pages = <Widget>[
       HomePage(callback: this.callback, title: widget.title, data: widget.data),
-      // ComparePage(title: widget.title, data: widget.data),
       ComparePage(title: widget.title, data: widget.data),
       ReportPage(),
       MorePage(),
@@ -109,24 +109,28 @@ class _MyHomePageState extends State<MyHomePage> {
         child: _pages[_selectedIndex],
       ),
       bottomNavigationBar: BottomNavigationBar(
-        unselectedItemColor: Colors.black,
-        selectedItemColor: Colors.green,
+        unselectedItemColor: Colors.white,
+        backgroundColor: Colors.blue,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
+            icon: Icon(MdiIcons.home),
             label: 'Home',
+            backgroundColor: Colors.blue,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.insights),
+            icon: Icon(MdiIcons.trophy),
             label: 'Compare',
+            backgroundColor: Colors.blue,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.summarize),
+            icon: Icon(MdiIcons.pin),
             label: 'Reporting',
+            backgroundColor: Colors.blue,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.more_horiz),
+            icon: Icon(MdiIcons.helpCircleOutline),
             label: 'More',
+            backgroundColor: Colors.blue,
           ),
         ],
         currentIndex: _selectedIndex,
