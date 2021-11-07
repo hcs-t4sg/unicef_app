@@ -6,6 +6,7 @@ import './sections/reporting.dart';
 import 'package:flutter/widgets.dart';
 import 'model.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:sqflite/sqflite.dart';
 
 void main() async {
   // Avoid errors caused by flutter upgrade.
@@ -13,12 +14,28 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // Open the database and store the reference.
 
+  // Sample code for accessing, querying, and reading values from resulting map
+  // Perform inside an async function
+  // vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+
+  // Opens instance of database
   List<Indicator> data = await SQLiteDbProvider.db.getAllIndicators();
   print(data[98]);
   runApp(MyApp(data));
+
+  // Note: From Kevin's branch:
+  // Database db = await SQLiteDbProvider.db.database;
+  // runApp(MyApp(db));
 }
 
 class MyApp extends StatelessWidget {
+  // Note: From Kevin's branch:
+  // late Database _db;
+
+  // MyApp(Database db) {
+  //   this._db = db;
+  // }
+
   // This widget is the root of your application.
   List<Indicator> _data = [];
 
