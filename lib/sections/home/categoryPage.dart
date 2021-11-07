@@ -24,71 +24,127 @@ class CategoryPage extends StatefulWidget {
   final List categoryData;
 
   @override
-  _CategoryPageState createState() => _CategoryPageState();
+  _CategoryPageState createState() =>
+      _CategoryPageState(categoryNames, country);
 }
 
 class _CategoryPageState extends State<CategoryPage> {
-  Icon searchBarIcon = const Icon(Icons.search);
-  Widget searchBar = const Text('Search category by name');
+  Icon searchBarIcon = Icon(Icons.search);
+  Widget searchBar = Text("Search for category");
+
+  TextEditingController _controller = new TextEditingController();
+
+  String _searchText = "";
+  List _categories = [];
+  List _filteredCategories = [];
+
+  _CategoryPageState(categories, country) {
+    searchBar = Text(country);
+    _categories = categories;
+    _filteredCategories = _categories;
+    _controller.addListener(
+      () {
+        if (_controller.text.isEmpty) {
+          setState(
+            () {
+              _searchText = "";
+              _filteredCategories = _categories;
+            },
+          );
+        } else {
+          setState(
+            () {
+              _searchText = _controller.text;
+              List<String> keywords = _searchText.split(' ');
+              _filteredCategories = [];
+
+              for (int i = 0; i < _categories.length; i++) {
+                List<String> categoryWords = _categories[i].split(' ');
+                for (int j = 0; j < keywords.length; j++) {
+                  for (int k = 0; k < categoryWords.length; k++) {
+                    if (keywords[j].length > 0 &&
+                        categoryWords[k]
+                            .trim()
+                            .toLowerCase()
+                            .startsWith(keywords[j])) {
+                      _filteredCategories.add(_categories[i]);
+                      break;
+                    }
+                  }
+                }
+              }
+            },
+          );
+        }
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Row(children: [
-          IconButton(
-              icon: const Icon(Icons.arrow_back),
+    return GestureDetector(
+      onTap: () {
+        FocusScopeNode currentFocus = FocusScope.of(context);
+        if (!currentFocus.hasPrimaryFocus) {
+          currentFocus.unfocus();
+        }
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: searchBar,
+          automaticallyImplyLeading: false,
+          actions: [
+            IconButton(
               onPressed: () {
-                widget.callback("UNICEF SAR Data Pocketbook");
-                Navigator.pop(context);
-              }),
-          Text(widget.country),
-        ]),
-        automaticallyImplyLeading: false,
-        actions: [
-          IconButton(
-            onPressed: () {
-              setState(() {
-                if (searchBarIcon.icon == Icons.search) {
-                  searchBarIcon = const Icon(Icons.cancel);
-                  searchBar = const ListTile(
-                    leading: Icon(
-                      Icons.search,
-                      color: Colors.white,
-                      size: 28,
-                    ),
-                    title: TextField(
-                      decoration: InputDecoration(
-                        hintText: 'Search for country',
-                        hintStyle: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
-                          fontStyle: FontStyle.italic,
-                        ),
-                        border: InputBorder.none,
-                      ),
-                      style: TextStyle(
+                setState(() {
+                  if (searchBarIcon.icon == Icons.search) {
+                    searchBarIcon = Icon(Icons.cancel);
+                    searchBar = ListTile(
+                      leading: Icon(
+                        Icons.search,
                         color: Colors.white,
+                        size: 28,
                       ),
-                    ),
-                  );
-                } else {
-                  searchBarIcon = const Icon(Icons.search);
-                  searchBar = Text(widget.country);
-                }
-              });
-            },
-            icon: searchBarIcon,
-          )
-        ],
-        centerTitle: true,
-      ),
-      body: Container(
-        child: Center(
-          child: ListView(
-            children: widget.categoryNames
-                .map((obj) => CategoryTag(obj, widget.callback, widget.country,
-                    widget.categoryData[widget.categoryNames.indexOf(obj)]))
-                .toList(),
+                      title: TextField(
+                        controller: _controller,
+                        decoration: InputDecoration(
+                          hintText: 'Search for category',
+                          hintStyle: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                            fontStyle: FontStyle.italic,
+                          ),
+                          border: InputBorder.none,
+                        ),
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
+                    );
+                  } else {
+                    _controller.clear();
+                    searchBarIcon = Icon(Icons.search);
+                    searchBar = Text(widget.country);
+                  }
+                });
+              },
+              icon: searchBarIcon,
+            )
+          ],
+          centerTitle: true,
+        ),
+        body: Container(
+          child: Center(
+            child: ListView(
+              key: Key(_filteredCategories.length.toString()),
+              children: _filteredCategories
+                  .map((obj) => CategoryTag(
+                      obj,
+                      widget.callback,
+                      widget.country,
+                      widget.categoryData[widget.categoryNames.indexOf(obj)]))
+                  .toList(),
+            ),
           ),
         ),
       ),
