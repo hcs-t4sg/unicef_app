@@ -1,32 +1,26 @@
 import 'package:flutter/material.dart';
-import 'dropDownData.dart';
-import './../../model.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:unicef_app/sections/compare/multiCountryChart.dart';
+import 'birth_attendance_series.dart';
 
-class ComparePage extends StatefulWidget {
-  ComparePage({required this.title, required this.data});
-
-  String title;
-  List<Indicator> data;
+class ComparePage2 extends StatelessWidget {
+  final List<BirthSeries> data = [
+    BirthSeries(
+        country: "Afghanistan",
+        birthAttendance: 23,
+        barColor: charts.ColorUtil.fromDartColor(Colors.red)),
+    BirthSeries(
+        country: "Nepal",
+        birthAttendance: 33,
+        barColor: charts.ColorUtil.fromDartColor(Colors.orange)),
+  ];
 
   @override
-  _ComparePageState createState() => _ComparePageState();
-}
-
-class _ComparePageState extends State<ComparePage> {
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Compare')),
       body: Center(
-        child: Container(
-          child: ListView(
-            children: <Widget>[
-              Container(child: DropDownData()),
-              Container(child: DropDownData()),
-              Container(child: DropDownData()),
-              Container(child: DropDownData()),
-            ],
-          ),
+        child: MultiCountryChart(
+          data: data,
         ),
       ),
     );
