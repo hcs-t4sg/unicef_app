@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:path/path.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 import 'dart:typed_data';
 import 'package:flutter/services.dart';
@@ -69,28 +68,14 @@ class Indicator {
 class SQLiteDbProvider {
   SQLiteDbProvider._();
   static final SQLiteDbProvider db = SQLiteDbProvider._();
-  // Future<Database> get database async {
-  //   _database = await initDB();
-  //   return _database;
-  // }
-
-  // initDB() async {
-  //   Directory documentsDirectory = await getApplicationDocumentsDirectory();
-  //   String path = join(documentsDirectory.path, "indicator_database.db");
-  //   return await openDatabase(
-  //     path,
-  //     version: 1,
-  //     onOpen: (db) {},
-  //   );
-  // }
 
   Future<Database> get database async {
     var databasesPath = await getDatabasesPath();
     var path = join(databasesPath, "indicator_database.db");
-    
+    await deleteDatabase(path);
     // Check if the database exists
     var exists = await databaseExists(path);
-    
+
     if (!exists) {
       // Should happen only the first time you launch your application
       print("Creating new copy from asset");
@@ -113,29 +98,5 @@ class SQLiteDbProvider {
     }
     // open the database
     return await openDatabase(path, readOnly: true);
-  }
-
-  // A method that retrieves all the indicators from the indicators table.
-  Future<List<Indicator>> getAllIndicators() async {
-    // Get a reference to the database.
-    final db = await database;
-
-    // Query the table for all The Indicators.
-    final List<Map<String, dynamic>> maps = await db.query('indicators');
-
-    // Convert the List<Map<String, dynamic> into a List<Indicator>.
-    return List.generate(maps.length, (i) {
-      return Indicator(
-          id: maps[i]['id'],
-          region: maps[i]['region'],
-          country: maps[i]['country'],
-          category: maps[i]['category'],
-          index: maps[i]['index'],
-          value: maps[i]['value'],
-          units: maps[i]['units'],
-          source: maps[i]['source'],
-          link: maps[i]['link'],
-          percentage: maps[i]['percentage']);
-    });
   }
 }

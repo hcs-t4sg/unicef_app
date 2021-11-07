@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'dropDownData.dart';
-import './../../model.dart';
+import 'package:sqflite/sqflite.dart';
 
 class ComparePage extends StatefulWidget {
-  ComparePage({required this.title, required this.data});
+  ComparePage({required this.title, required this.db});
 
   String title;
-  List<Indicator> data;
+  Database db;
 
   @override
   _ComparePageState createState() => _ComparePageState();

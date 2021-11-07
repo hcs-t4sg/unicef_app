@@ -10,37 +10,20 @@ import 'package:sqflite/sqflite.dart';
 
 void main() async {
   // Avoid errors caused by flutter upgrade.
-  // Importing 'package:flutter/widgets.dart' is required.
   WidgetsFlutterBinding.ensureInitialized();
+
   // Open the database and store the reference.
-
-  // Sample code for accessing, querying, and reading values from resulting map
-  // Perform inside an async function
-  // vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
-
-  // Opens instance of database
-  List<Indicator> data = await SQLiteDbProvider.db.getAllIndicators();
-  print(data[98]);
-  runApp(MyApp(data));
-
-  // Note: From Kevin's branch:
-  // Database db = await SQLiteDbProvider.db.database;
-  // runApp(MyApp(db));
+  Database db = await SQLiteDbProvider.db.database;
+  
+  // Run the app!
+  runApp(MyApp(db));
 }
 
 class MyApp extends StatelessWidget {
-  // Note: From Kevin's branch:
-  // late Database _db;
+  late Database _db;
 
-  // MyApp(Database db) {
-  //   this._db = db;
-  // }
-
-  // This widget is the root of your application.
-  List<Indicator> _data = [];
-
-  MyApp(List<Indicator> data) {
-    this._data = data;
+  MyApp(Database db) {
+    this._db = db;
   }
 
   @override
@@ -59,13 +42,13 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: "UNICEF SAR Data Pocketbook", data: this._data),
+      home: MyHomePage(title: "UNICEF SAR Data Pocketbook", db: this._db),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key, required this.title, required this.data})
+  MyHomePage({Key? key, required this.title, required this.db})
       : super(key: key);
 
   // This widget is the home page of your application. It is stateful, meaning
@@ -78,7 +61,7 @@ class MyHomePage extends StatefulWidget {
   // always marked "final".
 
   final String title;
-  final List<Indicator> data;
+  final Database db;
 
   @override
   _MyHomePageState createState() => _MyHomePageState(title);
@@ -107,8 +90,8 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     List<Widget> _pages = <Widget>[
-      HomePage(callback: this.callback, title: widget.title, data: widget.data),
-      ComparePage(title: widget.title, data: widget.data),
+      HomePage(callback: this.callback, title: widget.title, db: widget.db),
+      ComparePage(title: widget.title, db: widget.db),
       ReportPage(),
       MorePage(),
     ];
