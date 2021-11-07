@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class ComparePage extends StatelessWidget {
   Widget build(BuildContext context) {
@@ -8,7 +9,7 @@ class ComparePage extends StatelessWidget {
             child: Column(
           children: [
             Text("This is the Compare Page", textScaleFactor: 2),
-            Icon(Icons.folder_open, size: 150, color: Colors.blue),
+            Icon(MdiIcons.trophy, size: 150, color: Colors.blue),
           ],
         )));
   }
