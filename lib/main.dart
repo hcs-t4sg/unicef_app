@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'sections/home/home.dart';
 import 'sections/compare/compare.dart';
 import './sections/more.dart';
-import './sections/reporting.dart';
+import 'sections/reporting/reporting.dart';
 import 'package:flutter/widgets.dart';
 import 'model.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -91,7 +91,7 @@ class _MyHomePageState extends State<MyHomePage> {
     List<Widget> _pages = <Widget>[
       HomePage(callback: this.callback, title: widget.title, data: widget.data),
       ComparePage(title: widget.title, data: widget.data),
-      ReportPage(),
+      ReportPage(data: widget.data),
       MorePage(),
     ];
     return Scaffold(
