@@ -14,7 +14,7 @@ class ReportPage extends StatefulWidget {
 
 class _ReportPageState extends State<ReportPage> {
   String _selectedCountry = '';
-  List _countries = [];
+  List _countries = ["Data not yet loaded"];
 
   _ReportPageState(countries) {
     _countries =
@@ -34,10 +34,16 @@ class _ReportPageState extends State<ReportPage> {
           padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 20.0),
           child: Column(
             children: [
-              DropDownData(
-                  list: _countries,
-                  hint: "Select country...",
-                  callback: (val) => {setState(_selectedCountry = val)}),
+              Container(
+                child: DropDownData(
+                    list: _countries,
+                    hint: "Select country...",
+                    callback: (val) => {
+                          setState(() {
+                            _selectedCountry = val;
+                          })
+                        }),
+              ),
               Text("This is the Reporting Page Page", textScaleFactor: 2),
               Icon(MdiIcons.pin, size: 150, color: Colors.blue),
             ],

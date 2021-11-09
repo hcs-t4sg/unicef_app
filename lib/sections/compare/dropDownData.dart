@@ -38,7 +38,7 @@ class _DropDownDataState extends State<DropDownData> {
       ),
       hint: Text(widget.hint,
           style: TextStyle(
-              color: Colors.black, fontSize: 14, fontWeight: FontWeight.w500)),
+              color: Colors.black, fontSize: 14, fontWeight: FontWeight.w400)),
       onChanged: (String? newValue) {
         setState(
           () {
