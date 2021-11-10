@@ -5,6 +5,7 @@ import 'bar_series.dart';
 import 'dropDownData.dart';
 import './../../model.dart';
 import "package:collection/collection.dart";
+import 'package:multi_select_flutter/multi_select_flutter.dart';
 
 class ComparePage extends StatefulWidget {
   String title;
@@ -17,6 +18,7 @@ class ComparePage extends StatefulWidget {
 
 class _ComparePageState extends State<ComparePage> {
   List _countries = [];
+  List _selectedCountries = [];
   List _indicators = [];
   List<Indicator> _data = [];
 
@@ -45,7 +47,19 @@ class _ComparePageState extends State<ComparePage> {
           child: ListView(
             children: <Widget>[
               Container(
-                child: DropDownData(list: _countries, hint: "SELECT COUNTRIES"),
+                child: MultiSelectDialogField(
+                  items: _countries.map((e) => MultiSelectItem(e, e)).toList(),
+                  listType: MultiSelectListType.LIST,
+                  searchable: true,
+                  searchHint: "Search countries",
+                  buttonText: Text("Select Countries"),
+                  chipDisplay: MultiSelectChipDisplay.none(),
+                  onConfirm: (values) => setState(
+                    () {
+                      _selectedCountries = values;
+                    },
+                  ),
+                ),
               ),
               Container(
                 child:
