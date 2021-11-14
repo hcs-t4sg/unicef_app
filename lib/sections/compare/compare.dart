@@ -5,7 +5,7 @@ import 'bar_series.dart';
 import 'dropDownData.dart';
 import './../../model.dart';
 import "package:collection/collection.dart";
-import 'package:multi_select_flutter/multi_select_flutter.dart';
+import './../../multiSelect/lib/multi_select_flutter.dart';
 
 class ComparePage extends StatefulWidget {
   String title;
@@ -41,7 +41,10 @@ class _ComparePageState extends State<ComparePage> {
 
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Compare')),
+      appBar: AppBar(
+        title: const Text('Compare'),
+        centerTitle: true,
+      ),
       body: Center(
         child: Container(
           child: ListView(
