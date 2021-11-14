@@ -20,8 +20,9 @@ void main() async {
 
   // Opens instance of database
   List<Indicator> data = await SQLiteDbProvider.db.getAllIndicators();
+  List<Report> reportData = [];
   print(data[98]);
-  runApp(MyApp(data));
+  runApp(MyApp(data, reportData));
 
   // Note: From Kevin's branch:
   // Database db = await SQLiteDbProvider.db.database;
@@ -38,9 +39,11 @@ class MyApp extends StatelessWidget {
 
   // This widget is the root of your application.
   List<Indicator> _data = [];
+  List<Report> _reports = [];
 
-  MyApp(List<Indicator> data) {
+  MyApp(List<Indicator> data, List<Report> reportData) {
     this._data = data;
+    this._reports = reportData;
   }
 
   @override
