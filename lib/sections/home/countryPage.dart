@@ -2,20 +2,14 @@ import 'package:flutter/material.dart';
 import './countryTag.dart';
 import './../../model.dart';
 import "package:collection/collection.dart";
+import "package:sqflite/sqflite.dart";
 
-//State for Country Page
+// State for Country Page
 // State for Home Page
 class CountryPage extends StatefulWidget {
-  CountryPage({Key? key, required this.callback, required this.data})
-      : this.countryData =
-            groupBy(data, (Indicator obj) => obj.country).values.toList(),
-        this.countries =
-            groupBy(data, (Indicator obj) => obj.country).keys.toList(),
-        super(key: key);
+  CountryPage({required this.callback, required this.db});
   final Function callback;
-  final List<Indicator> data;
-  final List countries;
-  final List countryData;
+  final Database db;
 
   @override
   _CountryPageState createState() => _CountryPageState();

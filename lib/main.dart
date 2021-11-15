@@ -14,7 +14,9 @@ void main() async {
 
   // Open the database and store the reference.
   Database db = await SQLiteDbProvider.db.database;
-  
+
+  print(db.rawQuery("SELECT DISTINCT SubAreaDisplayName FROM SubArea"));
+
   // Run the app!
   runApp(MyApp(db));
 }
