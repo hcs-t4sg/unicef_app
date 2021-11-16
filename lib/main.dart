@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'sections/home/home.dart';
 import 'sections/compare/compare.dart';
-import './sections/more.dart';
+import 'sections/more/more.dart';
 import './sections/reporting.dart';
 import 'package:flutter/widgets.dart';
 import 'model.dart';
