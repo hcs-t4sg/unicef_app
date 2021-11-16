@@ -87,10 +87,14 @@ class SQLiteDbProvider {
   Future<Database> get database async {
     var databasesPath = await getDatabasesPath();
     var path = join(databasesPath, "indicator_database.db");
-    
+
+    // Delete the database stored in Android filesystem. This will make the app copy from the asset database again.
+    // TODO: Figure out how this will impact app store updates and if it should be included or not
+    await deleteDatabase(path);
+
     // Check if the database exists
     var exists = await databaseExists(path);
-    
+
     if (!exists) {
       // Should happen only the first time you launch your application
       print("Creating new copy from asset");
