@@ -19,6 +19,28 @@ class ComparePage extends StatefulWidget {
 
 class _ComparePageState extends State<ComparePage> {
   List _countries = [];
+  List _compareBy = [
+    "Gender",
+    "Location",
+    "Wealth Quintile",
+    "Division",
+    "Mother's education",
+    "Caste and ethnicity",
+    "Religion",
+    "Disparity Gap"
+  ];
+  List _comparisonIndex = [
+    "Skilled birth attendance (%)",
+    "Birth registration (%)",
+    "Child under-nutrition (%)",
+    "Immunization (%)",
+    "Neonatal mortality (#/1,000)",
+    "Under-five morality (#/1,000)",
+    "Improved sanitation (%)",
+    "Primary school net attendance (%)",
+    "Secondary school net attendance (%)"
+  ];
+  List _sortBy = ["Greatest to least", "Least to greatest", "Alphabetical"];
   List _selectedCountries = [];
   List _indicators = [];
   List<Indicator> _data = [];
@@ -129,7 +151,7 @@ class _ComparePageState extends State<ComparePage> {
                     elevation: 6,
                     padding: EdgeInsets.all(5),
                   ),
-                  items: _countries
+                  items: _comparisonIndex
                       .asMap()
                       .entries
                       .map(
@@ -176,7 +198,7 @@ class _ComparePageState extends State<ComparePage> {
                     elevation: 6,
                     padding: EdgeInsets.all(5),
                   ),
-                  items: _countries
+                  items: _compareBy
                       .asMap()
                       .entries
                       .map(
@@ -223,7 +245,7 @@ class _ComparePageState extends State<ComparePage> {
                     elevation: 6,
                     padding: EdgeInsets.all(5),
                   ),
-                  items: _countries
+                  items: _sortBy
                       .asMap()
                       .entries
                       .map(
