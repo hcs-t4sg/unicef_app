@@ -6,6 +6,7 @@ import 'dropDownData.dart';
 import './../../model.dart';
 import "package:collection/collection.dart";
 import './../../multiSelect/lib/multi_select_flutter.dart';
+import 'dropDown.dart';
 
 class ComparePage extends StatefulWidget {
   String title;
@@ -64,6 +65,10 @@ class _ComparePageState extends State<ComparePage> {
                   ),
                 ),
               ),
+              Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: CustomDropdown(
+                      text: "SELECT INDICATOR", dropDownOptions: _countries)),
               Container(
                 child:
                     DropDownData(list: _indicators, hint: "SELECT INDICATOR"),
