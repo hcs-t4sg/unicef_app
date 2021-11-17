@@ -48,47 +48,103 @@ class _ComparePageState extends State<ComparePage> {
       ),
       body: Center(
         child: Container(
-          child: ListView(
-            children: <Widget>[
-              Container(
-                child: MultiSelectDialogField(
-                  items: _countries.map((e) => MultiSelectItem(e, e)).toList(),
-                  listType: MultiSelectListType.LIST,
-                  searchable: true,
-                  searchHint: "Search countries",
-                  buttonText: Text("Select Countries"),
-                  chipDisplay: MultiSelectChipDisplay.none(),
-                  onConfirm: (values) => setState(
-                    () {
-                      _selectedCountries = values;
-                    },
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            child: ListView(children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: CustomDropdown<int>(
+                  icon: Icon(Icons.keyboard_arrow_down),
+                  child: Text('SELECT COUNTRIES',
+                      style: TextStyle(
+                          color: Colors.blue,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500)),
+                  onChange: (int value, int index) => print(value),
+                  dropdownButtonStyle: DropdownButtonStyle(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    padding: EdgeInsets.fromLTRB(15, 2, 10, 2),
+                    width: 170,
+                    height: 40,
+                    elevation: 1,
+                    backgroundColor: Colors.white,
+                    primaryColor: Colors.black87,
+                    constraints: BoxConstraints(
+                      maxHeight: MediaQuery.of(context).size.height - 15,
+                    ),
                   ),
+                  dropdownStyle: DropdownStyle(
+                    constraints: BoxConstraints(
+                      maxHeight: MediaQuery.of(context).size.height - 15,
+                    ),
+                    width: 50,
+                    offset: Offset(0, 45),
+                    borderRadius: BorderRadius.circular(8),
+                    elevation: 6,
+                    padding: EdgeInsets.all(5),
+                  ),
+                  items: _countries
+                      .asMap()
+                      .entries
+                      .map(
+                        (item) => DropdownItem<int>(
+                          value: item.key + 1,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(item.value),
+                          ),
+                        ),
+                      )
+                      .toList(),
                 ),
               ),
               Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: CustomDropdown(
-                      text: "SELECT INDICATOR", dropDownOptions: _countries)),
-              Container(
-                child:
-                    DropDownData(list: _indicators, hint: "SELECT INDICATOR"),
-              ),
-              Container(
-                child: DropDownData(list: _countries, hint: "COMPARE BY"),
-              ),
-              Container(
-                child: DropDownData(list: _countries, hint: "SORT BY"),
-              ),
-              Container(
-                constraints: BoxConstraints(maxHeight: 500, maxWidth: 350),
-                margin: EdgeInsets.symmetric(horizontal: 15, vertical: 0),
-                child: MultiCountryChart(
-                  data: graphData,
+                padding: const EdgeInsets.all(8.0),
+                child: CustomDropdown<int>(
+                  icon: Icon(Icons.keyboard_arrow_down),
+                  child: Text('SELECT INDICATOR',
+                      style: TextStyle(
+                          color: Colors.blue,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500)),
+                  onChange: (int value, int index) => print(value),
+                  dropdownButtonStyle: DropdownButtonStyle(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    padding: EdgeInsets.fromLTRB(15, 2, 10, 2),
+                    width: 170,
+                    height: 40,
+                    elevation: 1,
+                    backgroundColor: Colors.white,
+                    primaryColor: Colors.black87,
+                    constraints: BoxConstraints(
+                      maxHeight: MediaQuery.of(context).size.height - 15,
+                    ),
+                  ),
+                  dropdownStyle: DropdownStyle(
+                    constraints: BoxConstraints(
+                      maxHeight: MediaQuery.of(context).size.height - 15,
+                    ),
+                    width: 50,
+                    offset: Offset(0, 45),
+                    borderRadius: BorderRadius.circular(8),
+                    elevation: 6,
+                    padding: EdgeInsets.all(5),
+                  ),
+                  items: _countries
+                      .asMap()
+                      .entries
+                      .map(
+                        (item) => DropdownItem<int>(
+                          value: item.key + 1,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(item.value),
+                          ),
+                        ),
+                      )
+                      .toList(),
                 ),
               ),
-            ],
-          ),
-        ),
+            ])),
       ),
     );
   }
