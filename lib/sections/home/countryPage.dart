@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
 import './countryTag.dart';
 import './../../model.dart';
-import "package:collection/collection.dart";
-import "package:sqflite/sqflite.dart";
 
 // State for Country Page
 // State for Home Page
 class CountryPage extends StatefulWidget {
-  CountryPage({required this.callback, required this.db});
+  CountryPage({required this.callback});
   final Function callback;
-  final Database db;
 
   @override
   _CountryPageState createState() => _CountryPageState();
@@ -19,7 +16,26 @@ class _CountryPageState extends State<CountryPage> {
   Icon searchBarIcon = const Icon(Icons.search);
   Widget searchBar = const Text('UNICEF SAR Pocketbook');
 
+  List<String> _countries = [];
+
+  void _getSubareas() async {
+    final List<Map<dynamic, dynamic>> subareas =
+        await SQLiteDbProvider.db.getSubareaTags();
+    var countrydynamic = subareas.map((Map<dynamic, dynamic> subarea) {
+      return subarea['SubAreaDisplayName'];
+    }).toList();
+    var countries = List<String>.from(countrydynamic);
+    setState(() {
+      _countries = countries;
+    });
+  }
+
   @override
+  void initState() {
+    super.initState();
+    _getSubareas();
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -66,12 +82,12 @@ class _CountryPageState extends State<CountryPage> {
       body: Container(
         child: Center(
           child: ListView(
-            children: widget.countries
+            children: _countries
                 .map((country) => CountryTag(
-                    country,
-                    'assets/flags/' + country + '.png',
-                    widget.callback,
-                    widget.countryData[widget.countries.indexOf(country)]))
+                      country,
+                      'assets/flags/' + country + '.png',
+                      widget.callback,
+                    ))
                 .toList(),
           ),
         ),

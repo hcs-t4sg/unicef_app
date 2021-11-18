@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import './../../model.dart';
-import "package:collection/collection.dart";
 
 //State for CategoryInfo Page
 // State for Home Page
@@ -9,13 +7,11 @@ class CategoryInfoPage extends StatefulWidget {
       {Key? key,
       required this.category,
       required this.country,
-      required this.callback,
-      required this.indicators})
+      required this.callback,})
       : super(key: key);
   final String category;
   final Function callback;
   final String country;
-  final List<Indicator> indicators;
 
   @override
   _CategoryInfoPageState createState() => _CategoryInfoPageState();
@@ -94,6 +90,8 @@ class _CategoryInfoPageState extends State<CategoryInfoPage> {
                     fontSize: 15,
                   ),
                 )),
+
+            /*
             Container(
               child: ListView(
                 physics: ClampingScrollPhysics(),
@@ -208,6 +206,7 @@ class _CategoryInfoPageState extends State<CategoryInfoPage> {
                     .toList(),
               ),
             )
+            */
           ],
         ),
       ),

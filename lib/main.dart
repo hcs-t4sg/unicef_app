@@ -4,30 +4,15 @@ import 'sections/compare/compare.dart';
 import './sections/more.dart';
 import './sections/reporting.dart';
 import 'package:flutter/widgets.dart';
-import 'model.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:sqflite/sqflite.dart';
 
 void main() async {
-  // Avoid errors caused by flutter upgrade.
-  WidgetsFlutterBinding.ensureInitialized();
-
-  // Open the database and store the reference.
-  Database db = await SQLiteDbProvider.db.database;
-
-  print(db.rawQuery("SELECT DISTINCT SubAreaDisplayName FROM SubArea"));
-
   // Run the app!
-  runApp(MyApp(db));
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  late Database _db;
-
-  MyApp(Database db) {
-    this._db = db;
-  }
-
+  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -44,13 +29,13 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: "UNICEF SAR Data Pocketbook", db: this._db),
+      home: MyHomePage(title: "UNICEF SAR Data Pocketbook"),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key, required this.title, required this.db})
+  MyHomePage({Key? key, required this.title})
       : super(key: key);
 
   // This widget is the home page of your application. It is stateful, meaning
@@ -63,7 +48,6 @@ class MyHomePage extends StatefulWidget {
   // always marked "final".
 
   final String title;
-  final Database db;
 
   @override
   _MyHomePageState createState() => _MyHomePageState(title);
@@ -92,8 +76,8 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     List<Widget> _pages = <Widget>[
-      HomePage(callback: this.callback, title: widget.title, db: widget.db),
-      ComparePage(title: widget.title, db: widget.db),
+      HomePage(callback: this.callback, title: widget.title),
+      ComparePage(title: widget.title),
       ReportPage(),
       MorePage(),
     ];
