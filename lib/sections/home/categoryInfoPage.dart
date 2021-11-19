@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import './../../model.dart';
-import "package:collection/collection.dart";
-import './categoryInfo.dart';
 
 //State for CategoryInfo Page
 // State for Home Page
@@ -10,13 +7,11 @@ class CategoryInfoPage extends StatefulWidget {
       {Key? key,
       required this.category,
       required this.country,
-      required this.callback,
-      required this.indicators})
+      required this.callback,})
       : super(key: key);
   final String category;
   final Function callback;
   final String country;
-  final List<Indicator> indicators;
 
   @override
   _CategoryInfoPageState createState() =>
@@ -91,13 +86,80 @@ class _CategoryInfoPageState extends State<CategoryInfoPage> {
           actions: [
             IconButton(
               onPressed: () {
-                setState(
-                  () {
-                    if (searchBarIcon.icon == Icons.search) {
-                      searchBarIcon = Icon(Icons.cancel);
-                      searchBar = ListTile(
-                        leading: Icon(
-                          Icons.search,
+                widget.callback(widget.country);
+                Navigator.pop(context);
+              }),
+          Text(widget.country),
+        ]),
+        automaticallyImplyLeading: false,
+        actions: [
+          IconButton(
+            onPressed: () {
+              setState(() {
+                if (searchBarIcon.icon == Icons.search) {
+                  searchBarIcon = const Icon(Icons.cancel);
+                  searchBar = const ListTile(
+                    leading: Icon(
+                      Icons.search,
+                      color: Colors.white,
+                      size: 28,
+                    ),
+                    title: TextField(
+                      decoration: InputDecoration(
+                        hintText: 'Search for country',
+                        hintStyle: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                          fontStyle: FontStyle.italic,
+                        ),
+                        border: InputBorder.none,
+                      ),
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                  );
+                } else {
+                  searchBarIcon = const Icon(Icons.search);
+                  searchBar = Text(widget.country);
+                }
+              });
+            },
+            icon: searchBarIcon,
+          )
+        ],
+        centerTitle: true,
+      ),
+      body: Center(
+        child: ListView(
+          children: [
+            Container(
+                decoration: BoxDecoration(
+                  color: Colors.blue[100],
+                ),
+                margin: EdgeInsets.only(bottom: 10),
+                height: 30,
+                alignment: Alignment.center,
+                child: Text(
+                  widget.category,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15,
+                  ),
+                )),
+
+            /*
+            Container(
+              child: ListView(
+                physics: ClampingScrollPhysics(),
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                children: widget.indicators
+                    .map(
+                      (indicator) => Container(
+                        margin: const EdgeInsets.symmetric(
+                            horizontal: 15.0, vertical: 8.0),
+                        decoration: BoxDecoration(
                           color: Colors.white,
                           size: 28,
                         ),
@@ -127,6 +189,7 @@ class _CategoryInfoPageState extends State<CategoryInfoPage> {
               },
               icon: searchBarIcon,
             )
+            */
           ],
           centerTitle: true,
         ),

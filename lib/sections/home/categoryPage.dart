@@ -1,27 +1,17 @@
 import 'package:flutter/material.dart';
 import './categoryTag.dart';
 import './../../model.dart';
-import "package:collection/collection.dart";
 
 //State for Category Page
 // State for Home Page
 class CategoryPage extends StatefulWidget {
-  CategoryPage(
-      {Key? key,
-      required this.country,
-      required this.callback,
-      required this.indicators})
-      : this.categoryData = groupBy(indicators, (Indicator obj) => obj.category)
-            .values
-            .toList(),
-        this.categoryNames =
-            groupBy(indicators, (Indicator obj) => obj.category).keys.toList(),
-        super(key: key);
+  CategoryPage({
+    Key? key,
+    required this.country,
+    required this.callback,
+  }) : super(key: key);
   final String country;
   final Function callback;
-  final List<Indicator> indicators;
-  final List categoryNames;
-  final List categoryData;
 
   @override
   _CategoryPageState createState() =>
@@ -78,9 +68,28 @@ class _CategoryPageState extends State<CategoryPage> {
         }
       },
     );
+
+  List<String> _categories = [];
+
+  void _getCategories() async {
+    final List<Map<dynamic, dynamic>> categories =
+        await SQLiteDbProvider.db.getCategoryTags();
+    var categorydynamic = categories.map((Map<dynamic, dynamic> categories) {
+      return categories['KPICategoryDisplayName'];
+    }).toList();
+    var categorylist = List<String>.from(categorydynamic);
+    setState(() {
+      _categories = categorylist;
+    });
   }
 
   @override
+
+  void initState() {
+    super.initState();
+    _getCategories();
+  }
+
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {

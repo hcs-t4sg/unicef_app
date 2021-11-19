@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'dropDownData.dart';
-import './../../model.dart';
 
 class ComparePage extends StatefulWidget {
-  ComparePage({required this.title, required this.data});
+  ComparePage({required this.title});
 
   String title;
-  List<Indicator> data;
 
   @override
   _ComparePageState createState() => _ComparePageState();

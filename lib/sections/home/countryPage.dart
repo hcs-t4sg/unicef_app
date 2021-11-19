@@ -1,21 +1,12 @@
 import 'package:flutter/material.dart';
 import './countryTag.dart';
 import './../../model.dart';
-import "package:collection/collection.dart";
 
-//State for Country Page
+// State for Country Page
 // State for Home Page
 class CountryPage extends StatefulWidget {
-  CountryPage({Key? key, required this.callback, required this.data})
-      : this.countryData =
-            groupBy(data, (Indicator obj) => obj.country).values.toList(),
-        this.countries =
-            groupBy(data, (Indicator obj) => obj.country).keys.toList(),
-        super(key: key);
+  CountryPage({required this.callback});
   final Function callback;
-  final List<Indicator> data;
-  final List countries;
-  final List countryData;
 
   @override
   _CountryPageState createState() => _CountryPageState(countries);
@@ -57,7 +48,26 @@ class _CountryPageState extends State<CountryPage> {
     );
   }
 
+  List<String> _countries = [];
+
+  void _getSubareas() async {
+    final List<Map<dynamic, dynamic>> subareas =
+        await SQLiteDbProvider.db.getSubareaTags();
+    var countrydynamic = subareas.map((Map<dynamic, dynamic> subarea) {
+      return subarea['SubAreaDisplayName'];
+    }).toList();
+    var countries = List<String>.from(countrydynamic);
+    setState(() {
+      _countries = countries;
+    });
+  }
+
   @override
+  void initState() {
+    super.initState();
+    _getSubareas();
+  }
+
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
