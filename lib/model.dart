@@ -66,6 +66,42 @@ class Indicator {
   }
 }
 
+class Report {
+  Report(
+      {required this.name,
+      required this.ratificationDate,
+      required this.date,
+      required this.status,
+      required this.country});
+
+  dynamic country;
+  dynamic name;
+  dynamic ratificationDate;
+  dynamic date;
+  dynamic status;
+
+  // Convert an Indicator into a Map.
+  Map<String, dynamic> toMap() {
+    return {
+      'name': name,
+      'ratificationDate': ratificationDate,
+      'date': date,
+      'status': status,
+      'country': country
+    };
+  }
+
+  @override
+  String toString() {
+    return '''Report{
+      name: $name,
+      ratificationDate: $ratificationDate,
+      date: $date,
+      status: $status,
+      country: $country''';
+  }
+}
+
 class SQLiteDbProvider {
   SQLiteDbProvider._();
   static final SQLiteDbProvider db = SQLiteDbProvider._();
@@ -140,6 +176,24 @@ class SQLiteDbProvider {
           source: maps[i]['source'],
           link: maps[i]['link'],
           percentage: maps[i]['percentage']);
+    });
+  }
+
+  Future<List<Report>> getReporting() async {
+    // Get a reference to the database.
+    final db = await database;
+
+    // Query the table for all The Indicators.
+    final List<Map<String, dynamic>> maps = await db.query('Reports');
+
+    // Convert the List<Map<String, dynamic> into a List<Indicator>.
+    return List.generate(maps.length, (i) {
+      return Report(
+          name: maps[i]['name'],
+          ratificationDate: maps[i]['ratificationDate'],
+          date: maps[i]['date'],
+          status: maps[i]['status'],
+          country: maps[i]['country']);
     });
   }
 }

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'sections/home/home.dart';
 import 'sections/compare/compare.dart';
 import './sections/more.dart';
-import './sections/reporting.dart';
+import 'sections/reporting/reporting.dart';
 import 'package:flutter/widgets.dart';
 import 'model.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -20,8 +20,9 @@ void main() async {
 
   // Opens instance of database
   List<Indicator> data = await SQLiteDbProvider.db.getAllIndicators();
+  List<Report> reportData = [];
   print(data[98]);
-  runApp(MyApp(data));
+  runApp(MyApp(data, reportData));
 
   // Note: From Kevin's branch:
   // Database db = await SQLiteDbProvider.db.database;
@@ -38,9 +39,11 @@ class MyApp extends StatelessWidget {
 
   // This widget is the root of your application.
   List<Indicator> _data = [];
+  List<Report> _reports = [];
 
-  MyApp(List<Indicator> data) {
+  MyApp(List<Indicator> data, List<Report> reportData) {
     this._data = data;
+    this._reports = reportData;
   }
 
   @override
@@ -91,7 +94,7 @@ class _MyHomePageState extends State<MyHomePage> {
     List<Widget> _pages = <Widget>[
       HomePage(callback: this.callback, title: widget.title, data: widget.data),
       ComparePage(title: widget.title, data: widget.data),
-      ReportPage(),
+      ReportPage(data: widget.data),
       MorePage(),
     ];
     return Scaffold(
