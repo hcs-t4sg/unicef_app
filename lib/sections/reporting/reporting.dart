@@ -36,6 +36,24 @@ class _ReportPageState extends State<ReportPage> {
         status: "Submitted",
         country: "Afghanistan"),
     Report(
+        name: "Report 3",
+        ratificationDate: "2021-03-01",
+        date: "2021-10-05",
+        status: "Submitted",
+        country: "Afghanistan"),
+    Report(
+        name: "Report 3",
+        ratificationDate: "2021-03-01",
+        date: "2021-10-05",
+        status: "Submitted",
+        country: "Afghanistan"),
+    Report(
+        name: "Report 3",
+        ratificationDate: "2021-03-01",
+        date: "2021-10-05",
+        status: "Submitted",
+        country: "Afghanistan"),
+    Report(
         name: "Report 4",
         ratificationDate: "2021-04-01",
         date: "2021-10-05",
@@ -56,13 +74,16 @@ class _ReportPageState extends State<ReportPage> {
 
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
+      // NOTE: Fixed overflow/scroll behavior using the second solution in link below
+      // https://stackoverflow.com/questions/54156420/flutter-bottom-overflowed-by-119-pixels
       appBar: AppBar(
         title: const Text(
           'Reporting',
         ),
         centerTitle: true,
       ),
-      body: Center(
+      body: SingleChildScrollView(
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 20.0),
           child: Column(
