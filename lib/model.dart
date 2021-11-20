@@ -10,6 +10,7 @@ class Indicator {
     required this.category,
     required this.indicatortext,
     required this.source,
+    required this.sourcelink,
     required this.note,
     required this.area,
     required this.subarea,
@@ -23,6 +24,7 @@ class Indicator {
   dynamic category;
   dynamic indicatortext;
   dynamic source;
+  dynamic sourcelink;
   dynamic note;
   dynamic area;
   dynamic subarea;
@@ -32,12 +34,31 @@ class Indicator {
   dynamic value2unit;
   dynamic id;
 
+  // Create an empty Indicator with null values
+  factory Indicator.empty() {
+    return Indicator(
+      category: null,
+      indicatortext: null,
+      source: null,
+      sourcelink: null,
+      note: null,
+      area: null,
+      subarea: null,
+      value1: null,
+      value1unit: null,
+      value2: null,
+      value2unit: null,
+      id: null,
+    );
+  }
+
   // Convert an Indicator into a Map.
   Map<String, dynamic> toMap() {
     return {
       'category': category,
       'indicatortext': indicatortext,
       'source': source,
+      'sourcelink': sourcelink,
       'note': note,
       'area': area,
       'subarea': subarea,
@@ -52,17 +73,18 @@ class Indicator {
   // Convert a Map into an Indicator.
   factory Indicator.fromMap(Map<String, dynamic> map) {
     return Indicator(
-      category: map['category'],
-      indicatortext: map['indicatortext'],
-      source: map['source'],
-      note: map['note'],
-      area: map['area'],
-      subarea: map['subarea'],
-      value1: map['value1'],
-      value1unit: map['value1unit'],
-      value2: map['value2'],
-      value2unit: map['value2unit'],
-      id: map['id'],
+      category: map['KPICategoryDisplayName'],
+      indicatortext: map['KPIText'],
+      source: map['SourceDescription'],
+      sourcelink: map['SourceLink'],
+      note: map['NoteText'],
+      area: map['AreaDisplayName'],
+      subarea: map['SubAreaDisplayName'],
+      value1: map['Value1'],
+      value1unit: map['Value1Unit'],
+      value2: map['Value2'],
+      value2unit: map['Value2Unit'],
+      id: map['KPIID'],
     );
   }
 
@@ -129,7 +151,7 @@ class SQLiteDbProvider {
         LEFT JOIN SubArea USING(SubAreaID) 
         LEFT JOIN Area USING(AreaID)
         LEFT JOIN Sources USING(SourceID)
-        WHERE KPICategory.KPICategoryDisplayName LIKE ? AND SubArea.SubAreaDisplayArea LIKE ?''',
+        WHERE KPICategory.KPICategoryDisplayName LIKE ? AND SubArea.SubAreaDisplayName LIKE ?''',
         [category, subarea]);
     return result.isNotEmpty
         ? result.map((i) => Indicator.fromMap(i)).toList()
@@ -143,18 +165,21 @@ class SQLiteDbProvider {
   // Get subareas from the database
   Future<List<Map>> getSubareaTags() async {
     final db = await database;
-    return await db.rawQuery("SELECT SubAreaDisplayName, SubAreaImage FROM SubArea");
+    return await db
+        .rawQuery("SELECT SubAreaDisplayName, SubAreaImage FROM SubArea");
   }
 
   // Get categories from the database
   Future<List<Map>> getCategoryTags() async {
     final db = await database;
-    return await db.rawQuery("SELECT KPICategoryDisplayName, KPICategoryIcon FROM KPICategory");
+    return await db.rawQuery(
+        "SELECT KPICategoryDisplayName, KPICategoryIcon FROM KPICategory");
   }
 
   // Get sources from the database
   Future<List<Map>> getAllSources() async {
     final db = await database;
-    return await db.query("Sources", columns: ["SourceDescription", "SourceLink"]);
+    return await db
+        .query("Sources", columns: ["SourceDescription", "SourceLink"]);
   }
 }

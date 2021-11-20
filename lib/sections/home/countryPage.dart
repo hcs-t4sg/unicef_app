@@ -9,7 +9,7 @@ class CountryPage extends StatefulWidget {
   final Function callback;
 
   @override
-  _CountryPageState createState() => _CountryPageState(countries);
+  _CountryPageState createState() => _CountryPageState();
 }
 
 class _CountryPageState extends State<CountryPage> {
@@ -17,19 +17,36 @@ class _CountryPageState extends State<CountryPage> {
   Widget searchBar = Text('UNICEF SAR Pocketbook');
   TextEditingController _controller = new TextEditingController();
   String _searchText = "";
-  List _countries = [];
-  List _filteredCountries = [];
+  List<String> _countries = [];
+  List<String> _filteredCountries = [];
 
-  _CountryPageState(countries) {
-    _countries = countries;
-    _filteredCountries = countries;
+  void _getSubareas() async {
+    final List<Map<dynamic, dynamic>> subareas =
+        await SQLiteDbProvider.db.getSubareaTags();
+    var countrydynamic = subareas.map((Map<dynamic, dynamic> subarea) {
+      return subarea['SubAreaDisplayName'];
+    }).toList();
+    var countries = List<String>.from(countrydynamic);
+    setState(() {
+      _countries = countries;
+      _filteredCountries = countries;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _getSubareas();
+  }
+
+  _CountryPageState() {
     _controller.addListener(
       () {
         if (_controller.text.isEmpty) {
           setState(
             () {
               _searchText = "";
-              _filteredCountries = countries;
+              _filteredCountries = _countries;
             },
           );
         } else {
@@ -46,26 +63,6 @@ class _CountryPageState extends State<CountryPage> {
         }
       },
     );
-  }
-
-  List<String> _countries = [];
-
-  void _getSubareas() async {
-    final List<Map<dynamic, dynamic>> subareas =
-        await SQLiteDbProvider.db.getSubareaTags();
-    var countrydynamic = subareas.map((Map<dynamic, dynamic> subarea) {
-      return subarea['SubAreaDisplayName'];
-    }).toList();
-    var countries = List<String>.from(countrydynamic);
-    setState(() {
-      _countries = countries;
-    });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _getSubareas();
   }
 
   Widget build(BuildContext context) {
@@ -127,10 +124,10 @@ class _CountryPageState extends State<CountryPage> {
               children: _filteredCountries
                   .map(
                     (country) => CountryTag(
-                        country,
-                        'assets/flags/' + country + '.png',
-                        widget.callback,
-                        widget.countryData[widget.countries.indexOf(country)]),
+                      country,
+                      'assets/flags/' + country + '.png',
+                      widget.callback,
+                    ),
                   )
                   .toList(),
             ),

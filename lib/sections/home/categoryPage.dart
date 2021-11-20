@@ -14,8 +14,7 @@ class CategoryPage extends StatefulWidget {
   final Function callback;
 
   @override
-  _CategoryPageState createState() =>
-      _CategoryPageState(categoryNames, country);
+  _CategoryPageState createState() => _CategoryPageState(country);
 }
 
 class _CategoryPageState extends State<CategoryPage> {
@@ -28,9 +27,26 @@ class _CategoryPageState extends State<CategoryPage> {
   List _categories = [];
   List _filteredCategories = [];
 
-  _CategoryPageState(categories, country) {
+  void _getCategories() async {
+    final List<Map<dynamic, dynamic>> categories =
+        await SQLiteDbProvider.db.getCategoryTags();
+    var categorydynamic = categories.map((Map<dynamic, dynamic> categories) {
+      return categories['KPICategoryDisplayName'];
+    }).toList();
+    var categorylist = List<String>.from(categorydynamic);
+    setState(() {
+      _categories = categorylist;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _getCategories();
+  }
+
+  _CategoryPageState(country) {
     searchBar = Text(country);
-    _categories = categories;
     _filteredCategories = _categories;
     _controller.addListener(
       () {
@@ -68,28 +84,8 @@ class _CategoryPageState extends State<CategoryPage> {
         }
       },
     );
-
-  List<String> _categories = [];
-
-  void _getCategories() async {
-    final List<Map<dynamic, dynamic>> categories =
-        await SQLiteDbProvider.db.getCategoryTags();
-    var categorydynamic = categories.map((Map<dynamic, dynamic> categories) {
-      return categories['KPICategoryDisplayName'];
-    }).toList();
-    var categorylist = List<String>.from(categorydynamic);
-    setState(() {
-      _categories = categorylist;
-    });
   }
-
-  @override
-
-  void initState() {
-    super.initState();
-    _getCategories();
-  }
-
+    
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
@@ -148,10 +144,10 @@ class _CategoryPageState extends State<CategoryPage> {
               key: Key(_filteredCategories.length.toString()),
               children: _filteredCategories
                   .map((obj) => CategoryTag(
-                      obj,
-                      widget.callback,
-                      widget.country,
-                      widget.categoryData[widget.categoryNames.indexOf(obj)]))
+                        obj,
+                        widget.callback,
+                        widget.country,
+                      ))
                   .toList(),
             ),
           ),

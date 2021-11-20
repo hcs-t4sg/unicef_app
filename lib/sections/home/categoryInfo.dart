@@ -5,19 +5,9 @@ import './../../model.dart';
 
 // ignore: must_be_immutable
 class CategoryInfo extends StatefulWidget {
-  Indicator _indicator = new Indicator(
-      percentage: "",
-      units: "",
-      index: "",
-      value: "",
-      source: "",
-      id: "",
-      category: "",
-      region: "",
-      country: "",
-      link: "");
+  Indicator _indicator = Indicator.empty();
 
-  CategoryInfo(Indicator indicator) {
+  CategoryInfo(indicator) {
     _indicator = indicator;
   }
 
@@ -27,17 +17,7 @@ class CategoryInfo extends StatefulWidget {
 
 // State for category tag
 class _CategoryInfoState extends State<CategoryInfo> {
-  Indicator _indicator = new Indicator(
-      percentage: "",
-      units: "",
-      index: "",
-      value: "",
-      source: "",
-      id: "",
-      category: "",
-      region: "",
-      country: "",
-      link: "");
+  Indicator _indicator = Indicator.empty();
   bool showSource = false;
 
   _CategoryInfoState(Indicator indicator) {
@@ -50,7 +30,7 @@ class _CategoryInfoState extends State<CategoryInfo> {
         SizedBox(
           width: double.infinity,
           child: Text(
-            _indicator.index,
+            _indicator.indicatortext,
             textAlign: TextAlign.left,
             style: TextStyle(
                 color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold),
@@ -59,7 +39,7 @@ class _CategoryInfoState extends State<CategoryInfo> {
         SizedBox(
           width: double.infinity,
           child: Text(
-            (_indicator.units != "N/A") ? _indicator.units : "",
+            (_indicator.value1unit != null) ? _indicator.value1unit : "",
             textAlign: TextAlign.left,
             style: TextStyle(
                 color: Colors.black, fontSize: 16, fontWeight: FontWeight.w500),
@@ -80,7 +60,7 @@ class _CategoryInfoState extends State<CategoryInfo> {
       SizedBox(
         width: double.infinity,
         child: Text(
-          _indicator.index,
+          _indicator.indicatortext,
           textAlign: TextAlign.left,
           style: TextStyle(
               color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold),
@@ -89,7 +69,7 @@ class _CategoryInfoState extends State<CategoryInfo> {
       SizedBox(
         width: double.infinity,
         child: Text(
-          (_indicator.units != "N/A") ? _indicator.units : "",
+          (_indicator.value2unit != null) ? _indicator.value2unit : "",
           textAlign: TextAlign.left,
           style: TextStyle(
               color: Colors.black, fontSize: 16, fontWeight: FontWeight.w500),
@@ -146,7 +126,7 @@ class _CategoryInfoState extends State<CategoryInfo> {
             Expanded(
               child: Container(
                 child: Text(
-                  _indicator.value,
+                  _indicator.value1,
                   textAlign: TextAlign.center,
                   style: TextStyle(
                       color: Colors.black,
