@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'sections/home/home.dart';
 import 'sections/compare/compare.dart';
 import './sections/more.dart';
-import './sections/reporting.dart';
+import 'sections/reporting/reporting.dart';
 import 'package:flutter/widgets.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 

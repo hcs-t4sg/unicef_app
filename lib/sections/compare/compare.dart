@@ -18,8 +18,18 @@ class _ComparePageState extends State<ComparePage> {
         child: Container(
           child: ListView(
             children: <Widget>[
-              Container(child: DropDownData()),
-              Container(child: DropDownData()),
+              Container(
+                child: DropDownData(
+                    list: ["One", "Two", "Three", "Four"],
+                    hint: "",
+                    callback: (val) => {print(val)}),
+              ),
+              Container(
+                child: DropDownData(
+                    list: ["One", "Two", "Three", "Four"],
+                    hint: "",
+                    callback: (val) => {print(val)}),
+              ),
               Container(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
