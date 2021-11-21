@@ -108,38 +108,136 @@ class Indicator {
 }
 
 class Report {
-  Report(
-      {required this.name,
-      required this.ratificationDate,
-      required this.date,
-      required this.status,
-      required this.country});
+  Report({
+    required this.name,
+    required this.ratificationdate,
+    required this.reportdate,
+    required this.reportstatus,
+    required this.area,
+    required this.subarea,
+    required this.id,
+  });
 
-  dynamic country;
   dynamic name;
-  dynamic ratificationDate;
-  dynamic date;
-  dynamic status;
+  dynamic ratificationdate;
+  dynamic reportdate;
+  dynamic reportstatus;
+  dynamic area;
+  dynamic subarea;
+  dynamic id;
 
-  // Convert an Indicator into a Map.
+  // Create an empty Report with null values
+  factory Report.empty() {
+    return Report(
+      name: null,
+      ratificationdate: null,
+      reportdate: null,
+      reportstatus: null,
+      area: null,
+      subarea: null,
+      id: null,
+    );
+  }
+
+  // Convert a Report into a Map.
   Map<String, dynamic> toMap() {
     return {
       'name': name,
-      'ratificationDate': ratificationDate,
-      'date': date,
-      'status': status,
-      'country': country
+      'ratificationdate': ratificationdate,
+      'reportdate': reportdate,
+      'reportstatus': reportstatus,
+      'area': area,
+      'subarea': subarea,
+      'id': id,
     };
   }
 
+  // Convert a Map into a Report.
+  factory Report.fromMap(Map<String, dynamic> map) {
+    return Report(
+      name: map['ReportDisplayName'],
+      ratificationdate: map['RatificationDate'],
+      reportdate: map['ReportDate'],
+      reportstatus: map['ReportStatus'],
+      area: map['AreaDisplayName'],
+      subarea: map['SubAreaDisplayName'],
+      id: map['ReportID'],
+    );
+  }
+
+  // Implement toString to make it easier to see information about
+  // each report when using the print statement.
   @override
   String toString() {
     return '''Report{
-      name: $name,
-      ratificationDate: $ratificationDate,
-      date: $date,
-      status: $status,
-      country: $country''';
+      name: $name, 
+      ratificationdate: $ratificationdate, 
+      reportdate: $reportdate, 
+      reportstatus: $reportstatus, 
+      area: $area, 
+      subarea: $subarea, 
+      id: $id}''';
+  }
+}
+
+class ComparisonIndicator {
+  ComparisonIndicator({
+    required this.subarea,
+    required this.compareby,
+    required this.comparisonindicator,
+    required this.value,
+    required this.subcomparisonindicator,
+  });
+
+  dynamic subarea;
+  dynamic compareby;
+  dynamic comparisonindicator;
+  dynamic value;
+  dynamic subcomparisonindicator;
+
+  // Create an empty ComparisonIndicator with null values
+  factory ComparisonIndicator.empty() {
+    return ComparisonIndicator(
+      subarea: null,
+      compareby: null,
+      comparisonindicator: null,
+      value: null,
+      subcomparisonindicator: null,
+    );
+  }
+
+  // Convert a ComparisonIndicator into a Map.
+  Map<String, dynamic> toMap() {
+    return {
+      'subarea': subarea,
+      'compareby': compareby,
+      'comparisonindicator': comparisonindicator,
+      'value': value,
+      'subcomparisonindicator': subcomparisonindicator,
+    };
+  }
+
+  // Convert a Map into a ComparisonIndicator.
+  factory ComparisonIndicator.fromMap(Map<String, dynamic> map) {
+    return ComparisonIndicator(
+      subarea: map['SubAreaDisplayName'],
+      compareby: map['CompareBy'],
+      comparisonindicator: map['ComparisonIndicator'],
+      value: map['Value'],
+      subcomparisonindicator: map['SubComparisonIndicator'],
+    );
+  }
+
+  // Implement toString to make it easier to see information about
+  // each comparison indicator when using the print statement.
+  @override
+  String toString() {
+    return '''ComparisonIndicator{
+      subarea: $subarea, 
+      compareby: $compareby, 
+      comparisonindicator: $comparisonindicator, 
+      value: $value, 
+      subcomparisonindicator: $subcomparisonindicator}''';
   }
 }
 
@@ -194,10 +292,6 @@ class SQLiteDbProvider {
         : [];
   }
 
-  List<String> getList(query, column) {
-    return query.isNotEmpty ? query.map((i) => i[column[0]]).toList() : [];
-  }
-
   // Get subareas from the database
   Future<List<Map>> getSubareaTags() async {
     final db = await database;
@@ -219,21 +313,66 @@ class SQLiteDbProvider {
         .query("Sources", columns: ["SourceDescription", "SourceLink"]);
   }
 
-  Future<List<Report>> getReporting() async {
-    // Get a reference to the database.
+  // Get reports from the database by subarea
+  Future<List<Report>> getReports(String subarea) async {
     final db = await database;
+    var result = await db.rawQuery('''SELECT * FROM Report
+        LEFT JOIN Area USING(AreaID)
+        LEFT JOIN SubArea USING(SubAreaID)
+        WHERE SubArea.SubAreaDisplayName LIKE ?''' , [subarea]);
+    return result.isNotEmpty
+        ? result.map((i) => Report.fromMap(i)).toList()
+        : [];
+  }
 
-    // Query the table for all The Indicators.
-    final List<Map<String, dynamic>> maps = await db.query('Reports');
+  // Get all unique subareas from the database in Report
+  Future<List<Map>> getReportSubareas() async {
+    final db = await database;
+    return await db.rawQuery('''SELECT DISTINCT SubAreaDisplayName FROM Report
+        LEFT JOIN SubArea USING(SubAreaID) WHERE SubAreaDisplayName IS NOT NULL''');
+  }
 
-    // Convert the List<Map<String, dynamic> into a List<Indicator>.
-    return List.generate(maps.length, (i) {
-      return Report(
-          name: maps[i]['name'],
-          ratificationDate: maps[i]['ratificationDate'],
-          date: maps[i]['date'],
-          status: maps[i]['status'],
-          country: maps[i]['country']);
-    });
+  // Get ComparisonIndicators from the database by subarea, compareby, and comparisonindicator
+  Future<List<ComparisonIndicator>> getComparisonIndicators(
+      String subarea, String compareby, String comparisonindicator) async {
+    final db = await database;
+    var result = await db.rawQuery('''SELECT * FROM ComparisonValue
+        LEFT JOIN SubArea USING(SubAreaID) 
+        LEFT JOIN CompareBy USING(CompareByID) 
+        LEFT JOIN ComparisonIndex USING(ComparisonIndexID)
+        LEFT JOIN SubComparisonIndex USING(SubComparisonIndexID)
+        WHERE SubArea.SubAreaDisplayName LIKE ? AND CompareBy.CompareByText LIKE ? AND ComparisonIndex.ComparisonIndexText LIKE ?''',
+        [subarea, compareby, comparisonindicator]);
+    return result.isNotEmpty
+        ? result.map((i) => ComparisonIndicator.fromMap(i)).toList()
+        : [];
+  }
+
+  // Get Compareby from the database 
+  Future<List<Map>> getCompareby() async {
+    final db = await database;
+    return await db.rawQuery(
+        "SELECT CompareByText FROM CompareBy");
+  }
+
+  // Get ComparisonIndicator from the database
+  Future<List<Map>> getComparisonIndicator() async {
+    final db = await database;
+    return await db.rawQuery(
+        "SELECT DISTINCT ComparisonIndexText FROM ComparisonIndex");
+  }
+
+  // Get SubComparisonIndicator from the database
+  Future<List<Map>> getSubComparisonIndicator() async {
+    final db = await database;
+    return await db.rawQuery(
+        "SELECT SubComparisonIndexText FROM SubComparisonIndex");
+  }
+
+  // Get subareas from the database
+  Future<List<Map>> getSubareas() async {
+    final db = await database;
+    return await db.rawQuery(
+        "SELECT SubAreaDisplayName FROM SubArea");
   }
 }

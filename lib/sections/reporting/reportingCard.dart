@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import './../../model.dart';
 
 class ReportingCard extends StatelessWidget {
-  String _name = "";
-  String _date = "";
-  String _ratificationDate = "";
-  String _country = "";
-  String _status = "";
+  Report _report = Report.empty();
   Map<String, Icon> icons = {
     'Next Report':
         Icon(MdiIcons.chevronRightCircleOutline, size: 20, color: Colors.blue),
@@ -16,13 +13,8 @@ class ReportingCard extends StatelessWidget {
         Icon(MdiIcons.closeCircleOutline, size: 20, color: Colors.red),
   };
 
-  ReportingCard(String name, String date, String ratificationDate,
-      String country, String status) {
-    this._name = name;
-    this._date = date;
-    this._ratificationDate = ratificationDate;
-    this._country = country;
-    this._status = status;
+  ReportingCard(Report report) {
+    this._report = report;
   }
 
   @override
@@ -49,7 +41,7 @@ class ReportingCard extends StatelessWidget {
               ),
             ),
             child: Text(
-              _name,
+              (_report.name!= null) ? _report.name : "",
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
             ),
           ),
@@ -63,7 +55,7 @@ class ReportingCard extends StatelessWidget {
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 ),
                 Text(
-                  _ratificationDate,
+                  (_report.ratificationdate != null) ? _report.ratificationdate : "",
                   style: TextStyle(fontSize: 16),
                 ),
               ],
@@ -79,14 +71,14 @@ class ReportingCard extends StatelessWidget {
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 ),
                 Text(
-                  _date,
+                  (_report.reportdate != null) ? _report.reportdate : "",
                   style: TextStyle(
                     fontSize: 16,
                   ),
                 ),
                 Container(
                     padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
-                    child: icons[_status])
+                    child: icons[(_report.reportstatus != null) ? _report.reportstatus : ""]),
               ],
             ),
           )

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import './categoryInfo.dart';
 import './../../model.dart';
 
-//State for CategoryInfo Page
+// State for CategoryInfo Page
 // State for Home Page
 class CategoryInfoPage extends StatefulWidget {
   const CategoryInfoPage({
