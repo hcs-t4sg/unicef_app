@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import './help.dart';
+import './sources.dart';
+import './about.dart';
 
 class MorePage extends StatefulWidget {
   MorePage({
@@ -12,6 +13,34 @@ class MorePage extends StatefulWidget {
 }
 
 class _MorePageState extends State<MorePage> {
+  List<String> _sourceNames = [
+    "source1",
+    "source2",
+    "source3",
+    "source1",
+    "source2",
+    "source3",
+    "source1",
+    "source2",
+    "source3",
+    "source1",
+    "source2",
+    "source3",
+  ];
+  List<String> _sourceLinks = [
+    "link1",
+    "link2",
+    "link3",
+    "link1",
+    "link2",
+    "link3",
+    "link1",
+    "link2",
+    "link3",
+    "link1",
+    "link2",
+    "link3",
+  ];
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 3,
@@ -23,48 +52,20 @@ class _MorePageState extends State<MorePage> {
           centerTitle: true,
           bottom: TabBar(
             tabs: [
-              Tab(text: 'SOURCES'),
-              Tab(text: 'HELP'),
               Tab(text: 'ABOUT US'),
+              Tab(text: 'HELP'),
+              Tab(text: 'SOURCES'),
             ],
           ),
         ),
         body: TabBarView(
           children: [
-            Center(
-              child: Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
-                child: Center(
-                  child: Column(
-                    children: [
-                      Text("This is the page with extra info",
-                          textScaleFactor: 2),
-                      Icon(MdiIcons.helpCircleOutline,
-                          size: 150, color: Colors.blue),
-                    ],
-                  ),
-                ),
-              ),
-            ),
+            Center(child: AboutPage()),
             Center(
               child: HelpPage(),
             ),
             Center(
-              child: Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
-                child: Center(
-                  child: Column(
-                    children: [
-                      Text("This is the page with extra info",
-                          textScaleFactor: 2),
-                      Icon(MdiIcons.helpCircleOutline,
-                          size: 150, color: Colors.blue),
-                    ],
-                  ),
-                ),
-              ),
+              child: SourcesPage(_sourceNames, _sourceLinks),
             ),
           ],
         ),
