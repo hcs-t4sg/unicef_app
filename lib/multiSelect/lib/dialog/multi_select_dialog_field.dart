@@ -415,7 +415,7 @@ class __MultiSelectDialogFieldViewState<V>
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 widget.buttonText ?? Text("Select"),
-                widget.buttonIcon ?? Icon(Icons.arrow_downward),
+                widget.buttonIcon ?? Icon(Icons.keyboard_arrow_down),
               ],
             ),
           ),

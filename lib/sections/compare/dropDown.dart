@@ -48,6 +48,8 @@ class _CustomDropdownState<T> extends State<CustomDropdown<T>>
   late AnimationController _animationController;
   late Animation<double> _expandAnimation;
   late Animation<double> _rotateAnimation;
+  String dropDownValue = 'Default';
+  String holder = '';
 
   @override
   void initState() {
@@ -63,6 +65,10 @@ class _CustomDropdownState<T> extends State<CustomDropdown<T>>
       parent: _animationController,
       curve: Curves.easeInOut,
     ));
+  }
+
+  void getDropDownItem() {
+    setState(() => {holder = dropDownValue});
   }
 
   @override

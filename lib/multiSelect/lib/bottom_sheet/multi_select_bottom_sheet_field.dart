@@ -307,8 +307,8 @@ class __MultiSelectBottomSheetFieldViewState<V>
   Widget _buildInheritedChipDisplay() {
     List<MultiSelectItem<V>?> chipDisplayItems = [];
     chipDisplayItems = _selectedItems
-        .map((e) => widget.items
-            .firstWhereOrNull((element) => e == element.value))
+        .map((e) =>
+            widget.items.firstWhereOrNull((element) => e == element.value))
         .toList();
     chipDisplayItems.removeWhere((element) => element == null);
     if (widget.chipDisplay != null) {
@@ -444,7 +444,7 @@ class __MultiSelectBottomSheetFieldViewState<V>
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 widget.buttonText ?? Text("Select"),
-                widget.buttonIcon ?? Icon(Icons.arrow_downward),
+                widget.buttonIcon ?? Icon(Icons.keyboard_arrow_down),
               ],
             ),
           ),

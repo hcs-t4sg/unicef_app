@@ -6,6 +6,7 @@ import './../../model.dart';
 import "package:collection/collection.dart";
 import './../../multiSelect/lib/multi_select_flutter.dart';
 import 'dropDown.dart';
+import './../../multiSelect/multidropDown.dart';
 
 class ComparePage extends StatefulWidget {
   ComparePage({required this.title});
@@ -16,6 +17,12 @@ class ComparePage extends StatefulWidget {
   _ComparePageState createState() => _ComparePageState();
 }
 
+class A {
+  Future<int> getInt() {
+    return Future.value(10);
+  }
+}
+
 class _ComparePageState extends State<ComparePage> {
   List<String> _compareby = [];
   List<String> _subcomparison = [];
@@ -23,8 +30,13 @@ class _ComparePageState extends State<ComparePage> {
   List<String> _subareas = [];
   List _sortBy = ["Greatest to least", "Least to greatest", "Alphabetical"];
   List _selectedCountries = [];
+  String _selectedCompareBy = '';
+  String _selectedComparisonIndex = '';
+  List<int> list = [];
+  List<String> subcomparisonTypes = [];
+  int dataVal = 0;
 
-  final List<BarSeries> graphData = [
+  List<BarSeries> graphData = [
     BarSeries(
         country: "Afghanistan",
         dataValue: 23,
@@ -34,6 +46,33 @@ class _ComparePageState extends State<ComparePage> {
         dataValue: 33,
         barColor: charts.ColorUtil.fromDartColor(Colors.orange)),
   ];
+
+  void _getData(String compareBy, String comparisonIndex, String subIndex,
+      String subArea) async {
+    List<Map> data = await SQLiteDbProvider.db
+        .getData(compareBy, comparisonIndex, subIndex, subArea);
+    dataVal = data[0]['value'] as int;
+  }
+
+  // Creates a graph for each subcomparison type
+  void _createGraphs() {
+    for (String subIndex in subcomparisonTypes) {
+      graphData = [];
+      _createGraph(subIndex);
+    }
+  }
+
+  // Creates a graph with countries as ind variable and comparisonIndex as dep variable
+  void _createGraph(String _selectedSubIndex) {
+    for (String country in _selectedCountries) {
+      _getData(_selectedCompareBy, _selectedComparisonIndex, _selectedSubIndex,
+          country);
+      graphData.add(BarSeries(
+          country: country,
+          dataValue: dataVal,
+          barColor: charts.ColorUtil.fromDartColor(Colors.red)));
+    }
+  }
 
   void _getCompareBy() async {
     List<Map> compareby = await SQLiteDbProvider.db.getCompareby();
@@ -109,6 +148,12 @@ class _ComparePageState extends State<ComparePage> {
               ),
             ),
           ),
+          Padding(
+              padding: const EdgeInsets.only(
+                  top: 20.0, left: 8.0, right: 8.0, bottom: 8.0),
+              child: MultiDropdown(
+                text: "SELECT COUNTRIES",
+              )),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: CustomDropdown<int>(

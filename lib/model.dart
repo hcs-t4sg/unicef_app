@@ -348,6 +348,14 @@ class SQLiteDbProvider {
         : [];
   }
 
+  // Get data value
+  Future<List<Map>> getData(String compareBy, String comparisonIndex,
+      String subIndex, String subArea) async {
+    final db = await database;
+    return await db.rawQuery(
+        "SELECT value FROM ComparisonValue LEFT JOIN ComparisonIndex USING(ComparisonIndexID) LEFT JOIN CompareBy USING(CompareByID) LEFT JOIN SubComparisonIndex USING(SubComparisonIndexID) LEFT JOIN SubArea USING(SubAreaID) WHERE ComparisonIndexText = {$comparisonIndex} AND CompareByText = {$compareBy} AND SubAreaID = {$subArea} AND SubComparisonIndexText = {$subIndex}");
+  }
+
   // Get Compareby from the database
   Future<List<Map>> getCompareby() async {
     final db = await database;
