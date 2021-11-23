@@ -77,7 +77,7 @@ class Indicator {
       indicatortext: map['KPIText'],
       source: map['SourceDescription'],
       sourcelink: map['SourceLink'],
-      note: map['NoteText'],
+      note: map['NoteDisplayText'],
       area: map['AreaDisplayName'],
       subarea: map['SubAreaDisplayName'],
       value1: map['Value1'],
@@ -287,6 +287,7 @@ class SQLiteDbProvider {
         LEFT JOIN SubArea USING(SubAreaID) 
         LEFT JOIN Area USING(AreaID)
         LEFT JOIN Sources USING(SourceID)
+        LEFT JOIN Note USING(NoteID)
         WHERE KPICategory.KPICategoryDisplayName LIKE ? AND SubArea.SubAreaDisplayName LIKE ?''',
         [category, subarea]);
     return result.isNotEmpty

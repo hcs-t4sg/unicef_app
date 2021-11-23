@@ -47,12 +47,16 @@ class _CategoryInfoState extends State<CategoryInfo> {
         ),
         SizedBox(
           width: double.infinity,
-          child: Text(
-            (_indicator.note != null) ? "Notes: " + _indicator.note : "yeet",
-            textAlign: TextAlign.left,
-            style: TextStyle(
-                color: Colors.black, fontSize: 16, fontWeight: FontWeight.w600),
-          ),
+          child: (_indicator.note != null)
+              ? Text(
+                  "Notes: " + _indicator.note,
+                  textAlign: TextAlign.left,
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600),
+                )
+              : null,
         ),
       ];
     }
@@ -126,33 +130,41 @@ class _CategoryInfoState extends State<CategoryInfo> {
                           fontSize: 30,
                           fontWeight: FontWeight.bold),
                     ),
-                    Text(
-                      (_indicator.value1unit != null)
-                          ? _indicator.value1unit
-                          : "",
-                      textAlign: TextAlign.left,
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500),
+                    Container(
+                      child: (_indicator.value1unit != null)
+                          ? Text(
+                              _indicator.value1unit,
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500),
+                            )
+                          : null,
                     ),
-                    Text(
-                      _indicator.value2 != null ? _indicator.value2 : "",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 30,
-                          fontWeight: FontWeight.bold),
+                    Container(
+                      child: (_indicator.value2 != null)
+                          ? Text(
+                              _indicator.value2,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 30,
+                                  fontWeight: FontWeight.bold),
+                            )
+                          : null,
                     ),
-                    Text(
-                      (_indicator.value2unit != null)
-                          ? _indicator.value2unit
-                          : "",
-                      textAlign: TextAlign.left,
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500),
+                    Container(
+                      child: (_indicator.value2unit != null)
+                          ? Text(
+                              _indicator.value2unit,
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500),
+                            )
+                          : null,
                     ),
                   ],
                 ),
