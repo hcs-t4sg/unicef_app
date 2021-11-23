@@ -36,16 +36,7 @@ class _ComparePageState extends State<ComparePage> {
   List<String> subcomparisonTypes = [];
   int dataVal = 0;
 
-  List<BarSeries> graphData = [
-    BarSeries(
-        country: "Afghanistan",
-        dataValue: 23,
-        barColor: charts.ColorUtil.fromDartColor(Colors.red)),
-    BarSeries(
-        country: "Nepal",
-        dataValue: 33,
-        barColor: charts.ColorUtil.fromDartColor(Colors.orange)),
-  ];
+  List<BarSeries> graphData = [];
 
   void _getData(String compareBy, String comparisonIndex, String subIndex,
       String subArea) async {
@@ -71,6 +62,7 @@ class _ComparePageState extends State<ComparePage> {
           country: country,
           dataValue: dataVal,
           barColor: charts.ColorUtil.fromDartColor(Colors.red)));
+      //TODO: figure out how to build the graph
     }
   }
 
@@ -146,59 +138,6 @@ class _ComparePageState extends State<ComparePage> {
                   _selectedCountries = values;
                 },
               ),
-            ),
-          ),
-          Padding(
-              padding: const EdgeInsets.only(
-                  top: 20.0, left: 8.0, right: 8.0, bottom: 8.0),
-              child: MultiDropdown(
-                text: "SELECT COUNTRIES",
-              )),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: CustomDropdown<int>(
-              icon: Icon(Icons.keyboard_arrow_down),
-              child: Text('SELECT COUNTRIES',
-                  style: TextStyle(
-                      color: Colors.blue,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500)),
-              onChange: (int value, int index) => print(value),
-              dropdownButtonStyle: DropdownButtonStyle(
-                mainAxisAlignment: MainAxisAlignment.center,
-                padding: EdgeInsets.fromLTRB(15, 2, 10, 2),
-                width: 170,
-                height: 40,
-                elevation: 1,
-                backgroundColor: Colors.white,
-                primaryColor: Colors.black87,
-                constraints: BoxConstraints(
-                  maxHeight: MediaQuery.of(context).size.height - 15,
-                ),
-              ),
-              dropdownStyle: DropdownStyle(
-                constraints: BoxConstraints(
-                  maxHeight: MediaQuery.of(context).size.height - 15,
-                ),
-                width: 50,
-                offset: Offset(0, 45),
-                borderRadius: BorderRadius.circular(8),
-                elevation: 6,
-                padding: EdgeInsets.all(5),
-              ),
-              items: _subareas
-                  .asMap()
-                  .entries
-                  .map(
-                    (item) => DropdownItem<int>(
-                      value: item.key + 1,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(item.value),
-                      ),
-                    ),
-                  )
-                  .toList(),
             ),
           ),
           Padding(
