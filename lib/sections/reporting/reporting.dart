@@ -31,9 +31,13 @@ class _ReportPageState extends State<ReportPage> {
       return countrymap['SubAreaDisplayName'];
     }).toList();
     var countries = List<String>.from(countrydynamic);
+    print(countries);
     setState(() {
       _countries = countries;
+      _selectedCountry = _countries[0];
     });
+
+    _getReports(_selectedCountry);
   }
 
   @override
@@ -61,7 +65,7 @@ class _ReportPageState extends State<ReportPage> {
                     Container(
                       child: DropDownData(
                         list: _countries,
-                        hint: "Select country...",
+                        hint: _selectedCountry,
                         callback: (val) => {
                           setState(() {
                             _selectedCountry = val;
