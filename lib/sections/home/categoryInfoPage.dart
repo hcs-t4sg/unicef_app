@@ -101,16 +101,8 @@ class _CategoryInfoPageState extends State<CategoryInfoPage> {
       },
       child: Scaffold(
         appBar: AppBar(
-        title: Row(children: [
-          IconButton(
-              icon: const Icon(Icons.arrow_back),
-              onPressed: () {
-                widget.callback("UNICEF SAR Data Pocketbook");
-                Navigator.pop(context);
-              }),
-          Text(widget.country),
-        ]),
-          automaticallyImplyLeading: false,
+          title: searchBar,
+          automaticallyImplyLeading: true,
           actions: [
             IconButton(
               onPressed: () {

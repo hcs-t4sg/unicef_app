@@ -31,7 +31,6 @@ class _ReportPageState extends State<ReportPage> {
       return countrymap['SubAreaDisplayName'];
     }).toList();
     var countries = List<String>.from(countrydynamic);
-    print(countries);
     setState(() {
       _countries = countries;
       _selectedCountry = _countries[0];
