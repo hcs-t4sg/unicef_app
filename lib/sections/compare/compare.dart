@@ -188,7 +188,7 @@ class _ComparePageState extends State<ComparePage> {
                 elevation: 6,
                 padding: EdgeInsets.all(5),
               ),
-              items: _subcomparison
+              items: _comparisonindicators
                   .asMap()
                   .entries
                   .map(
@@ -235,7 +235,7 @@ class _ComparePageState extends State<ComparePage> {
                 elevation: 6,
                 padding: EdgeInsets.all(5),
               ),
-              items: _subcomparison
+              items: _compareby
                   .asMap()
                   .entries
                   .map(

@@ -248,6 +248,7 @@ class SQLiteDbProvider {
   Future<Database> get database async {
     var databasesPath = await getDatabasesPath();
     var path = join(databasesPath, "indicator_database.db");
+    await deleteDatabase(path);
 
     // Check if the database exists
     var exists = await databaseExists(path);
@@ -319,7 +320,7 @@ class SQLiteDbProvider {
     var result = await db.rawQuery('''SELECT * FROM Report
         LEFT JOIN Area USING(AreaID)
         LEFT JOIN SubArea USING(SubAreaID)
-        WHERE SubArea.SubAreaDisplayName LIKE ?''' , [subarea]);
+        WHERE SubArea.SubAreaDisplayName LIKE ?''', [subarea]);
     return result.isNotEmpty
         ? result.map((i) => Report.fromMap(i)).toList()
         : [];
@@ -348,31 +349,29 @@ class SQLiteDbProvider {
         : [];
   }
 
-  // Get Compareby from the database 
+  // Get Compareby from the database
   Future<List<Map>> getCompareby() async {
     final db = await database;
-    return await db.rawQuery(
-        "SELECT CompareByText FROM CompareBy");
+    return await db.rawQuery("SELECT CompareByText FROM CompareBy");
   }
 
   // Get ComparisonIndicator from the database
   Future<List<Map>> getComparisonIndicator() async {
     final db = await database;
-    return await db.rawQuery(
-        "SELECT DISTINCT ComparisonIndexText FROM ComparisonIndex");
+    return await db
+        .rawQuery("SELECT DISTINCT ComparisonIndexText FROM ComparisonIndex");
   }
 
   // Get SubComparisonIndicator from the database
   Future<List<Map>> getSubComparisonIndicator() async {
     final db = await database;
-    return await db.rawQuery(
-        "SELECT SubComparisonIndexText FROM SubComparisonIndex");
+    return await db
+        .rawQuery("SELECT SubComparisonIndexText FROM SubComparisonIndex");
   }
 
   // Get subareas from the database
   Future<List<Map>> getSubareas() async {
     final db = await database;
-    return await db.rawQuery(
-        "SELECT SubAreaDisplayName FROM SubArea");
+    return await db.rawQuery("SELECT SubAreaDisplayName FROM SubArea");
   }
 }
