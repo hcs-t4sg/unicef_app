@@ -36,6 +36,7 @@ class _CategoryPageState extends State<CategoryPage> {
     var categorylist = List<String>.from(categorydynamic);
     setState(() {
       _categories = categorylist;
+      _filteredCategories = categorylist;
     });
   }
 
@@ -47,7 +48,6 @@ class _CategoryPageState extends State<CategoryPage> {
 
   _CategoryPageState(country) {
     searchBar = Text(country);
-    _filteredCategories = _categories;
     _controller.addListener(
       () {
         if (_controller.text.isEmpty) {
@@ -85,7 +85,7 @@ class _CategoryPageState extends State<CategoryPage> {
       },
     );
   }
-    
+
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
@@ -97,7 +97,7 @@ class _CategoryPageState extends State<CategoryPage> {
       child: Scaffold(
         appBar: AppBar(
           title: searchBar,
-          automaticallyImplyLeading: false,
+          automaticallyImplyLeading: true,
           actions: [
             IconButton(
               onPressed: () {

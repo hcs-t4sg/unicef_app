@@ -39,20 +39,24 @@ class _CategoryInfoState extends State<CategoryInfo> {
         SizedBox(
           width: double.infinity,
           child: Text(
-            (_indicator.value1unit != null) ? _indicator.value1unit : "",
-            textAlign: TextAlign.left,
-            style: TextStyle(
-                color: Colors.black, fontSize: 16, fontWeight: FontWeight.w500),
-          ),
-        ),
-        SizedBox(
-          width: double.infinity,
-          child: Text(
             "Source: " + _indicator.source,
             textAlign: TextAlign.left,
             style: TextStyle(
                 color: Colors.black, fontSize: 16, fontWeight: FontWeight.w600),
           ),
+        ),
+        SizedBox(
+          width: double.infinity,
+          child: (_indicator.note != null)
+              ? Text(
+                  "Notes: " + _indicator.note,
+                  textAlign: TextAlign.left,
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600),
+                )
+              : null,
         ),
       ];
     }
@@ -64,15 +68,6 @@ class _CategoryInfoState extends State<CategoryInfo> {
           textAlign: TextAlign.left,
           style: TextStyle(
               color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold),
-        ),
-      ),
-      SizedBox(
-        width: double.infinity,
-        child: Text(
-          (_indicator.value2unit != null) ? _indicator.value2unit : "",
-          textAlign: TextAlign.left,
-          style: TextStyle(
-              color: Colors.black, fontSize: 16, fontWeight: FontWeight.w500),
         ),
       ),
     ];
@@ -125,13 +120,53 @@ class _CategoryInfoState extends State<CategoryInfo> {
             ),
             Expanded(
               child: Container(
-                child: Text(
-                  _indicator.value1,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 30,
-                      fontWeight: FontWeight.bold),
+                child: Column(
+                  children: [
+                    Text(
+                      _indicator.value1,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 30,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    Container(
+                      child: (_indicator.value1unit != null)
+                          ? Text(
+                              _indicator.value1unit,
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500),
+                            )
+                          : null,
+                    ),
+                    Container(
+                      child: (_indicator.value2 != null)
+                          ? Text(
+                              _indicator.value2,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 30,
+                                  fontWeight: FontWeight.bold),
+                            )
+                          : null,
+                    ),
+                    Container(
+                      child: (_indicator.value2unit != null)
+                          ? Text(
+                              _indicator.value2unit,
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500),
+                            )
+                          : null,
+                    ),
+                  ],
                 ),
               ),
             ),

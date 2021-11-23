@@ -102,7 +102,7 @@ class _CategoryInfoPageState extends State<CategoryInfoPage> {
       child: Scaffold(
         appBar: AppBar(
           title: searchBar,
-          automaticallyImplyLeading: false,
+          automaticallyImplyLeading: true,
           actions: [
             IconButton(
               onPressed: () {

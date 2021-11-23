@@ -27,14 +27,16 @@ class _ReportPageState extends State<ReportPage> {
 
   void _getSubareas() async {
     final List<Map> countrymap = await SQLiteDbProvider.db.getReportSubareas();
-    print(countrymap);
     var countrydynamic = countrymap.map((Map<dynamic, dynamic> countrymap) {
       return countrymap['SubAreaDisplayName'];
     }).toList();
     var countries = List<String>.from(countrydynamic);
     setState(() {
       _countries = countries;
+      _selectedCountry = _countries[0];
     });
+
+    _getReports(_selectedCountry);
   }
 
   @override
@@ -62,7 +64,7 @@ class _ReportPageState extends State<ReportPage> {
                     Container(
                       child: DropDownData(
                         list: _countries,
-                        hint: "Select country...",
+                        hint: _selectedCountry,
                         callback: (val) => {
                           setState(() {
                             _selectedCountry = val;
