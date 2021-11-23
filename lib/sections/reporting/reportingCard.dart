@@ -5,12 +5,11 @@ import './../../model.dart';
 class ReportingCard extends StatelessWidget {
   Report _report = Report.empty();
   Map<String, Icon> icons = {
-    'Next Report':
+    'blue':
         Icon(MdiIcons.chevronRightCircleOutline, size: 20, color: Colors.blue),
-    'Submitted': Icon(MdiIcons.checkboxMarkedCircleOutline,
+    'green': Icon(MdiIcons.checkboxMarkedCircleOutline,
         size: 20, color: Colors.green),
-    'Not submitted':
-        Icon(MdiIcons.closeCircleOutline, size: 20, color: Colors.red),
+    'red': Icon(MdiIcons.closeCircleOutline, size: 20, color: Colors.red),
   };
 
   ReportingCard(Report report) {
@@ -41,7 +40,7 @@ class ReportingCard extends StatelessWidget {
               ),
             ),
             child: Text(
-              (_report.name!= null) ? _report.name : "",
+              (_report.name != null) ? _report.name : "",
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
             ),
           ),
@@ -55,7 +54,9 @@ class ReportingCard extends StatelessWidget {
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 ),
                 Text(
-                  (_report.ratificationdate != null) ? _report.ratificationdate : "",
+                  (_report.ratificationdate != null)
+                      ? _report.ratificationdate
+                      : "",
                   style: TextStyle(fontSize: 16),
                 ),
               ],
@@ -78,7 +79,9 @@ class ReportingCard extends StatelessWidget {
                 ),
                 Container(
                     padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
-                    child: icons[(_report.reportstatus != null) ? _report.reportstatus : ""]),
+                    child: (_report.reportstatus != null)
+                        ? icons[_report.reportstatus]
+                        : null),
               ],
             ),
           )
