@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:unicef_app/sections/compare/multiCountryChart.dart';
 import 'bar_series.dart';
-import 'dropDownData.dart';
 import './../../model.dart';
 import "package:collection/collection.dart";
 import './../../multiSelect/lib/multi_select_flutter.dart';
@@ -72,6 +71,21 @@ class _ComparePageState extends State<ComparePage> {
         child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             child: ListView(children: <Widget>[
+              Container(
+                child: MultiSelectDialogField(
+                  items: _countries.map((e) => MultiSelectItem(e, e)).toList(),
+                  listType: MultiSelectListType.LIST,
+                  searchable: true,
+                  searchHint: "Search countries",
+                  buttonText: Text("Select Countries"),
+                  chipDisplay: MultiSelectChipDisplay.none(),
+                  onConfirm: (values) => setState(
+                    () {
+                      _selectedCountries = values;
+                    },
+                  ),
+                ),
+              ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: CustomDropdown<int>(
