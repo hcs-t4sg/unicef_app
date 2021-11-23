@@ -27,7 +27,6 @@ class _ReportPageState extends State<ReportPage> {
 
   void _getSubareas() async {
     final List<Map> countrymap = await SQLiteDbProvider.db.getReportSubareas();
-    print(countrymap);
     var countrydynamic = countrymap.map((Map<dynamic, dynamic> countrymap) {
       return countrymap['SubAreaDisplayName'];
     }).toList();
