@@ -14,32 +14,20 @@ class MorePage extends StatefulWidget {
 
 class _MorePageState extends State<MorePage> {
   List<String> _sourceNames = [
-    "source1",
-    "source2",
-    "source3",
-    "source1",
-    "source2",
-    "source3",
-    "source1",
-    "source2",
-    "source3",
-    "source1",
-    "source2",
-    "source3",
+    "UNICEF. The State of the World's Children 2019-statistical tables & UNICEF GLobal Data Warehouse. Data.unicef.org",
+    "UNDP. 2019 Human Development Report",
+    "World Bank. World Development Indicators Database",
+    "UNAIDS online AIDSInfo Database",
+    "UNDP, Human Development Indices and Indicators",
+    "UNESCAP; ADB; UNDP. Making it Happen: Technology, Finance and Statistics for Sustainable Development in Asia and the Pacific. Asia-Pacific Regional MDGs Report. 2014/2015.",
   ];
   List<String> _sourceLinks = [
-    "link1",
-    "link2",
-    "link3",
-    "link1",
-    "link2",
-    "link3",
-    "link1",
-    "link2",
-    "link3",
-    "link1",
-    "link2",
-    "link3",
+    "https://data.unicef.org/resources/state-worlds-children-2017-statistical-tables",
+    "http://www.hdr.undp.org/sites/default/files/hdr2019.pdf",
+    "https://data.worldbank.org/country",
+    "https://aidsinfo.unaids.org/",
+    "http://hdr.undp.org/en/indicators/21806",
+    "https://issuu.com/undpasiapacific/docs/rbap-rmdg-report-2014-2015",
   ];
   Widget build(BuildContext context) {
     return DefaultTabController(

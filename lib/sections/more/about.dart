@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class AboutPage extends StatelessWidget {
   Widget build(BuildContext context) {
@@ -45,19 +46,40 @@ class AboutPage extends StatelessWidget {
                       ),
                     ),
                     Container(
-                        width: double.infinity,
-                        margin: EdgeInsets.symmetric(
-                            horizontal: 0.0, vertical: 10.0),
-                        padding: EdgeInsets.fromLTRB(10.0, 10, 10, 0.0),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          border: Border(
-                            top: BorderSide(color: Colors.grey, width: 0.5),
-                          ),
+                      width: double.infinity,
+                      margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                      padding: EdgeInsets.fromLTRB(10.0, 10, 10, 0.0),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        border: Border(
+                          top: BorderSide(color: Colors.grey, width: 0.5),
                         ),
-                        child: Row(
-                          children: [Text("LOGOS HERE")],
-                        ))
+                      ),
+                      child: Row(
+                        children: [
+                          Container(
+                            padding: EdgeInsets.all(5),
+                            child: Icon(MdiIcons.facebook,
+                                color: Colors.blue, size: 30),
+                          ),
+                          Container(
+                            padding: EdgeInsets.all(5),
+                            child: Icon(MdiIcons.twitter,
+                                color: Colors.blue, size: 30),
+                          ),
+                          Container(
+                            padding: EdgeInsets.all(5),
+                            child: Icon(MdiIcons.web,
+                                color: Colors.blue, size: 30),
+                          ),
+                          Container(
+                            padding: EdgeInsets.all(5),
+                            child: Icon(MdiIcons.phoneOutline,
+                                color: Colors.blue, size: 30),
+                          ),
+                        ],
+                      ),
+                    )
                   ],
                 ),
               ),
@@ -98,19 +120,31 @@ class AboutPage extends StatelessWidget {
                       ),
                     ),
                     Container(
-                        width: double.infinity,
-                        margin: EdgeInsets.symmetric(
-                            horizontal: 0.0, vertical: 10.0),
-                        padding: EdgeInsets.fromLTRB(10.0, 10, 10, 0.0),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          border: Border(
-                            top: BorderSide(color: Colors.grey, width: 0.5),
-                          ),
+                      width: double.infinity,
+                      margin:
+                          EdgeInsets.symmetric(horizontal: 0.0, vertical: 10.0),
+                      padding: EdgeInsets.fromLTRB(10.0, 10, 10, 0.0),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        border: Border(
+                          top: BorderSide(color: Colors.grey, width: 0.5),
                         ),
-                        child: Row(
-                          children: [Text("LOGOS HERE")],
-                        ))
+                      ),
+                      child: Row(
+                        children: [
+                          Container(
+                            padding: EdgeInsets.all(5),
+                            child: Icon(MdiIcons.facebook,
+                                color: Colors.blue, size: 30),
+                          ),
+                          Container(
+                            padding: EdgeInsets.all(5),
+                            child: Icon(MdiIcons.web,
+                                color: Colors.blue, size: 30),
+                          ),
+                        ],
+                      ),
+                    )
                   ],
                 ),
               ),

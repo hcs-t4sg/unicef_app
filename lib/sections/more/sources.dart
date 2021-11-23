@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import './sourceTag.dart';
+import './../../model.dart';
 
 // ignore: must_be_immutable
 class SourcesPage extends StatelessWidget {
