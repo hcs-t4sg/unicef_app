@@ -31,11 +31,16 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
+  multi_select_flutter: ^4.0.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-    
+dependency_overrides:
+  charts_flutter:
+    git:
+      url: https://github.com/google/charts
+      path: charts_flutter
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

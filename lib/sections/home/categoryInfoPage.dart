@@ -1,26 +1,23 @@
 import 'package:flutter/material.dart';
-import './../../model.dart';
-import "package:collection/collection.dart";
 import './categoryInfo.dart';
+import './../../model.dart';
 
-//State for CategoryInfo Page
+// State for CategoryInfo Page
 // State for Home Page
 class CategoryInfoPage extends StatefulWidget {
-  const CategoryInfoPage(
-      {Key? key,
-      required this.category,
-      required this.country,
-      required this.callback,
-      required this.indicators})
-      : super(key: key);
+  const CategoryInfoPage({
+    Key? key,
+    required this.category,
+    required this.country,
+    required this.callback,
+  }) : super(key: key);
   final String category;
   final Function callback;
   final String country;
-  final List<Indicator> indicators;
 
   @override
   _CategoryInfoPageState createState() =>
-      _CategoryInfoPageState(indicators, country);
+      _CategoryInfoPageState(category, country);
 }
 
 class _CategoryInfoPageState extends State<CategoryInfoPage> {
@@ -30,12 +27,15 @@ class _CategoryInfoPageState extends State<CategoryInfoPage> {
   TextEditingController _controller = new TextEditingController();
 
   String _searchText = "";
-  List _indicators = [];
-  List _filteredIndicators = [];
+  List<Indicator> _indicators = [];
+  List<Indicator> _filteredIndicators = [];
+  String _country = "";
+  String _category = "";
 
-  _CategoryInfoPageState(indicators, country) {
-    _indicators = indicators;
-    _filteredIndicators = indicators;
+  _CategoryInfoPageState(category, country) {
+    _filteredIndicators = _indicators;
+    _category = category;
+    _country = country;
     searchBar = Text(country);
     _controller.addListener(
       () {
@@ -54,7 +54,8 @@ class _CategoryInfoPageState extends State<CategoryInfoPage> {
               _filteredIndicators = [];
 
               for (int i = 0; i < _indicators.length; i++) {
-                List<String> indicatorWords = _indicators[i].index.split(' ');
+                List<String> indicatorWords =
+                    _indicators[i].indicatortext.split(' ');
                 for (int j = 0; j < keywords.length; j++) {
                   for (int k = 0; k < indicatorWords.length; k++) {
                     if (keywords[j].length > 0 &&
@@ -75,6 +76,20 @@ class _CategoryInfoPageState extends State<CategoryInfoPage> {
     );
   }
 
+  void _getIndicators() async {
+    final List<Indicator> indics =
+        await SQLiteDbProvider.db.getIndicators(_category, _country);
+    setState(() {
+      _indicators = indics;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _getIndicators();
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -91,13 +106,53 @@ class _CategoryInfoPageState extends State<CategoryInfoPage> {
           actions: [
             IconButton(
               onPressed: () {
-                setState(
-                  () {
-                    if (searchBarIcon.icon == Icons.search) {
-                      searchBarIcon = Icon(Icons.cancel);
-                      searchBar = ListTile(
-                        leading: Icon(
-                          Icons.search,
+                setState(() {
+                  if (searchBarIcon.icon == Icons.search) {
+                    searchBarIcon = const Icon(Icons.cancel);
+                    searchBar = const ListTile(
+                      leading: Icon(
+                        Icons.search,
+                        color: Colors.white,
+                        size: 28,
+                      ),
+                      title: TextField(
+                        decoration: InputDecoration(
+                          hintText: 'Search for country',
+                          hintStyle: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                            fontStyle: FontStyle.italic,
+                          ),
+                          border: InputBorder.none,
+                        ),
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
+                    );
+                  } else {
+                    searchBarIcon = const Icon(Icons.search);
+                    searchBar = Text(widget.country);
+                  }
+                });
+              },
+              icon: searchBarIcon,
+            )
+          ],
+          centerTitle: true,
+        ),
+        /*
+            Container(
+              child: ListView(
+                physics: ClampingScrollPhysics(),
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                children: widget.indicators
+                    .map(
+                      (indicator) => Container(
+                        margin: const EdgeInsets.symmetric(
+                            horizontal: 15.0, vertical: 8.0),
+                        decoration: BoxDecoration(
                           color: Colors.white,
                           size: 28,
                         ),
@@ -127,9 +182,7 @@ class _CategoryInfoPageState extends State<CategoryInfoPage> {
               },
               icon: searchBarIcon,
             )
-          ],
-          centerTitle: true,
-        ),
+            */
         body: Center(
           child: ListView(
             children: [
@@ -152,7 +205,7 @@ class _CategoryInfoPageState extends State<CategoryInfoPage> {
                   physics: ClampingScrollPhysics(),
                   scrollDirection: Axis.vertical,
                   shrinkWrap: true,
-                  children: _filteredIndicators
+                  children: _indicators
                       .map(
                         (indicator) => CategoryInfo(indicator),
                       )

@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import './categoryInfoPage.dart';
-
-import './../../model.dart';
-
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 // Create tag listing a category
@@ -12,14 +9,11 @@ class CategoryTag extends StatefulWidget {
   String _category = "";
   Function _callback = () => {};
   String _country = "";
-  List<Indicator> _indicators = [];
 
-  CategoryTag(String category, Function callback, String country,
-      List<Indicator> indicators) {
+  CategoryTag(String category, Function callback, String country) {
     this._category = category;
     this._callback = callback;
     this._country = country;
-    this._indicators = indicators;
   }
 
   @override
@@ -46,8 +40,7 @@ class _CategoryTagState extends State<CategoryTag> {
                 child: CategoryInfoPage(
                     category: widget._category,
                     country: widget._country,
-                    callback: widget._callback,
-                    indicators: widget._indicators),
+                    callback: widget._callback),
               ),
             ),
           );

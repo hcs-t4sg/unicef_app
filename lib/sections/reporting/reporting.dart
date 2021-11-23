@@ -2,74 +2,45 @@ import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import './../compare/dropDownData.dart';
 import './../../model.dart';
-import "package:collection/collection.dart";
 import "./reportingCard.dart";
 
 class ReportPage extends StatefulWidget {
-  ReportPage({Key? key, required this.data});
+  ReportPage({
+    Key? key,
+  });
 
-  final List<Indicator> data;
   @override
-  _ReportPageState createState() => _ReportPageState(data);
+  _ReportPageState createState() => _ReportPageState();
 }
 
 class _ReportPageState extends State<ReportPage> {
   String _selectedCountry = '';
-  List _countries = ["Data not yet loaded"];
-  List<Report> _reports = [
-    Report(
-        name: "Report 1",
-        ratificationDate: "2021-01-01",
-        date: "2021-10-05",
-        status: "Submitted",
-        country: "Afghanistan"),
-    Report(
-        name: "Report 2",
-        ratificationDate: "2021-02-01",
-        date: "2021-10-05",
-        status: "Not submitted",
-        country: "Afghanistan"),
-    Report(
-        name: "Report 3",
-        ratificationDate: "2021-03-01",
-        date: "2021-10-05",
-        status: "Submitted",
-        country: "Afghanistan"),
-    Report(
-        name: "Report 3",
-        ratificationDate: "2021-03-01",
-        date: "2021-10-05",
-        status: "Submitted",
-        country: "Afghanistan"),
-    Report(
-        name: "Report 3",
-        ratificationDate: "2021-03-01",
-        date: "2021-10-05",
-        status: "Submitted",
-        country: "Afghanistan"),
-    Report(
-        name: "Report 3",
-        ratificationDate: "2021-03-01",
-        date: "2021-10-05",
-        status: "Submitted",
-        country: "Afghanistan"),
-    Report(
-        name: "Report 4",
-        ratificationDate: "2021-04-01",
-        date: "2021-10-05",
-        status: "Submitted",
-        country: "Pakistan"),
-    Report(
-        name: "Report 5",
-        ratificationDate: "2021-05-01",
-        date: "2021-10-05",
-        status: "Not submitted",
-        country: "Bhutan"),
-  ];
+  List<String> _countries = [];
+  List<Report> _reports = [];
 
-  _ReportPageState(countries) {
-    _countries =
-        groupBy(countries, (Indicator obj) => obj.country).keys.toList();
+  void _getReports(String subarea) async {
+    final List<Report> reports = await SQLiteDbProvider.db.getReports(subarea);
+    setState(() {
+      _reports = reports;
+    });
+  }
+
+  void _getSubareas() async {
+    final List<Map> countrymap = await SQLiteDbProvider.db.getReportSubareas();
+    print(countrymap);
+    var countrydynamic = countrymap.map((Map<dynamic, dynamic> countrymap) {
+      return countrymap['SubAreaDisplayName'];
+    }).toList();
+    var countries = List<String>.from(countrydynamic);
+    setState(() {
+      _countries = countries;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _getSubareas();
   }
 
   Widget build(BuildContext context) {
@@ -95,19 +66,16 @@ class _ReportPageState extends State<ReportPage> {
                         callback: (val) => {
                           setState(() {
                             _selectedCountry = val;
+                            _getReports(_selectedCountry);
                           })
                         },
                       ),
                     ),
                   ] +
                   _reports
-                      .where((report) => report.country == _selectedCountry)
-                      .map((report) => ReportingCard(
-                          report.name,
-                          report.date,
-                          report.ratificationDate,
-                          report.country,
-                          report.status))
+                      .map(
+                        (report) => ReportingCard(report),
+                      )
                       .toList()),
         ),
       ),

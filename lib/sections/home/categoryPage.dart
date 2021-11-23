@@ -1,31 +1,20 @@
 import 'package:flutter/material.dart';
 import './categoryTag.dart';
 import './../../model.dart';
-import "package:collection/collection.dart";
 
 //State for Category Page
 // State for Home Page
 class CategoryPage extends StatefulWidget {
-  CategoryPage(
-      {Key? key,
-      required this.country,
-      required this.callback,
-      required this.indicators})
-      : this.categoryData = groupBy(indicators, (Indicator obj) => obj.category)
-            .values
-            .toList(),
-        this.categoryNames =
-            groupBy(indicators, (Indicator obj) => obj.category).keys.toList(),
-        super(key: key);
+  CategoryPage({
+    Key? key,
+    required this.country,
+    required this.callback,
+  }) : super(key: key);
   final String country;
   final Function callback;
-  final List<Indicator> indicators;
-  final List categoryNames;
-  final List categoryData;
 
   @override
-  _CategoryPageState createState() =>
-      _CategoryPageState(categoryNames, country);
+  _CategoryPageState createState() => _CategoryPageState(country);
 }
 
 class _CategoryPageState extends State<CategoryPage> {
@@ -38,9 +27,26 @@ class _CategoryPageState extends State<CategoryPage> {
   List _categories = [];
   List _filteredCategories = [];
 
-  _CategoryPageState(categories, country) {
+  void _getCategories() async {
+    final List<Map<dynamic, dynamic>> categories =
+        await SQLiteDbProvider.db.getCategoryTags();
+    var categorydynamic = categories.map((Map<dynamic, dynamic> categories) {
+      return categories['KPICategoryDisplayName'];
+    }).toList();
+    var categorylist = List<String>.from(categorydynamic);
+    setState(() {
+      _categories = categorylist;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _getCategories();
+  }
+
+  _CategoryPageState(country) {
     searchBar = Text(country);
-    _categories = categories;
     _filteredCategories = _categories;
     _controller.addListener(
       () {
@@ -79,8 +85,7 @@ class _CategoryPageState extends State<CategoryPage> {
       },
     );
   }
-
-  @override
+    
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
@@ -139,10 +144,10 @@ class _CategoryPageState extends State<CategoryPage> {
               key: Key(_filteredCategories.length.toString()),
               children: _filteredCategories
                   .map((obj) => CategoryTag(
-                      obj,
-                      widget.callback,
-                      widget.country,
-                      widget.categoryData[widget.categoryNames.indexOf(obj)]))
+                        obj,
+                        widget.callback,
+                        widget.country,
+                      ))
                   .toList(),
             ),
           ),

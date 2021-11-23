@@ -1,51 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:unicef_app/sections/compare/compare.dart';
 import 'sections/home/home.dart';
 import 'sections/compare/compare.dart';
 import 'sections/more/more.dart';
 import './sections/reporting/reporting.dart';
 import 'package:flutter/widgets.dart';
-import 'model.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:sqflite/sqflite.dart';
 
 void main() async {
-  // Avoid errors caused by flutter upgrade.
-  // Importing 'package:flutter/widgets.dart' is required.
-  WidgetsFlutterBinding.ensureInitialized();
-  // Open the database and store the reference.
-
-  // Sample code for accessing, querying, and reading values from resulting map
-  // Perform inside an async function
-  // vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
-
-  // Opens instance of database
-  List<Indicator> data = await SQLiteDbProvider.db.getAllIndicators();
-  List<Report> reportData = [];
-  print(data[98]);
-  runApp(MyApp(data, reportData));
-
-  // Note: From Kevin's branch:
-  // Database db = await SQLiteDbProvider.db.database;
-  // runApp(MyApp(db));
+  // Run the app!
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  // Note: From Kevin's branch:
-  // late Database _db;
-
-  // MyApp(Database db) {
-  //   this._db = db;
-  // }
-
   // This widget is the root of your application.
-  List<Indicator> _data = [];
-  List<Report> _reports = [];
-
-  MyApp(List<Indicator> data, List<Report> reportData) {
-    this._data = data;
-    this._reports = reportData;
-  }
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -53,17 +21,15 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: "UNICEF SAR Data Pocketbook", data: this._data),
+      home: MyHomePage(title: "UNICEF SAR Data Pocketbook"),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key, required this.title, required this.data})
-      : super(key: key);
+  MyHomePage({Key? key, required this.title}) : super(key: key);
 
   final String title;
-  final List<Indicator> data;
 
   @override
   _MyHomePageState createState() => _MyHomePageState(title);
@@ -92,9 +58,9 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     List<Widget> _pages = <Widget>[
-      HomePage(callback: this.callback, title: widget.title, data: widget.data),
-      ComparePage(title: widget.title, data: widget.data),
-      ReportPage(data: widget.data),
+      HomePage(callback: this.callback, title: widget.title),
+      ComparePage(title: widget.title),
+      ReportPage(),
       MorePage(),
     ];
     return Scaffold(
