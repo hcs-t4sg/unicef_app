@@ -288,8 +288,8 @@ class SQLiteDbProvider {
         LEFT JOIN Area USING(AreaID)
         LEFT JOIN Sources USING(SourceID)
         LEFT JOIN Note USING(NoteID)
-        WHERE KPICategory.KPICategoryDisplayName LIKE ? AND SubArea.SubAreaDisplayName LIKE ?''',
-        [category, subarea]);
+        WHERE KPICategory.KPICategoryDisplayName LIKE ? AND SubArea.SubAreaDisplayName LIKE ?
+        ORDER BY KPI.KPIText ASC''', [category, subarea]);
     return result.isNotEmpty
         ? result.map((i) => Indicator.fromMap(i)).toList()
         : [];
@@ -298,22 +298,22 @@ class SQLiteDbProvider {
   // Get subareas from the database
   Future<List<Map>> getSubareaTags() async {
     final db = await database;
-    return await db
-        .rawQuery("SELECT SubAreaDisplayName, SubAreaImage FROM SubArea");
+    return await db.rawQuery(
+        "SELECT SubAreaDisplayName, SubAreaImage FROM SubArea ORDER BY SubAreaDisplayName ASC");
   }
 
   // Get categories from the database
   Future<List<Map>> getCategoryTags() async {
     final db = await database;
     return await db.rawQuery(
-        "SELECT KPICategoryDisplayName, KPICategoryIcon FROM KPICategory");
+        "SELECT KPICategoryDisplayName, KPICategoryIcon FROM KPICategory ORDER BY KPICategoryDisplayName ASC");
   }
 
   // Get sources from the database
   Future<List<Map>> getAllSources() async {
     final db = await database;
-    return await db.query("Sources",
-        columns: ["SourceID", "SourceDescription", "SourceLink"]);
+    return await db.rawQuery(
+        "SELECT SourceID, SourceDescription, SourceLink FROM Sources ORDER BY SourceID");
   }
 
   // Get reports from the database by subarea
@@ -322,7 +322,8 @@ class SQLiteDbProvider {
     var result = await db.rawQuery('''SELECT * FROM Report
         LEFT JOIN Area USING(AreaID)
         LEFT JOIN SubArea USING(SubAreaID)
-        WHERE SubArea.SubAreaDisplayName LIKE ?''', [subarea]);
+        WHERE SubArea.SubAreaDisplayName LIKE ?
+        ORDER BY ReportDisplayName ASC''', [subarea]);
     return result.isNotEmpty
         ? result.map((i) => Report.fromMap(i)).toList()
         : [];
@@ -332,7 +333,8 @@ class SQLiteDbProvider {
   Future<List<Map>> getReportSubareas() async {
     final db = await database;
     return await db.rawQuery('''SELECT DISTINCT SubAreaDisplayName FROM Report
-        LEFT JOIN SubArea USING(SubAreaID) WHERE SubAreaDisplayName IS NOT NULL''');
+        LEFT JOIN SubArea USING(SubAreaID) WHERE SubAreaDisplayName IS NOT NULL
+        ORDER BY SubAreaDisplayName ASC''');
   }
 
   // Get ComparisonIndicators from the database by subarea, compareby, and comparisonindicator
@@ -344,7 +346,8 @@ class SQLiteDbProvider {
         LEFT JOIN CompareBy USING(CompareByID) 
         LEFT JOIN ComparisonIndex USING(ComparisonIndexID)
         LEFT JOIN SubComparisonIndex USING(SubComparisonIndexID)
-        WHERE SubArea.SubAreaDisplayName LIKE ? AND CompareBy.CompareByText LIKE ? AND ComparisonIndex.ComparisonIndexText LIKE ?''',
+        WHERE SubArea.SubAreaDisplayName LIKE ? AND CompareBy.CompareByText LIKE ? AND ComparisonIndex.ComparisonIndexText LIKE ?
+        ORDER BY ComparisonIndexText ASC''',
         [subarea, compareby, comparisonindicator]);
     return result.isNotEmpty
         ? result.map((i) => ComparisonIndicator.fromMap(i)).toList()
@@ -354,26 +357,26 @@ class SQLiteDbProvider {
   // Get Compareby from the database
   Future<List<Map>> getCompareby() async {
     final db = await database;
-    return await db.rawQuery("SELECT CompareByText FROM CompareBy");
+    return await db.rawQuery("SELECT CompareByText FROM CompareBy ORDER BY CompareByText ASC");
   }
 
   // Get ComparisonIndicator from the database
   Future<List<Map>> getComparisonIndicator() async {
     final db = await database;
     return await db
-        .rawQuery("SELECT DISTINCT ComparisonIndexText FROM ComparisonIndex");
+        .rawQuery("SELECT DISTINCT ComparisonIndexText FROM ComparisonIndex ORDER BY ComparisonIndexText ASC");
   }
 
   // Get SubComparisonIndicator from the database
   Future<List<Map>> getSubComparisonIndicator() async {
     final db = await database;
     return await db
-        .rawQuery("SELECT SubComparisonIndexText FROM SubComparisonIndex");
+        .rawQuery("SELECT SubComparisonIndexText FROM SubComparisonIndex ORDER BY SubComparisonIndexText ASC");
   }
 
   // Get subareas from the database
   Future<List<Map>> getSubareas() async {
     final db = await database;
-    return await db.rawQuery("SELECT SubAreaDisplayName FROM SubArea");
+    return await db.rawQuery("SELECT SubAreaDisplayName FROM SubArea ORDER BY SubAreaDisplayName ASC");
   }
 }
