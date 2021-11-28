@@ -36,32 +36,33 @@ class _ComparePageState extends State<ComparePage> {
 
   List<BarSeries> graphData = [];
 
-  void _getData(String compareBy, String comparisonIndex, String subIndex,
-      String subArea) async {
+  Future<int> _getData(String compareBy, String comparisonIndex,
+      String subIndex, String subArea) async {
     List<Map> data = await SQLiteDbProvider.db
         .getData(compareBy, comparisonIndex, subIndex, subArea);
-    print("DEBUGGING");
-    print(data);
-    print(data[0]);
-    print(data[0]['value']);
-    dataVal = data[0]['value'] as int;
+    dataVal = int.parse(data[0]["Value"]);
+    return dataVal;
+    //TODO: change int to double
   }
 
   // Creates a graph with countries as ind variable and comparisonIndex as dep variable
-  List<Container> _createGraphs() {
+  Future<List<Container>> _createGraphs() async {
     List<Container> list = [];
     print(_subcomparison.length);
 
     for (String _selectedSubIndex in _subcomparison) {
       for (String country in _selectedCountries) {
-        print("DEBUGGING 2");
+        print("DEBUGGING");
+        print(_selectedCompareBy);
+        print(_selectedComparisonIndex);
         print(_selectedSubIndex);
         print(country);
-        _getData(_selectedCompareBy, _selectedComparisonIndex,
-            _selectedSubIndex, country);
+        int number = await _getData(_selectedCompareBy,
+            _selectedComparisonIndex, _selectedSubIndex, country);
+        print(number);
         graphData.add(BarSeries(
             country: country,
-            dataValue: dataVal,
+            dataValue: number,
             barColor: charts.ColorUtil.fromDartColor(Colors.red)));
       }
       list.add(Container(
