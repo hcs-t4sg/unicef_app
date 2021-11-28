@@ -29,27 +29,21 @@ class _ComparePageState extends State<ComparePage> {
   List<String> _comparisonindicators = [];
   List<String> _subareas = [];
   List _sortBy = ["Greatest to least", "Least to greatest", "Alphabetical"];
-  List _selectedCountries = ["Afghanistan", "India"];
+  List _selectedCountries = ["Afghanistan", "Pakistan"];
   String _selectedCompareBy = 'wealth quintile';
-  String _selectedComparisonIndex = 'Immunization (%)';
-  List<String> subcomparisonTypes = [];
+  String _selectedComparisonIndex = 'Under-five mortality (#/1,000)';
   int dataVal = 0;
 
-  List<BarSeries> graphData = [
-    BarSeries(
-        country: "Afghanistan",
-        dataValue: 23,
-        barColor: charts.ColorUtil.fromDartColor(Colors.red)),
-    BarSeries(
-        country: "Nepal",
-        dataValue: 33,
-        barColor: charts.ColorUtil.fromDartColor(Colors.orange)),
-  ];
+  List<BarSeries> graphData = [];
 
   void _getData(String compareBy, String comparisonIndex, String subIndex,
       String subArea) async {
     List<Map> data = await SQLiteDbProvider.db
         .getData(compareBy, comparisonIndex, subIndex, subArea);
+    print("DEBUGGING");
+    print(data);
+    print(data[0]);
+    print(data[0]['value']);
     dataVal = data[0]['value'] as int;
   }
 
@@ -60,6 +54,9 @@ class _ComparePageState extends State<ComparePage> {
 
     for (String _selectedSubIndex in _subcomparison) {
       for (String country in _selectedCountries) {
+        print("DEBUGGING 2");
+        print(_selectedSubIndex);
+        print(country);
         _getData(_selectedCompareBy, _selectedComparisonIndex,
             _selectedSubIndex, country);
         graphData.add(BarSeries(
@@ -163,11 +160,7 @@ class _ComparePageState extends State<ComparePage> {
                       color: Colors.blue,
                       fontSize: 16,
                       fontWeight: FontWeight.w500)),
-              onChange: () => {
-                setState(() {
-                  _selectedComparisonIndex = _selectedComparisonIndex;
-                })
-              },
+              onChange: (int value, int index) => print(value),
               // TODO: Update onChange() to update the corresponding state variable
               dropdownButtonStyle: DropdownButtonStyle(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -215,11 +208,7 @@ class _ComparePageState extends State<ComparePage> {
                       color: Colors.blue,
                       fontSize: 16,
                       fontWeight: FontWeight.w500)),
-              onChange: () => {
-                setState(() {
-                  _selectedCompareBy = _selectedCompareBy;
-                })
-              },
+              onChange: (int value, int index) => print(value),
               // TODO: Update onChange() to update the corresponding state variable
               dropdownButtonStyle: DropdownButtonStyle(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -267,11 +256,7 @@ class _ComparePageState extends State<ComparePage> {
                       color: Colors.blue,
                       fontSize: 16,
                       fontWeight: FontWeight.w500)),
-              onChange: () => {
-                setState(() {
-                  _sortBy = _sortBy;
-                })
-              },
+              onChange: (int value, int index) => print(value),
               // TODO: Update onChange() to update the corresponding state variable
               dropdownButtonStyle: DropdownButtonStyle(
                 mainAxisAlignment: MainAxisAlignment.center,

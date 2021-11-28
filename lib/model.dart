@@ -353,7 +353,8 @@ class SQLiteDbProvider {
       String subIndex, String subArea) async {
     final db = await database;
     return await db.rawQuery(
-        "SELECT value FROM ComparisonValue LEFT JOIN ComparisonIndex USING(ComparisonIndexID) LEFT JOIN CompareBy USING(CompareByID) LEFT JOIN SubComparisonIndex USING(SubComparisonIndexID) LEFT JOIN SubArea USING(SubAreaID) WHERE ComparisonIndexText = {$comparisonIndex} AND CompareByText = {$compareBy} AND SubAreaID = {$subArea} AND SubComparisonIndexText = {$subIndex}");
+        "SELECT value FROM ComparisonValue LEFT JOIN ComparisonIndex USING(ComparisonIndexID) LEFT JOIN CompareBy USING(CompareByID) LEFT JOIN SubComparisonIndex USING(SubComparisonIndexID) LEFT JOIN SubArea USING(SubAreaID) WHERE ComparisonIndexText = '$comparisonIndex' AND CompareByText = '$compareBy' AND SubAreaID = '$subArea' AND SubComparisonIndexText = '$subIndex'");
+    // TODO: Sanitize for SQL?
   }
 
   // Get Compareby from the database
@@ -380,7 +381,7 @@ class SQLiteDbProvider {
   Future<List<Map>> getSubComparisonIndicatorSpecific(String compareBy) async {
     final db = await database;
     return await db.rawQuery(
-        "SELECT SubComparisonIndexText FROM ComparisonValue LEFT JOIN ComparisonIndex USING(ComparisonIndexID) LEFT JOIN CompareBy USING(CompareByID) LEFT JOIN SubComparisonIndex USING(SubComparisonIndexID) LEFT JOIN SubArea USING(SubAreaID) WHERE CompareByText = {$compareBy}");
+        "SELECT SubComparisonIndexText FROM ComparisonValue LEFT JOIN ComparisonIndex USING(ComparisonIndexID) LEFT JOIN CompareBy USING(CompareByID) LEFT JOIN SubComparisonIndex USING(SubComparisonIndexID) LEFT JOIN SubArea USING(SubAreaID) WHERE CompareByText = '$compareBy'");
   }
 
   // Get subareas from the database
