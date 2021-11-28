@@ -29,10 +29,9 @@ class _ComparePageState extends State<ComparePage> {
   List<String> _comparisonindicators = [];
   List<String> _subareas = [];
   List _sortBy = ["Greatest to least", "Least to greatest", "Alphabetical"];
-  List _selectedCountries = [];
-  String _selectedCompareBy = '';
-  String _selectedComparisonIndex = '';
-  List<int> list = [];
+  List _selectedCountries = ["Afghan", "Inda"];
+  String _selectedCompareBy = 'wealth quintile';
+  String _selectedComparisonIndex = 'Immunization (%)';
   List<String> subcomparisonTypes = [];
   int dataVal = 0;
 
@@ -45,25 +44,21 @@ class _ComparePageState extends State<ComparePage> {
     dataVal = data[0]['value'] as int;
   }
 
-  // Creates a graph for each subcomparison type
-  void _createGraphs() {
-    for (String subIndex in subcomparisonTypes) {
-      graphData = [];
-      _createGraph(subIndex);
-    }
-  }
-
   // Creates a graph with countries as ind variable and comparisonIndex as dep variable
-  void _createGraph(String _selectedSubIndex) {
-    for (String country in _selectedCountries) {
-      _getData(_selectedCompareBy, _selectedComparisonIndex, _selectedSubIndex,
-          country);
-      graphData.add(BarSeries(
-          country: country,
-          dataValue: dataVal,
-          barColor: charts.ColorUtil.fromDartColor(Colors.red)));
-      //TODO: figure out how to build the graph
+  List<MultiCountryChart> _createGraphs() {
+    List<MultiCountryChart> list = [];
+    for (String _selectedSubIndex in _subcomparison) {
+      for (String country in _selectedCountries) {
+        _getData(_selectedCompareBy, _selectedComparisonIndex,
+            _selectedSubIndex, country);
+        graphData.add(BarSeries(
+            country: country,
+            dataValue: dataVal,
+            barColor: charts.ColorUtil.fromDartColor(Colors.red)));
+      }
+      list.add(MultiCountryChart(data: graphData));
     }
+    return list;
   }
 
   void _getCompareBy() async {
@@ -286,7 +281,11 @@ class _ComparePageState extends State<ComparePage> {
               margin: EdgeInsets.symmetric(horizontal: 15, vertical: 0),
               child: MultiCountryChart(
                 data: graphData,
-              ))
+              )),
+          Container(
+              child: Column(
+            children: _createGraphs(),
+          ))
         ])),
       ),
     );
