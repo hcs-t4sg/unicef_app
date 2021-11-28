@@ -29,13 +29,22 @@ class _ComparePageState extends State<ComparePage> {
   List<String> _comparisonindicators = [];
   List<String> _subareas = [];
   List _sortBy = ["Greatest to least", "Least to greatest", "Alphabetical"];
-  List _selectedCountries = ["Afghan", "Inda"];
+  List _selectedCountries = ["Afghanistan", "India"];
   String _selectedCompareBy = 'wealth quintile';
   String _selectedComparisonIndex = 'Immunization (%)';
   List<String> subcomparisonTypes = [];
   int dataVal = 0;
 
-  List<BarSeries> graphData = [];
+  List<BarSeries> graphData = [
+    BarSeries(
+        country: "Afghanistan",
+        dataValue: 23,
+        barColor: charts.ColorUtil.fromDartColor(Colors.red)),
+    BarSeries(
+        country: "Nepal",
+        dataValue: 33,
+        barColor: charts.ColorUtil.fromDartColor(Colors.orange)),
+  ];
 
   void _getData(String compareBy, String comparisonIndex, String subIndex,
       String subArea) async {
@@ -45,8 +54,10 @@ class _ComparePageState extends State<ComparePage> {
   }
 
   // Creates a graph with countries as ind variable and comparisonIndex as dep variable
-  List<MultiCountryChart> _createGraphs() {
-    List<MultiCountryChart> list = [];
+  List<Container> _createGraphs() {
+    List<Container> list = [];
+    print(_subcomparison.length);
+
     for (String _selectedSubIndex in _subcomparison) {
       for (String country in _selectedCountries) {
         _getData(_selectedCompareBy, _selectedComparisonIndex,
@@ -56,7 +67,10 @@ class _ComparePageState extends State<ComparePage> {
             dataValue: dataVal,
             barColor: charts.ColorUtil.fromDartColor(Colors.red)));
       }
-      list.add(MultiCountryChart(data: graphData));
+      list.add(Container(
+          constraints: BoxConstraints(maxHeight: 500, maxWidth: 350),
+          margin: EdgeInsets.symmetric(horizontal: 15, vertical: 0),
+          child: MultiCountryChart(data: graphData)));
     }
     return list;
   }
@@ -71,10 +85,15 @@ class _ComparePageState extends State<ComparePage> {
   }
 
   void _getSubcomparison() async {
-    List<Map> subcomparison =
-        await SQLiteDbProvider.db.getSubComparisonIndicator();
-    var subcomparisondynamic =
-        subcomparison.map((i) => i['SubComparisonIndexText']).toList();
+    List<Map> subcomparison = await SQLiteDbProvider.db
+        .getSubComparisonIndicatorSpecific(_selectedCompareBy);
+    var subcomparisondynamic = subcomparison
+        .map((i) => i['SubComparisonIndexText'])
+        .toList()
+        .toSet()
+        .toList();
+    // TODO: May be redundant, change later?
+
     var subcomparisonstring = List<String>.from(subcomparisondynamic);
     setState(() {
       this._subcomparison = subcomparisonstring;
@@ -144,7 +163,12 @@ class _ComparePageState extends State<ComparePage> {
                       color: Colors.blue,
                       fontSize: 16,
                       fontWeight: FontWeight.w500)),
-              onChange: (int value, int index) => print(value),
+              onChange: () => {
+                setState(() {
+                  _selectedComparisonIndex = _selectedComparisonIndex;
+                })
+              },
+              // TODO: Update onChange() to update the corresponding state variable
               dropdownButtonStyle: DropdownButtonStyle(
                 mainAxisAlignment: MainAxisAlignment.center,
                 padding: EdgeInsets.fromLTRB(15, 2, 10, 2),
@@ -191,7 +215,12 @@ class _ComparePageState extends State<ComparePage> {
                       color: Colors.blue,
                       fontSize: 16,
                       fontWeight: FontWeight.w500)),
-              onChange: (int value, int index) => print(value),
+              onChange: () => {
+                setState(() {
+                  _selectedCompareBy = _selectedCompareBy;
+                })
+              },
+              // TODO: Update onChange() to update the corresponding state variable
               dropdownButtonStyle: DropdownButtonStyle(
                 mainAxisAlignment: MainAxisAlignment.center,
                 padding: EdgeInsets.fromLTRB(15, 2, 10, 2),
@@ -238,7 +267,12 @@ class _ComparePageState extends State<ComparePage> {
                       color: Colors.blue,
                       fontSize: 16,
                       fontWeight: FontWeight.w500)),
-              onChange: (int value, int index) => print(value),
+              onChange: () => {
+                setState(() {
+                  _sortBy = _sortBy;
+                })
+              },
+              // TODO: Update onChange() to update the corresponding state variable
               dropdownButtonStyle: DropdownButtonStyle(
                 mainAxisAlignment: MainAxisAlignment.center,
                 padding: EdgeInsets.fromLTRB(15, 2, 10, 2),
@@ -276,16 +310,19 @@ class _ComparePageState extends State<ComparePage> {
                   .toList(),
             ),
           ),
+          // Container(
+          //     constraints: BoxConstraints(maxHeight: 500, maxWidth: 350),
+          //     margin: EdgeInsets.symmetric(horizontal: 15, vertical: 0),
+          //     child: MultiCountryChart(data: graphData)),
+          // Container(
+          //     constraints: BoxConstraints(maxHeight: 500, maxWidth: 350),
+          //     margin: EdgeInsets.symmetric(horizontal: 15, vertical: 0),
+          //     child: MultiCountryChart(data: graphData)),
           Container(
-              constraints: BoxConstraints(maxHeight: 500, maxWidth: 350),
-              margin: EdgeInsets.symmetric(horizontal: 15, vertical: 0),
-              child: MultiCountryChart(
-                data: graphData,
-              )),
-          Container(
-              child: Column(
-            children: _createGraphs(),
-          ))
+              child: Column(children: <Container>[
+            ..._createGraphs(),
+            // https://stackoverflow.com/questions/53490661/how-to-return-part-of-a-list-of-widgets-in-flutter
+          ]))
         ])),
       ),
     );

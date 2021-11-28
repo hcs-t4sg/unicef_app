@@ -369,11 +369,18 @@ class SQLiteDbProvider {
         .rawQuery("SELECT DISTINCT ComparisonIndexText FROM ComparisonIndex");
   }
 
-  // Get SubComparisonIndicator from the database
+  // Get all SubComparisonIndicator from the database
   Future<List<Map>> getSubComparisonIndicator() async {
     final db = await database;
     return await db
         .rawQuery("SELECT SubComparisonIndexText FROM SubComparisonIndex");
+  }
+
+  //Get SubComparisonIndicators for specific CompareBy
+  Future<List<Map>> getSubComparisonIndicatorSpecific(String compareBy) async {
+    final db = await database;
+    return await db.rawQuery(
+        "SELECT SubComparisonIndexText FROM ComparisonValue LEFT JOIN ComparisonIndex USING(ComparisonIndexID) LEFT JOIN CompareBy USING(CompareByID) LEFT JOIN SubComparisonIndex USING(SubComparisonIndexID) LEFT JOIN SubArea USING(SubAreaID) WHERE CompareByText = {$compareBy}");
   }
 
   // Get subareas from the database
