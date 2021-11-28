@@ -34,8 +34,6 @@ class _ComparePageState extends State<ComparePage> {
   String _selectedComparisonIndex = 'Under-five mortality (#/1,000)';
   int dataVal = 0;
 
-  List<BarSeries> graphData = [];
-
   Future<int> _getData(String compareBy, String comparisonIndex,
       String subIndex, String subArea) async {
     List<Map> data = await SQLiteDbProvider.db
@@ -46,30 +44,37 @@ class _ComparePageState extends State<ComparePage> {
   }
 
   // Creates a graph with countries as ind variable and comparisonIndex as dep variable
-  Future<List<Container>> _createGraphs() async {
+  List<Container> _createGraphs() {
+    List<BarSeries> graphData = [];
     List<Container> list = [];
     print(_subcomparison.length);
 
     for (String _selectedSubIndex in _subcomparison) {
+      graphData = [];
       for (String country in _selectedCountries) {
         print("DEBUGGING");
         print(_selectedCompareBy);
         print(_selectedComparisonIndex);
         print(_selectedSubIndex);
         print(country);
-        int number = await _getData(_selectedCompareBy,
-            _selectedComparisonIndex, _selectedSubIndex, country);
-        print(number);
-        graphData.add(BarSeries(
-            country: country,
-            dataValue: number,
-            barColor: charts.ColorUtil.fromDartColor(Colors.red)));
+        int number = 100;
+        _getData(_selectedCompareBy, _selectedComparisonIndex,
+                _selectedSubIndex, country)
+            .then((value) {
+          number = value;
+          print(number);
+          graphData.add(BarSeries(
+              country: country,
+              dataValue: number,
+              barColor: charts.ColorUtil.fromDartColor(Colors.red)));
+        });
       }
       list.add(Container(
           constraints: BoxConstraints(maxHeight: 500, maxWidth: 350),
           margin: EdgeInsets.symmetric(horizontal: 15, vertical: 0),
           child: MultiCountryChart(data: graphData)));
     }
+    print(list);
     return list;
   }
 
