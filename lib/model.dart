@@ -312,8 +312,8 @@ class SQLiteDbProvider {
   // Get sources from the database
   Future<List<Map>> getAllSources() async {
     final db = await database;
-    return await db
-        .query("Sources", columns: ["SourceDescription", "SourceLink"]);
+    return await db.query("Sources",
+        columns: ["SourceID", "SourceDescription", "SourceLink"]);
   }
 
   // Get reports from the database by subarea

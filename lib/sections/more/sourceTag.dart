@@ -4,10 +4,12 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 class SourceTag extends StatelessWidget {
   String _name = "";
   String _link = "";
+  String _index = "";
 
-  SourceTag(String name, String link) {
+  SourceTag(String name, String link, String index) {
     _name = name;
     _link = link;
+    _index = index;
   }
 
   Widget build(BuildContext context) {
@@ -27,7 +29,7 @@ class SourceTag extends StatelessWidget {
           Container(
             padding: EdgeInsets.symmetric(vertical: 3, horizontal: 20),
             child: Text(
-              _name,
+              _index + ": " + _name,
               style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
             ),
             width: double.infinity,

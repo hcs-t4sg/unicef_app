@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import './help.dart';
 import './sources.dart';
 import './about.dart';
+import './../../model.dart';
 
 class MorePage extends StatefulWidget {
   MorePage({
@@ -13,22 +14,31 @@ class MorePage extends StatefulWidget {
 }
 
 class _MorePageState extends State<MorePage> {
-  List<String> _sourceNames = [
-    "UNICEF. The State of the World's Children 2019-statistical tables & UNICEF GLobal Data Warehouse. Data.unicef.org",
-    "UNDP. 2019 Human Development Report",
-    "World Bank. World Development Indicators Database",
-    "UNAIDS online AIDSInfo Database",
-    "UNDP, Human Development Indices and Indicators",
-    "UNESCAP; ADB; UNDP. Making it Happen: Technology, Finance and Statistics for Sustainable Development in Asia and the Pacific. Asia-Pacific Regional MDGs Report. 2014/2015.",
-  ];
-  List<String> _sourceLinks = [
-    "https://data.unicef.org/resources/state-worlds-children-2017-statistical-tables",
-    "http://www.hdr.undp.org/sites/default/files/hdr2019.pdf",
-    "https://data.worldbank.org/country",
-    "https://aidsinfo.unaids.org/",
-    "http://hdr.undp.org/en/indicators/21806",
-    "https://issuu.com/undpasiapacific/docs/rbap-rmdg-report-2014-2015",
-  ];
+  List<String> _sourceNames = [];
+  List<String> _sourceLinks = [];
+  List<String> _sourceIDs = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _getSources();
+  }
+
+  void _getSources() async {
+    final List<Map> sources = await SQLiteDbProvider.db.getAllSources();
+    setState(() {
+      _sourceIDs = sources
+          .map((source) => (source.values.toList()[0]).toString())
+          .toList();
+      _sourceNames = sources
+          .map((source) => source.values.toList()[1].toString())
+          .toList();
+      _sourceLinks = sources
+          .map((source) => source.values.toList()[2].toString())
+          .toList();
+    });
+  }
+
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 3,
@@ -53,7 +63,11 @@ class _MorePageState extends State<MorePage> {
               child: HelpPage(),
             ),
             Center(
-              child: SourcesPage(_sourceNames, _sourceLinks),
+              child: SourcesPage(
+                _sourceIDs,
+                _sourceNames,
+                _sourceLinks,
+              ),
             ),
           ],
         ),

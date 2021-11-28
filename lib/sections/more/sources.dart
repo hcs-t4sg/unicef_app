@@ -6,10 +6,12 @@ import './../../model.dart';
 class SourcesPage extends StatelessWidget {
   List<String> _sourceNames = [];
   List<String> _sourceLinks = [];
+  List<String> _sourceIDs = [];
 
-  SourcesPage(List<String> names, List<String> links) {
+  SourcesPage(List<String> ids, List<String> names, List<String> links) {
     _sourceNames = names;
     _sourceLinks = links;
+    _sourceIDs = ids;
   }
 
   Widget build(BuildContext context) {
@@ -22,9 +24,9 @@ class SourcesPage extends StatelessWidget {
           children: _sourceNames
               .map(
                 (name) => SourceTag(
-                  name,
-                  _sourceLinks[_sourceNames.indexOf(name)],
-                ),
+                    name,
+                    _sourceLinks[_sourceNames.indexOf(name)],
+                    _sourceIDs[_sourceNames.indexOf(name)]),
               )
               .toList(),
         ),
