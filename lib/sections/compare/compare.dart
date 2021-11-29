@@ -33,7 +33,7 @@ class _ComparePageState extends State<ComparePage> {
   String _selectedCompareBy = 'wealth quintile';
   String _selectedComparisonIndex = 'Under-five mortality (#/1,000)';
   int dataVal = 0;
-  Future<List<Container>> _graphs;
+  Future<List<Widget>> _graphs = [] as Future<List<Widget>>;
 
   get child => null;
 
@@ -57,7 +57,7 @@ class _ComparePageState extends State<ComparePage> {
   }
 
   // Creates a graph with countries as ind variable and comparisonIndex as dep variable
-  Future<List<Container>> _createGraphs() async {
+  Future<List<Widget>> _createGraphs() async {
     List<Container> list = [];
     print(_subcomparison.length);
 
@@ -138,11 +138,11 @@ class _ComparePageState extends State<ComparePage> {
       ),
       body: Center(
         child: Container(
-            child: FutureBuilder<List<Container>>(
+            child: FutureBuilder<List<Widget>>(
                 future: _graphs,
                 builder: (
                   BuildContext context,
-                  AsyncSnapshot<List<Container>> snapshot,
+                  AsyncSnapshot<List<Widget>> snapshot,
                 ) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return Column(
@@ -321,7 +321,10 @@ class _ComparePageState extends State<ComparePage> {
                                 .toList(),
                           ),
                         ),
-                        Container(child: snapshot.data)
+                        Container(
+                            child: Column(
+                          children: snapshot.data,
+                        ))
                       ]));
                     } else {
                       return const Text('Empty data');
