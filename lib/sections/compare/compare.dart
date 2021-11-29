@@ -140,6 +140,7 @@ class _ComparePageState extends State<ComparePage> {
         child: Container(
             child: FutureBuilder<List<Widget>>(
                 future: _graphs,
+                initialData: [],
                 builder: (
                   BuildContext context,
                   AsyncSnapshot<List<Widget>> snapshot,
@@ -152,6 +153,8 @@ class _ComparePageState extends State<ComparePage> {
                     if (snapshot.hasError) {
                       return const Text('Error');
                     } else if (snapshot.hasData) {
+                      final graphsDisplayed = snapshot.data as List<Widget>;
+
                       return Container(
                           child: ListView(children: <Widget>[
                         Container(
@@ -323,7 +326,7 @@ class _ComparePageState extends State<ComparePage> {
                         ),
                         Container(
                             child: Column(
-                          children: snapshot.data,
+                          children: graphsDisplayed,
                         ))
                       ]));
                     } else {
