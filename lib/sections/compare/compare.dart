@@ -45,12 +45,11 @@ class _ComparePageState extends State<ComparePage> {
 
   // Creates a graph with countries as ind variable and comparisonIndex as dep variable
   List<Container> _createGraphs() {
-    List<BarSeries> graphData = [];
     List<Container> list = [];
     print(_subcomparison.length);
 
     for (String _selectedSubIndex in _subcomparison) {
-      graphData = [];
+      List<BarSeries> graphData = [];
       for (String country in _selectedCountries) {
         print("DEBUGGING");
         print(_selectedCompareBy);
@@ -68,13 +67,14 @@ class _ComparePageState extends State<ComparePage> {
               dataValue: number,
               barColor: charts.ColorUtil.fromDartColor(Colors.red)));
         });
+        print("graphData");
+        print(graphData);
       }
       list.add(Container(
           constraints: BoxConstraints(maxHeight: 500, maxWidth: 350),
           margin: EdgeInsets.symmetric(horizontal: 15, vertical: 0),
           child: MultiCountryChart(data: graphData)));
     }
-    print(list);
     return list;
   }
 
