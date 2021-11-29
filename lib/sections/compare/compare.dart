@@ -56,19 +56,12 @@ class _ComparePageState extends State<ComparePage> {
         print(_selectedComparisonIndex);
         print(_selectedSubIndex);
         print(country);
-        int number = 100;
-        _getData(_selectedCompareBy, _selectedComparisonIndex,
-                _selectedSubIndex, country)
-            .then((value) {
-          number = value;
-          print(number);
-          graphData.add(BarSeries(
+        int number = await _getData(_selectedCompareBy, _selectedComparisonIndex,
+                _selectedSubIndex, country);
+        graphData.add(BarSeries(
               country: country,
               dataValue: number,
               barColor: charts.ColorUtil.fromDartColor(Colors.red)));
-        });
-        print("graphData");
-        print(graphData);
       }
       list.add(Container(
           constraints: BoxConstraints(maxHeight: 500, maxWidth: 350),
