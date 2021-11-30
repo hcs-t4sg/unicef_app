@@ -270,7 +270,7 @@ class SQLiteDbProvider {
       // Write and flush the bytes written
       await File(path).writeAsBytes(bytes, flush: true);
     } else {
-      print("Opening existing database");
+      // print("Opening existing database");
     }
     // open the database
     return await openDatabase(path, readOnly: true);

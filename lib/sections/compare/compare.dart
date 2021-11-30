@@ -39,7 +39,14 @@ class _ComparePageState extends State<ComparePage> {
       String subIndex, String subArea) async {
     List<Map> data = await SQLiteDbProvider.db
         .getData(compareBy, comparisonIndex, subIndex, subArea);
-    dataVal = int.parse(data[0]["Value"]);
+    try {
+      dataVal = int.parse(data[0]["Value"]);
+    } on FormatException {
+      dataVal = 0;
+    }
+
+    print("dataVal");
+    print(dataVal);
     return dataVal;
     //TODO: change int to double
   }
@@ -47,15 +54,9 @@ class _ComparePageState extends State<ComparePage> {
   // Creates a graph with countries as ind variable and comparisonIndex as dep variable
   void _createGraphs() async {
     List<Container> list = [];
-    print(_subcomparison.length);
     for (String _selectedSubIndex in _subcomparison) {
       List<BarSeries> graphData = [];
       for (String country in _selectedCountries) {
-        print("DEBUGGING");
-        print(_selectedCompareBy);
-        print(_selectedComparisonIndex);
-        print(_selectedSubIndex);
-        print(country);
         int number = await _getData(_selectedCompareBy,
             _selectedComparisonIndex, _selectedSubIndex, country);
         graphData.add(BarSeries(
@@ -105,6 +106,8 @@ class _ComparePageState extends State<ComparePage> {
         comparisonindicators.map((i) => i['ComparisonIndexText']).toList();
     var comparisonindicatorsstring =
         List<String>.from(comparisonindicatorsdynamic);
+    // print("yeet");
+    // print(comparisonindicatorsstring);
     setState(() {
       this._comparisonindicators = comparisonindicatorsstring;
     });
@@ -155,14 +158,21 @@ class _ComparePageState extends State<ComparePage> {
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: CustomDropdown<int>(
+            child: CustomDropdown<String>(
               icon: Icon(Icons.keyboard_arrow_down),
               child: Text('SELECT INDICATOR',
                   style: TextStyle(
                       color: Colors.blue,
                       fontSize: 16,
                       fontWeight: FontWeight.w500)),
-              onChange: (int value, int index) => print(value),
+              onChange: (String value, int index) {
+                print("yeet");
+                print(value);
+                setState(() {
+                  this._selectedComparisonIndex = value;
+                });
+                print(this._selectedComparisonIndex);
+              },
               // TODO: Update onChange() to update the corresponding state variable
               dropdownButtonStyle: DropdownButtonStyle(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -190,8 +200,8 @@ class _ComparePageState extends State<ComparePage> {
                   .asMap()
                   .entries
                   .map(
-                    (item) => DropdownItem<int>(
-                      value: item.key + 1,
+                    (item) => DropdownItem<String>(
+                      value: item.value,
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Text(item.value),
@@ -203,14 +213,15 @@ class _ComparePageState extends State<ComparePage> {
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: CustomDropdown<int>(
+            child: CustomDropdown<String>(
               icon: Icon(Icons.keyboard_arrow_down),
               child: Text('COMPARE BY',
                   style: TextStyle(
                       color: Colors.blue,
                       fontSize: 16,
                       fontWeight: FontWeight.w500)),
-              onChange: (int value, int index) => print(value),
+              onChange: (String value, int index) =>
+                  this._selectedCompareBy = value,
               // TODO: Update onChange() to update the corresponding state variable
               dropdownButtonStyle: DropdownButtonStyle(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -238,8 +249,8 @@ class _ComparePageState extends State<ComparePage> {
                   .asMap()
                   .entries
                   .map(
-                    (item) => DropdownItem<int>(
-                      value: item.key + 1,
+                    (item) => DropdownItem<String>(
+                      value: item.value,
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Text(item.value),
