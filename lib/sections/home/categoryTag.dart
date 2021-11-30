@@ -89,14 +89,25 @@ class _CategoryTagState extends State<CategoryTag> {
                 ),
               ),
               Container(
+                margin: EdgeInsets.fromLTRB(0, 0, 20, 0),
                 child: Align(
-                  child: Icon(
-                    MdiIcons.menuRight,
-                    size: 30,
+                  child: TextButton(
+                    onPressed: () {
+                      _showSimpleModalDialog(
+                          context, _category, "Description", "DIsaggregation");
+                    },
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(Colors.white),
+                    ),
+                    child: Icon(
+                      MdiIcons.informationOutline,
+                      size: 30,
+                      color: Colors.blueAccent,
+                    ),
                   ),
-                  alignment: Alignment.centerRight,
+                  alignment: Alignment.center,
                 ),
-                alignment: Alignment.centerRight,
+                alignment: Alignment.center,
               ),
             ],
           ),
@@ -104,4 +115,84 @@ class _CategoryTagState extends State<CategoryTag> {
       ),
     );
   }
+}
+
+_showSimpleModalDialog(
+    context, String title, String description, String disaggregation) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return Dialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0.0)),
+        child: Container(
+          constraints: BoxConstraints(maxHeight: 400),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                width: 350,
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    title,
+                    textAlign: TextAlign.left,
+                    style: TextStyle(
+                        fontSize: 22,
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+              ),
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+                child: RichText(
+                  textAlign: TextAlign.left,
+                  text: TextSpan(
+                    text: description,
+                    style: TextStyle(
+                      fontWeight: FontWeight.w400,
+                      fontSize: 20,
+                      color: Colors.black,
+                      wordSpacing: 1,
+                    ),
+                  ),
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.fromLTRB(20, 20, 20, 5),
+                child: RichText(
+                  textAlign: TextAlign.left,
+                  text: TextSpan(
+                    text: "Disaggregation",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                      color: Colors.black,
+                      wordSpacing: 1,
+                    ),
+                  ),
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.fromLTRB(20, 0, 20, 0),
+                child: RichText(
+                  textAlign: TextAlign.left,
+                  text: TextSpan(
+                    text: disaggregation,
+                    style: TextStyle(
+                      fontWeight: FontWeight.w300,
+                      fontSize: 16,
+                      color: Colors.black,
+                      wordSpacing: 1,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    },
+  );
 }
