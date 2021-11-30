@@ -29,23 +29,11 @@ class _ComparePageState extends State<ComparePage> {
   List<String> _comparisonindicators = [];
   List<String> _subareas = [];
   List _sortBy = ["Greatest to least", "Least to greatest", "Alphabetical"];
-  List _selectedCountries = ["Afghanistan", "Pakistan"];
+  List _selectedCountries = ["Bhutan", "Pakistan"];
   String _selectedCompareBy = 'wealth quintile';
   String _selectedComparisonIndex = 'Under-five mortality (#/1,000)';
   int dataVal = 0;
-  Future<List<Widget>> _graphs = [] as Future<List<Widget>>;
-
-  get child => null;
-
-  @override
-  initState() {
-    super.initState();
-    _graphs = _createGraphs();
-    _getCompareBy();
-    _getSubcomparison();
-    _getComparisonIndicators();
-    _getSubareas();
-  }
+  List<Container> _list = [];
 
   Future<int> _getData(String compareBy, String comparisonIndex,
       String subIndex, String subArea) async {
@@ -57,10 +45,9 @@ class _ComparePageState extends State<ComparePage> {
   }
 
   // Creates a graph with countries as ind variable and comparisonIndex as dep variable
-  Future<List<Widget>> _createGraphs() async {
+  void _createGraphs() async {
     List<Container> list = [];
     print(_subcomparison.length);
-
     for (String _selectedSubIndex in _subcomparison) {
       List<BarSeries> graphData = [];
       for (String country in _selectedCountries) {
@@ -81,7 +68,9 @@ class _ComparePageState extends State<ComparePage> {
           margin: EdgeInsets.symmetric(horizontal: 15, vertical: 0),
           child: MultiCountryChart(data: graphData)));
     }
-    return list;
+    setState(() {
+      this._list = list;
+    });
   }
 
   void _getCompareBy() async {
@@ -130,7 +119,17 @@ class _ComparePageState extends State<ComparePage> {
     });
   }
 
+  @override
+  void initState() {
+    super.initState();
+    _getCompareBy();
+    _getSubcomparison();
+    _getComparisonIndicators();
+    _getSubareas();
+  }
+
   Widget build(BuildContext context) {
+    _createGraphs();
     return Scaffold(
       appBar: AppBar(
         title: const Text('Compare'),
@@ -138,204 +137,176 @@ class _ComparePageState extends State<ComparePage> {
       ),
       body: Center(
         child: Container(
-            child: FutureBuilder<List<Widget>>(
-                future: _graphs,
-                initialData: [],
-                builder: (
-                  BuildContext context,
-                  AsyncSnapshot<List<Widget>> snapshot,
-                ) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Column(
-                      children: [Text("Waiting")],
-                    );
-                  } else if (snapshot.connectionState == ConnectionState.done) {
-                    if (snapshot.hasError) {
-                      return const Text('Error');
-                    } else if (snapshot.hasData) {
-                      final graphsDisplayed = snapshot.data as List<Widget>;
-
-                      return Container(
-                          child: ListView(children: <Widget>[
-                        Container(
-                          child: MultiSelectDialogField(
-                            items: _subareas
-                                .map((e) => MultiSelectItem(e, e))
-                                .toList(),
-                            listType: MultiSelectListType.LIST,
-                            searchable: true,
-                            searchHint: "Search countries",
-                            buttonText: Text("Select Countries"),
-                            chipDisplay: MultiSelectChipDisplay.none(),
-                            onConfirm: (values) => setState(
-                              () {
-                                _selectedCountries = values;
-                              },
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: CustomDropdown<int>(
-                            icon: Icon(Icons.keyboard_arrow_down),
-                            child: Text('SELECT INDICATOR',
-                                style: TextStyle(
-                                    color: Colors.blue,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w500)),
-                            onChange: (int value, int index) => print(value),
-                            // TODO: Update onChange() to update the corresponding state variable
-                            dropdownButtonStyle: DropdownButtonStyle(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              padding: EdgeInsets.fromLTRB(15, 2, 10, 2),
-                              width: 170,
-                              height: 40,
-                              elevation: 1,
-                              backgroundColor: Colors.white,
-                              primaryColor: Colors.black87,
-                              constraints: BoxConstraints(
-                                maxHeight:
-                                    MediaQuery.of(context).size.height - 15,
-                              ),
-                            ),
-                            dropdownStyle: DropdownStyle(
-                              constraints: BoxConstraints(
-                                maxHeight:
-                                    MediaQuery.of(context).size.height - 15,
-                              ),
-                              width: 50,
-                              offset: Offset(0, 45),
-                              borderRadius: BorderRadius.circular(8),
-                              elevation: 6,
-                              padding: EdgeInsets.all(5),
-                            ),
-                            items: _comparisonindicators
-                                .asMap()
-                                .entries
-                                .map(
-                                  (item) => DropdownItem<int>(
-                                    value: item.key + 1,
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Text(item.value),
-                                    ),
-                                  ),
-                                )
-                                .toList(),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: CustomDropdown<int>(
-                            icon: Icon(Icons.keyboard_arrow_down),
-                            child: Text('COMPARE BY',
-                                style: TextStyle(
-                                    color: Colors.blue,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w500)),
-                            onChange: (int value, int index) => print(value),
-                            // TODO: Update onChange() to update the corresponding state variable
-                            dropdownButtonStyle: DropdownButtonStyle(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              padding: EdgeInsets.fromLTRB(15, 2, 10, 2),
-                              width: 170,
-                              height: 40,
-                              elevation: 1,
-                              backgroundColor: Colors.white,
-                              primaryColor: Colors.black87,
-                              constraints: BoxConstraints(
-                                maxHeight:
-                                    MediaQuery.of(context).size.height - 15,
-                              ),
-                            ),
-                            dropdownStyle: DropdownStyle(
-                              constraints: BoxConstraints(
-                                maxHeight:
-                                    MediaQuery.of(context).size.height - 15,
-                              ),
-                              width: 50,
-                              offset: Offset(0, 45),
-                              borderRadius: BorderRadius.circular(8),
-                              elevation: 6,
-                              padding: EdgeInsets.all(5),
-                            ),
-                            items: _compareby
-                                .asMap()
-                                .entries
-                                .map(
-                                  (item) => DropdownItem<int>(
-                                    value: item.key + 1,
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Text(item.value),
-                                    ),
-                                  ),
-                                )
-                                .toList(),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: CustomDropdown<int>(
-                            icon: Icon(Icons.keyboard_arrow_down),
-                            child: Text('SORT BY',
-                                style: TextStyle(
-                                    color: Colors.blue,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w500)),
-                            onChange: (int value, int index) => print(value),
-                            // TODO: Update onChange() to update the corresponding state variable
-                            dropdownButtonStyle: DropdownButtonStyle(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              padding: EdgeInsets.fromLTRB(15, 2, 10, 2),
-                              width: 170,
-                              height: 40,
-                              elevation: 1,
-                              backgroundColor: Colors.white,
-                              primaryColor: Colors.black87,
-                              constraints: BoxConstraints(
-                                maxHeight:
-                                    MediaQuery.of(context).size.height - 15,
-                              ),
-                            ),
-                            dropdownStyle: DropdownStyle(
-                              constraints: BoxConstraints(
-                                maxHeight:
-                                    MediaQuery.of(context).size.height - 15,
-                              ),
-                              width: 50,
-                              offset: Offset(0, 45),
-                              borderRadius: BorderRadius.circular(8),
-                              elevation: 6,
-                              padding: EdgeInsets.all(5),
-                            ),
-                            items: _sortBy
-                                .asMap()
-                                .entries
-                                .map(
-                                  (item) => DropdownItem<int>(
-                                    value: item.key + 1,
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Text(item.value),
-                                    ),
-                                  ),
-                                )
-                                .toList(),
-                          ),
-                        ),
-                        Container(
-                            child: Column(
-                          children: graphsDisplayed,
-                        ))
-                      ]));
-                    } else {
-                      return const Text('Empty data');
-                    }
-                  } else {
-                    return Text("Not waiting or done");
-                  }
-                })),
+            child: ListView(children: <Widget>[
+          Container(
+            child: MultiSelectDialogField(
+              items: _subareas.map((e) => MultiSelectItem(e, e)).toList(),
+              listType: MultiSelectListType.LIST,
+              searchable: true,
+              searchHint: "Search countries",
+              buttonText: Text("Select Countries"),
+              chipDisplay: MultiSelectChipDisplay.none(),
+              onConfirm: (values) => setState(
+                () {
+                  _selectedCountries = values;
+                },
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: CustomDropdown<int>(
+              icon: Icon(Icons.keyboard_arrow_down),
+              child: Text('SELECT INDICATOR',
+                  style: TextStyle(
+                      color: Colors.blue,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500)),
+              onChange: (int value, int index) => print(value),
+              // TODO: Update onChange() to update the corresponding state variable
+              dropdownButtonStyle: DropdownButtonStyle(
+                mainAxisAlignment: MainAxisAlignment.center,
+                padding: EdgeInsets.fromLTRB(15, 2, 10, 2),
+                width: 170,
+                height: 40,
+                elevation: 1,
+                backgroundColor: Colors.white,
+                primaryColor: Colors.black87,
+                constraints: BoxConstraints(
+                  maxHeight: MediaQuery.of(context).size.height - 15,
+                ),
+              ),
+              dropdownStyle: DropdownStyle(
+                constraints: BoxConstraints(
+                  maxHeight: MediaQuery.of(context).size.height - 15,
+                ),
+                width: 50,
+                offset: Offset(0, 45),
+                borderRadius: BorderRadius.circular(8),
+                elevation: 6,
+                padding: EdgeInsets.all(5),
+              ),
+              items: _comparisonindicators
+                  .asMap()
+                  .entries
+                  .map(
+                    (item) => DropdownItem<int>(
+                      value: item.key + 1,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(item.value),
+                      ),
+                    ),
+                  )
+                  .toList(),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: CustomDropdown<int>(
+              icon: Icon(Icons.keyboard_arrow_down),
+              child: Text('COMPARE BY',
+                  style: TextStyle(
+                      color: Colors.blue,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500)),
+              onChange: (int value, int index) => print(value),
+              // TODO: Update onChange() to update the corresponding state variable
+              dropdownButtonStyle: DropdownButtonStyle(
+                mainAxisAlignment: MainAxisAlignment.center,
+                padding: EdgeInsets.fromLTRB(15, 2, 10, 2),
+                width: 170,
+                height: 40,
+                elevation: 1,
+                backgroundColor: Colors.white,
+                primaryColor: Colors.black87,
+                constraints: BoxConstraints(
+                  maxHeight: MediaQuery.of(context).size.height - 15,
+                ),
+              ),
+              dropdownStyle: DropdownStyle(
+                constraints: BoxConstraints(
+                  maxHeight: MediaQuery.of(context).size.height - 15,
+                ),
+                width: 50,
+                offset: Offset(0, 45),
+                borderRadius: BorderRadius.circular(8),
+                elevation: 6,
+                padding: EdgeInsets.all(5),
+              ),
+              items: _compareby
+                  .asMap()
+                  .entries
+                  .map(
+                    (item) => DropdownItem<int>(
+                      value: item.key + 1,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(item.value),
+                      ),
+                    ),
+                  )
+                  .toList(),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: CustomDropdown<int>(
+              icon: Icon(Icons.keyboard_arrow_down),
+              child: Text('SORT BY',
+                  style: TextStyle(
+                      color: Colors.blue,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500)),
+              onChange: (int value, int index) => print(value),
+              // TODO: Update onChange() to update the corresponding state variable
+              dropdownButtonStyle: DropdownButtonStyle(
+                mainAxisAlignment: MainAxisAlignment.center,
+                padding: EdgeInsets.fromLTRB(15, 2, 10, 2),
+                width: 170,
+                height: 40,
+                elevation: 1,
+                backgroundColor: Colors.white,
+                primaryColor: Colors.black87,
+                constraints: BoxConstraints(
+                  maxHeight: MediaQuery.of(context).size.height - 15,
+                ),
+              ),
+              dropdownStyle: DropdownStyle(
+                constraints: BoxConstraints(
+                  maxHeight: MediaQuery.of(context).size.height - 15,
+                ),
+                width: 50,
+                offset: Offset(0, 45),
+                borderRadius: BorderRadius.circular(8),
+                elevation: 6,
+                padding: EdgeInsets.all(5),
+              ),
+              items: _sortBy
+                  .asMap()
+                  .entries
+                  .map(
+                    (item) => DropdownItem<int>(
+                      value: item.key + 1,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(item.value),
+                      ),
+                    ),
+                  )
+                  .toList(),
+            ),
+          ),
+          // Container(
+          //     constraints: BoxConstraints(maxHeight: 500, maxWidth: 350),
+          //     margin: EdgeInsets.symmetric(horizontal: 15, vertical: 0),
+          //     child: MultiCountryChart(data: graphData)),
+          // Container(
+          //     constraints: BoxConstraints(maxHeight: 500, maxWidth: 350),
+          //     margin: EdgeInsets.symmetric(horizontal: 15, vertical: 0),
+          //     child: MultiCountryChart(data: graphData)),
+          Container(child: Column(children: _list))
+        ])),
       ),
     );
   }
