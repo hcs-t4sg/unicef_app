@@ -32,15 +32,15 @@ class _ComparePageState extends State<ComparePage> {
   List _selectedCountries = ["Bhutan", "Pakistan"];
   String _selectedCompareBy = 'wealth quintile';
   String _selectedComparisonIndex = 'Under-five mortality (#/1,000)';
-  int dataVal = 0;
+  double dataVal = 0;
   List<Container> _list = [];
 
-  Future<int> _getData(String compareBy, String comparisonIndex,
+  Future<double> _getData(String compareBy, String comparisonIndex,
       String subIndex, String subArea) async {
     List<Map> data = await SQLiteDbProvider.db
         .getData(compareBy, comparisonIndex, subIndex, subArea);
     try {
-      dataVal = int.parse(data[0]["Value"]);
+      dataVal = double.parse(data[0]["Value"]);
     } on FormatException {
       dataVal = 0;
     }
@@ -57,7 +57,7 @@ class _ComparePageState extends State<ComparePage> {
     for (String _selectedSubIndex in _subcomparison) {
       List<BarSeries> graphData = [];
       for (String country in _selectedCountries) {
-        int number = await _getData(_selectedCompareBy,
+        double number = await _getData(_selectedCompareBy,
             _selectedComparisonIndex, _selectedSubIndex, country);
         graphData.add(BarSeries(
             country: country,
