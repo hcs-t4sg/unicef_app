@@ -4,7 +4,8 @@ import 'bar_series.dart';
 
 class MultiCountryChart extends StatelessWidget {
   final List<BarSeries> data;
-  MultiCountryChart({required this.data});
+  final String title;
+  MultiCountryChart({required this.data, required this.title});
 
   @override
   Widget build(BuildContext context) {
@@ -17,6 +18,14 @@ class MultiCountryChart extends StatelessWidget {
         colorFn: (BarSeries series, _) => series.barColor,
       )
     ];
-    return charts.BarChart(series, animate: true, vertical: false);
+    return charts.BarChart(
+      series,
+      animate: true,
+      vertical: false,
+      behaviors: [
+        new charts.ChartTitle(title,
+            behaviorPosition: charts.BehaviorPosition.top),
+      ],
+    );
   }
 }

@@ -67,7 +67,7 @@ class _ComparePageState extends State<ComparePage> {
       list.add(Container(
           constraints: BoxConstraints(maxHeight: 500, maxWidth: 350),
           margin: EdgeInsets.symmetric(horizontal: 15, vertical: 0),
-          child: MultiCountryChart(data: graphData)));
+          child: MultiCountryChart(data: graphData, title: _selectedSubIndex)));
     }
     setState(() {
       this._list = list;
