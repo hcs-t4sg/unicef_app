@@ -352,6 +352,9 @@ class SQLiteDbProvider {
   Future<List<Map>> getData(String compareBy, String comparisonIndex,
       String subIndex, String subArea) async {
     final db = await database;
+    String query =
+        "SELECT value FROM ComparisonValue LEFT JOIN ComparisonIndex USING(ComparisonIndexID) LEFT JOIN CompareBy USING(CompareByID) LEFT JOIN SubComparisonIndex USING(SubComparisonIndexID) LEFT JOIN SubArea USING(SubAreaID) WHERE ComparisonIndexText = '$comparisonIndex' AND CompareByText = '$compareBy' AND SubAreaDisplayName = '$subArea' AND SubComparisonIndexText = '$subIndex'";
+    print(query);
     return await db.rawQuery(
         "SELECT value FROM ComparisonValue LEFT JOIN ComparisonIndex USING(ComparisonIndexID) LEFT JOIN CompareBy USING(CompareByID) LEFT JOIN SubComparisonIndex USING(SubComparisonIndexID) LEFT JOIN SubArea USING(SubAreaID) WHERE ComparisonIndexText = '$comparisonIndex' AND CompareByText = '$compareBy' AND SubAreaDisplayName = '$subArea' AND SubComparisonIndexText = '$subIndex'");
     // TODO: Sanitize for SQL?

@@ -53,6 +53,7 @@ class _ComparePageState extends State<ComparePage> {
 
   // Creates a graph with countries as ind variable and comparisonIndex as dep variable
   void _createGraphs() async {
+    _getSubcomparison();
     List<Container> list = [];
     for (String _selectedSubIndex in _subcomparison) {
       List<BarSeries> graphData = [];
@@ -220,8 +221,11 @@ class _ComparePageState extends State<ComparePage> {
                       color: Colors.blue,
                       fontSize: 16,
                       fontWeight: FontWeight.w500)),
-              onChange: (String value, int index) =>
-                  this._selectedCompareBy = value,
+              onChange: (String value, int index) {
+                setState(() {
+                  this._selectedCompareBy = value;
+                });
+              },
               // TODO: Update onChange() to update the corresponding state variable
               dropdownButtonStyle: DropdownButtonStyle(
                 mainAxisAlignment: MainAxisAlignment.center,
