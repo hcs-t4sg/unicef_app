@@ -20,7 +20,7 @@ class MultiCountryChart extends StatelessWidget {
     ];
     return charts.BarChart(
       series,
-      animate: true,
+      animate: false,
       vertical: false,
       behaviors: [
         new charts.ChartTitle(title,
