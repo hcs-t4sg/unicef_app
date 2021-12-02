@@ -45,8 +45,6 @@ class _ComparePageState extends State<ComparePage> {
       dataVal = 0;
     }
 
-    print("dataVal");
-    print(dataVal);
     return dataVal;
     //TODO: change int to double
   }
@@ -68,7 +66,10 @@ class _ComparePageState extends State<ComparePage> {
       list.add(Container(
           constraints: BoxConstraints(maxHeight: 500, maxWidth: 350),
           margin: EdgeInsets.symmetric(horizontal: 15, vertical: 0),
-          child: MultiCountryChart(data: graphData, title: _selectedSubIndex)));
+          child: MultiCountryChart(
+              data: graphData,
+              graphTitle: _selectedSubIndex,
+              yTitle: _selectedComparisonIndex)));
     }
     setState(() {
       this._list = list;
