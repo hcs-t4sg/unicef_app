@@ -26,7 +26,8 @@ class MultiCountryChart extends StatelessWidget {
       vertical: false,
       behaviors: [
         new charts.ChartTitle(graphTitle,
-            behaviorPosition: charts.BehaviorPosition.top),
+            behaviorPosition: charts.BehaviorPosition.top,
+            titleStyleSpec: new charts.TextStyleSpec(fontSize: 24)),
         new charts.ChartTitle(yTitle,
             behaviorPosition: charts.BehaviorPosition.bottom)
       ],

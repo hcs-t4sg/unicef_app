@@ -8,6 +8,12 @@ import './../../multiSelect/lib/multi_select_flutter.dart';
 import 'dropDown.dart';
 import './../../multiSelect/multidropDown.dart';
 
+extension StringExtension on String {
+  String capitalize() {
+    return "${this[0].toUpperCase()}${this.substring(1)}";
+  }
+}
+
 class ComparePage extends StatefulWidget {
   ComparePage({required this.title});
 
@@ -68,7 +74,7 @@ class _ComparePageState extends State<ComparePage> {
           margin: EdgeInsets.symmetric(horizontal: 15, vertical: 0),
           child: MultiCountryChart(
               data: graphData,
-              graphTitle: _selectedSubIndex,
+              graphTitle: _selectedSubIndex.capitalize(),
               yTitle: _selectedComparisonIndex)));
     }
     setState(() {
