@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 
 class BarSeries {
   final String country;
-  final int dataValue;
+  final double dataValue;
   final charts.Color barColor;
 
   BarSeries(

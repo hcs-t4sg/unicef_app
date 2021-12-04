@@ -272,7 +272,7 @@ class SQLiteDbProvider {
       // Write and flush the bytes written
       await File(path).writeAsBytes(bytes, flush: true);
     } else {
-      print("Opening existing database");
+      // print("Opening existing database");
     }
     // open the database
     return await openDatabase(path, readOnly: true);
@@ -354,6 +354,17 @@ class SQLiteDbProvider {
         : [];
   }
 
+  // Get data value
+  Future<List<Map>> getData(String compareBy, String comparisonIndex,
+      String subIndex, String subArea) async {
+    final db = await database;
+    String query =
+        "SELECT value FROM ComparisonValue LEFT JOIN ComparisonIndex USING(ComparisonIndexID) LEFT JOIN CompareBy USING(CompareByID) LEFT JOIN SubComparisonIndex USING(SubComparisonIndexID) LEFT JOIN SubArea USING(SubAreaID) WHERE ComparisonIndexText = '$comparisonIndex' AND CompareByText = '$compareBy' AND SubAreaDisplayName = '$subArea' AND SubComparisonIndexText = '$subIndex'";
+    return await db.rawQuery(
+        "SELECT value FROM ComparisonValue LEFT JOIN ComparisonIndex USING(ComparisonIndexID) LEFT JOIN CompareBy USING(CompareByID) LEFT JOIN SubComparisonIndex USING(SubComparisonIndexID) LEFT JOIN SubArea USING(SubAreaID) WHERE ComparisonIndexText = '$comparisonIndex' AND CompareByText = '$compareBy' AND SubAreaDisplayName = '$subArea' AND SubComparisonIndexText = '$subIndex'");
+    // TODO: Sanitize for SQL?
+  }
+
   // Get Compareby from the database
   Future<List<Map>> getCompareby() async {
     final db = await database;
@@ -367,11 +378,18 @@ class SQLiteDbProvider {
         .rawQuery("SELECT DISTINCT ComparisonIndexText FROM ComparisonIndex ORDER BY ComparisonIndexText ASC");
   }
 
-  // Get SubComparisonIndicator from the database
+  // Get all SubComparisonIndicator from the database
   Future<List<Map>> getSubComparisonIndicator() async {
     final db = await database;
     return await db
         .rawQuery("SELECT SubComparisonIndexText FROM SubComparisonIndex ORDER BY SubComparisonIndexText ASC");
+  }
+
+  //Get SubComparisonIndicators for specific CompareBy
+  Future<List<Map>> getSubComparisonIndicatorSpecific(String compareBy) async {
+    final db = await database;
+    return await db.rawQuery(
+        "SELECT SubComparisonIndexText FROM ComparisonValue LEFT JOIN ComparisonIndex USING(ComparisonIndexID) LEFT JOIN CompareBy USING(CompareByID) LEFT JOIN SubComparisonIndex USING(SubComparisonIndexID) LEFT JOIN SubArea USING(SubAreaID) WHERE CompareByText = '$compareBy'");
   }
 
   // Get subareas from the database
