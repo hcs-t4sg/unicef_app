@@ -91,23 +91,11 @@ class _CategoryTagState extends State<CategoryTag> {
               Container(
                 margin: EdgeInsets.fromLTRB(0, 0, 20, 0),
                 child: Align(
-                  child: TextButton(
-                    onPressed: () {
-                      _showSimpleModalDialog(
-                          context, _category, "Description", "DIsaggregation");
-                    },
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(Colors.white),
-                    ),
-                    child: Icon(
-                      MdiIcons.informationOutline,
-                      size: 30,
-                      color: Colors.blueAccent,
-                    ),
+                  child: Icon(
+                    MdiIcons.chevronRight,
+                    size: 30,
                   ),
-                  alignment: Alignment.center,
                 ),
-                alignment: Alignment.center,
               ),
             ],
           ),
