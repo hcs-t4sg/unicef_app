@@ -50,13 +50,13 @@ class _ComparePageState extends State<ComparePage> {
     } on FormatException {
       dataVal = 0;
     }
-
+    print(dataVal);
     return dataVal;
     //TODO: change int to double
   }
 
   // Creates a graph with countries as ind variable and comparisonIndex as dep variable
-  void _createGraphs() async {
+  Future _createGraphs() async {
     _getSubcomparison();
     List<Container> list = [];
     for (String _selectedSubIndex in _subcomparison) {
@@ -77,9 +77,8 @@ class _ComparePageState extends State<ComparePage> {
               graphTitle: _selectedSubIndex.capitalize(),
               yTitle: _selectedComparisonIndex)));
     }
-    setState(() {
-      this._list = list;
-    });
+    print(list);
+    return list;
   }
 
   void _getCompareBy() async {
@@ -130,6 +129,13 @@ class _ComparePageState extends State<ComparePage> {
     });
   }
 
+  // // Future Widget HERE
+  // Widget graphsList() {
+  //   return FutureBuilder(
+  //     builder:
+  //   )
+  // }
+
   @override
   void initState() {
     super.initState();
@@ -140,7 +146,7 @@ class _ComparePageState extends State<ComparePage> {
   }
 
   Widget build(BuildContext context) {
-    _createGraphs();
+    // _createGraphs();
     return Scaffold(
       appBar: AppBar(
         title: const Text('Compare'),
@@ -319,6 +325,20 @@ class _ComparePageState extends State<ComparePage> {
                   .toList(),
             ),
           ),
+          FutureBuilder(
+              future: _createGraphs(),
+              builder: (context, AsyncSnapshot snapshot) {
+                if (snapshot.hasData) {
+                  if (snapshot.data != null &&
+                      snapshot.connectionState != ConnectionState.none) {
+                    return Container(child: Column(children: snapshot.data));
+                  } else {
+                    return Text("Is null");
+                  }
+                } else {
+                  return CircularProgressIndicator();
+                }
+              }),
           // Container(
           //     constraints: BoxConstraints(maxHeight: 500, maxWidth: 350),
           //     margin: EdgeInsets.symmetric(horizontal: 15, vertical: 0),
@@ -327,7 +347,7 @@ class _ComparePageState extends State<ComparePage> {
           //     constraints: BoxConstraints(maxHeight: 500, maxWidth: 350),
           //     margin: EdgeInsets.symmetric(horizontal: 15, vertical: 0),
           //     child: MultiCountryChart(data: graphData)),
-          Container(child: Column(children: _list))
+          // Container(child: Column(children: _createGraphs()))
         ])),
       ),
     );
