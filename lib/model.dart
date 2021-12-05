@@ -181,29 +181,33 @@ class Report {
 }
 
 class ComparisonIndicator {
-  ComparisonIndicator({
-    required this.subarea,
-    required this.compareby,
-    required this.comparisonindicator,
-    required this.value,
-    required this.subcomparisonindicator,
-  });
+  ComparisonIndicator(
+      {required this.subarea,
+      required this.compareby,
+      required this.comparisonindicator,
+      required this.value,
+      required this.subcomparisonindicator,
+      required this.description,
+      required this.disagg});
 
   dynamic subarea;
   dynamic compareby;
   dynamic comparisonindicator;
   dynamic value;
   dynamic subcomparisonindicator;
+  dynamic description;
+  dynamic disagg;
 
   // Create an empty ComparisonIndicator with null values
   factory ComparisonIndicator.empty() {
     return ComparisonIndicator(
-      subarea: null,
-      compareby: null,
-      comparisonindicator: null,
-      value: null,
-      subcomparisonindicator: null,
-    );
+        subarea: null,
+        compareby: null,
+        comparisonindicator: null,
+        value: null,
+        subcomparisonindicator: null,
+        description: null,
+        disagg: null);
   }
 
   // Convert a ComparisonIndicator into a Map.
@@ -214,6 +218,8 @@ class ComparisonIndicator {
       'comparisonindicator': comparisonindicator,
       'value': value,
       'subcomparisonindicator': subcomparisonindicator,
+      'description': description,
+      'disagg': disagg
     };
   }
 
@@ -225,6 +231,8 @@ class ComparisonIndicator {
       comparisonindicator: map['ComparisonIndicator'],
       value: map['Value'],
       subcomparisonindicator: map['SubComparisonIndicator'],
+      description: map['ComparisonIndexDescription'],
+      disagg: map['Disaggregation'],
     );
   }
 
@@ -252,7 +260,7 @@ class SQLiteDbProvider {
     // await deleteDatabase(path);
     // Check if the database exists
     // // Delete database if lingering
-    // await deleteDatabase(path);
+    //await deleteDatabase(path);
     var exists = await databaseExists(path);
 
     if (!exists) {
@@ -369,21 +377,22 @@ class SQLiteDbProvider {
   // Get Compareby from the database
   Future<List<Map>> getCompareby() async {
     final db = await database;
-    return await db.rawQuery("SELECT CompareByText FROM CompareBy ORDER BY CompareByText ASC");
+    return await db.rawQuery(
+        "SELECT CompareByText FROM CompareBy ORDER BY CompareByText ASC");
   }
 
   // Get ComparisonIndicator from the database
   Future<List<Map>> getComparisonIndicator() async {
     final db = await database;
-    return await db
-        .rawQuery("SELECT DISTINCT ComparisonIndexText FROM ComparisonIndex ORDER BY ComparisonIndexText ASC");
+    return await db.rawQuery(
+        "SELECT DISTINCT ComparisonIndexText, ComparisonIndexDescription, Disaggregation FROM ComparisonIndex ORDER BY ComparisonIndexText ASC");
   }
 
   // Get all SubComparisonIndicator from the database
   Future<List<Map>> getSubComparisonIndicator() async {
     final db = await database;
-    return await db
-        .rawQuery("SELECT SubComparisonIndexText FROM SubComparisonIndex ORDER BY SubComparisonIndexText ASC");
+    return await db.rawQuery(
+        "SELECT SubComparisonIndexText FROM SubComparisonIndex ORDER BY SubComparisonIndexText ASC");
   }
 
   //Get SubComparisonIndicators for specific CompareBy
@@ -396,6 +405,7 @@ class SQLiteDbProvider {
   // Get subareas from the database
   Future<List<Map>> getSubareas() async {
     final db = await database;
-    return await db.rawQuery("SELECT SubAreaDisplayName FROM SubArea ORDER BY SubAreaDisplayName ASC");
+    return await db.rawQuery(
+        "SELECT SubAreaDisplayName FROM SubArea ORDER BY SubAreaDisplayName ASC");
   }
 }
