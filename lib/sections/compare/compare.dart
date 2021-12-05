@@ -52,6 +52,7 @@ class _ComparePageState extends State<ComparePage> {
     } on FormatException {
       dataVal = 0;
     }
+    print("dataVal");
     print(dataVal);
     return dataVal;
     //TODO: change int to double
@@ -60,6 +61,7 @@ class _ComparePageState extends State<ComparePage> {
   // Creates a graph with countries as ind variable and comparisonIndex as dep variable
   Future _createGraphs() async {
     List<String> subComparisonList = await _getSubcomparison();
+    print("subcomparisonlist");
     print(subComparisonList);
     List<Container> list = [];
     for (String _selectedSubIndex in subComparisonList) {
@@ -80,6 +82,7 @@ class _ComparePageState extends State<ComparePage> {
               graphTitle: _selectedSubIndex.capitalize(),
               yTitle: _selectedComparisonIndex)));
     }
+    print("list");
     print(list);
     return list;
   }
