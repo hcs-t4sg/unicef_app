@@ -249,6 +249,7 @@ class SQLiteDbProvider {
     var databasesPath = await getDatabasesPath();
     var path = join(databasesPath, "indicator_database.db");
 
+    // await deleteDatabase(path);
     // Check if the database exists
     var exists = await databaseExists(path);
 
