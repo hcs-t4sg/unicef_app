@@ -1,3 +1,4 @@
+import 'dart:core';
 import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:unicef_app/sections/compare/multiCountryChart.dart';
@@ -57,9 +58,10 @@ class _ComparePageState extends State<ComparePage> {
 
   // Creates a graph with countries as ind variable and comparisonIndex as dep variable
   Future _createGraphs() async {
-    _getSubcomparison();
+    List<String> subComparisonList = await _getSubcomparison();
+    print(subComparisonList);
     List<Container> list = [];
-    for (String _selectedSubIndex in _subcomparison) {
+    for (String _selectedSubIndex in subComparisonList) {
       List<BarSeries> graphData = [];
       for (String country in _selectedCountries) {
         double number = await _getData(_selectedCompareBy,
@@ -90,7 +92,7 @@ class _ComparePageState extends State<ComparePage> {
     });
   }
 
-  void _getSubcomparison() async {
+  Future<List<String>> _getSubcomparison() async {
     List<Map> subcomparison = await SQLiteDbProvider.db
         .getSubComparisonIndicatorSpecific(_selectedCompareBy);
     var subcomparisondynamic = subcomparison
@@ -101,9 +103,7 @@ class _ComparePageState extends State<ComparePage> {
     // TODO: May be redundant, change later?
 
     var subcomparisonstring = List<String>.from(subcomparisondynamic);
-    setState(() {
-      this._subcomparison = subcomparisonstring;
-    });
+    return subcomparisonstring;
   }
 
   void _getComparisonIndicators() async {
@@ -129,18 +129,11 @@ class _ComparePageState extends State<ComparePage> {
     });
   }
 
-  // // Future Widget HERE
-  // Widget graphsList() {
-  //   return FutureBuilder(
-  //     builder:
-  //   )
-  // }
-
   @override
   void initState() {
     super.initState();
     _getCompareBy();
-    _getSubcomparison();
+    // _getSubcomparison();
     _getComparisonIndicators();
     _getSubareas();
   }
