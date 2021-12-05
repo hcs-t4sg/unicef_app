@@ -49,7 +49,6 @@ class _DescriptorPage extends State<DescriptorPage> {
                       children: [
                         Container(
                           width: double.infinity,
-                          alignment: Alignment.center,
                           padding: EdgeInsets.fromLTRB(0, 0, 0, 6),
                           decoration: BoxDecoration(
                             color: Colors.white,
@@ -62,7 +61,7 @@ class _DescriptorPage extends State<DescriptorPage> {
                           child: Text(
                             obj['ComparisonIndexText'],
                             style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.bold),
+                                fontSize: 18, fontWeight: FontWeight.w500),
                           ),
                         ),
                         Container(
@@ -75,12 +74,15 @@ class _DescriptorPage extends State<DescriptorPage> {
                           padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
                           child: Text(
                             "Disaggregation",
-                            style: TextStyle(fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black54),
                             textAlign: TextAlign.left,
                           ),
                         ),
                         Text(
                           obj['Disaggregation'],
+                          style: TextStyle(color: Colors.black54),
                         ),
                       ],
                     ),
