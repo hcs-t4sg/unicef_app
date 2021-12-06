@@ -283,21 +283,22 @@ class SQLiteDbProvider {
       print("Opening existing database");
     }
     // open the database
-    return await openDatabase(path, readOnly: true);
+    return await openDatabase(path, 
+    version: 1,);
   }
 
   // Get Indicators from the database by category and subarea
   Future<List<Indicator>> getIndicators(String category, String subarea) async {
     final db = await database;
-    var result = await db.rawQuery('''SELECT * FROM KPI 
+    var result = await db.rawQuery('''SELECT * FROM KPIValue
+        LEFT JOIN KPI USING(KPIID) 
         LEFT JOIN KPICategory USING(KPICategoryID) 
-        LEFT JOIN KPIValue USING(KPIID) 
         LEFT JOIN SubArea USING(SubAreaID) 
         LEFT JOIN Area USING(AreaID)
         LEFT JOIN Sources USING(SourceID)
         LEFT JOIN Note USING(NoteID)
         WHERE KPICategory.KPICategoryDisplayName LIKE ? AND SubArea.SubAreaDisplayName LIKE ?
-        ORDER BY KPI.KPIText ASC''', [category, subarea]);
+        ORDER BY KPI.KPIText ASC''', ['%'+category+'%', '%'+subarea+'%']);
     return result.isNotEmpty
         ? result.map((i) => Indicator.fromMap(i)).toList()
         : [];
