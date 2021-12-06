@@ -36,6 +36,7 @@ class _ComparePageState extends State<ComparePage> {
   List<String> _compareby = [];
   List<String> _comparisonindicators = [];
   List<String> _subareas = [];
+  Map _colors = {};
   List _sortBy = ["Greatest to least", "Least to greatest", "Alphabetical"];
   List _selectedCountries = ["Bhutan", "Pakistan"];
   String _selectedCompareBy = 'wealth quintile';
@@ -52,8 +53,8 @@ class _ComparePageState extends State<ComparePage> {
     } on FormatException {
       dataVal = 0;
     }
-    print("dataVal");
-    print(dataVal);
+    //print("dataVal");
+    //print(dataVal);
     return dataVal;
     //TODO: change int to double
   }
@@ -61,8 +62,8 @@ class _ComparePageState extends State<ComparePage> {
   // Creates a graph with countries as ind variable and comparisonIndex as dep variable
   Future _createGraphs() async {
     List<String> subComparisonList = await _getSubcomparison();
-    print("subcomparisonlist");
-    print(subComparisonList);
+    //print("subcomparisonlist");
+    //print(subComparisonList);
     List<Container> list = [];
     for (String _selectedSubIndex in subComparisonList) {
       List<BarSeries> graphData = [];
@@ -72,7 +73,8 @@ class _ComparePageState extends State<ComparePage> {
         graphData.add(BarSeries(
             country: country,
             dataValue: number,
-            barColor: charts.ColorUtil.fromDartColor(Colors.red)));
+            barColor: charts.ColorUtil.fromDartColor(
+                Color(int.parse("0xFF" + this._colors[country])))));
       }
       list.add(Container(
           constraints: BoxConstraints(maxHeight: 500, maxWidth: 350),
@@ -82,8 +84,8 @@ class _ComparePageState extends State<ComparePage> {
               graphTitle: _selectedSubIndex.capitalize(),
               yTitle: _selectedComparisonIndex)));
     }
-    print("list");
-    print(list);
+    //print("list");
+    //print(list);
     return list;
   }
 
@@ -159,10 +161,12 @@ class _ComparePageState extends State<ComparePage> {
 
   void _getSubareas() async {
     List<Map> subareas = await SQLiteDbProvider.db.getSubareas();
+    Map colors = await SQLiteDbProvider.db.getColors();
     var subareasdynamic = subareas.map((i) => i['SubAreaDisplayName']).toList();
     var subareastring = List<String>.from(subareasdynamic);
     setState(() {
       this._subareas = subareastring;
+      this._colors = colors;
     });
   }
 
@@ -215,12 +219,12 @@ class _ComparePageState extends State<ComparePage> {
                               fontSize: 16,
                               fontWeight: FontWeight.w500)),
                       onChange: (String value, int index) {
-                        print("yeet");
-                        print(value);
+                        //print("yeet");
+                        //print(value);
                         setState(() {
                           this._selectedComparisonIndex = value;
                         });
-                        print(this._selectedComparisonIndex);
+                        //print(this._selectedComparisonIndex);
                       },
                       // TODO: Update onChange() to update the corresponding state variable
                       dropdownButtonStyle: DropdownButtonStyle(
