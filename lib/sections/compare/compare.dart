@@ -48,6 +48,7 @@ class _ComparePageState extends State<ComparePage> {
     );
   }
 
+  // TODO: Remove hardcoded values here
   final List<BarSeries> graphData = [
     BarSeries(
         country: "Afghanistan",

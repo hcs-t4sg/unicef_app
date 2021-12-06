@@ -27,6 +27,8 @@ class _CountryPageState extends State<CountryPage> {
       return subarea['SubAreaDisplayName'];
     }).toList();
     var countries = List<String>.from(countrydynamic);
+    countries.remove("South Asia");
+    countries.insert(0, "South Asia");
     setState(() {
       _countries = countries;
       _filteredCountries = countries;

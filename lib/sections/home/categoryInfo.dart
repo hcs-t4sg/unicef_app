@@ -98,7 +98,7 @@ class _CategoryInfoState extends State<CategoryInfo> {
         style: ButtonStyle(
           backgroundColor: MaterialStateProperty.all(Colors.white),
           padding: MaterialStateProperty.all(
-            EdgeInsets.fromLTRB(30.0, 0.0, 0, 0),
+            EdgeInsets.fromLTRB(30.0, 10.0, 0, 10.0),
           ),
         ),
         onPressed: () {
@@ -110,7 +110,7 @@ class _CategoryInfoState extends State<CategoryInfo> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Container(
-              padding: EdgeInsets.fromLTRB(0, 15, 6, 8),
+              padding: EdgeInsets.fromLTRB(0, 0, 6, 0),
               width: 180,
               alignment: Alignment.centerLeft,
               child: Align(
