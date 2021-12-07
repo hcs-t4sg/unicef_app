@@ -37,7 +37,6 @@ class _ComparePageState extends State<ComparePage> {
   List<String> _comparisonindicators = [];
   List<String> _subareas = [];
   Map _colors = {};
-  List _sortBy = ["Greatest to least", "Least to greatest", "Alphabetical"];
   List _selectedCountries = ["Bhutan", "Pakistan"];
   String _selectedCompareBy = 'wealth quintile';
   String _selectedComparisonIndex = 'Under-five mortality (#/1,000)';
@@ -327,54 +326,6 @@ class _ComparePageState extends State<ComparePage> {
                       .toList(),
                 ),
               ),
-              // Padding(
-              //   padding: const EdgeInsets.all(8.0),
-              //   child: CustomDropdown<int>(
-              //     icon: Icon(Icons.keyboard_arrow_down),
-              //     child: Text('SORT BY',
-              //         style: TextStyle(
-              //             color: Colors.blue,
-              //             fontSize: 16,
-              //             fontWeight: FontWeight.w500)),
-              //     onChange: (int value, int index) => print(value),
-              //     // TODO: Update onChange() to update the corresponding state variable
-              //     dropdownButtonStyle: DropdownButtonStyle(
-              //       mainAxisAlignment: MainAxisAlignment.center,
-              //       padding: EdgeInsets.fromLTRB(15, 2, 10, 2),
-              //       width: 170,
-              //       height: 40,
-              //       elevation: 1,
-              //       backgroundColor: Colors.white,
-              //       primaryColor: Colors.black87,
-              //       constraints: BoxConstraints(
-              //         maxHeight: MediaQuery.of(context).size.height - 15,
-              //       ),
-              //     ),
-              //     dropdownStyle: DropdownStyle(
-              //       constraints: BoxConstraints(
-              //         maxHeight: MediaQuery.of(context).size.height - 15,
-              //       ),
-              //       width: 50,
-              //       offset: Offset(0, 45),
-              //       borderRadius: BorderRadius.circular(8),
-              //       elevation: 6,
-              //       padding: EdgeInsets.all(5),
-              //     ),
-              //     items: _sortBy
-              //         .asMap()
-              //         .entries
-              //         .map(
-              //           (item) => DropdownItem<int>(
-              //             value: item.key + 1,
-              //             child: Padding(
-              //               padding: const EdgeInsets.all(8.0),
-              //               child: Text(item.value),
-              //             ),
-              //           ),
-              //         )
-              //         .toList(),
-              //   ),
-              // ),
               FutureBuilder(
                   future: _createGraphs(),
                   builder: (context, AsyncSnapshot snapshot) {
