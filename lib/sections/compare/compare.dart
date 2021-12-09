@@ -237,7 +237,7 @@ class _ComparePageState extends State<ComparePage> {
                 ),
               ),
               Container(
-                padding: EdgeInsets.fromLTRB(25, 10, 0, 0),
+                padding: EdgeInsets.fromLTRB(30, 10, 0, 0),
                 child: Flex(
                   direction: Axis.horizontal,
                   children: [
