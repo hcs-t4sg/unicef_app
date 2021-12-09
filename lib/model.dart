@@ -284,8 +284,10 @@ class SQLiteDbProvider {
       // print("Opening existing database");
     }
     // open the database
-    return await openDatabase(path, 
-    version: 1,);
+    return await openDatabase(
+      path,
+      version: 1,
+    );
   }
 
   // Get Indicators from the database by category and subarea
@@ -299,7 +301,8 @@ class SQLiteDbProvider {
         LEFT JOIN Sources USING(SourceID)
         LEFT JOIN Note USING(NoteID)
         WHERE KPICategory.KPICategoryDisplayName LIKE ? AND SubArea.SubAreaDisplayName LIKE ?
-        ORDER BY KPI.KPIText ASC''', ['%'+category+'%', '%'+subarea+'%']);
+        ORDER BY KPI.KPIText ASC''',
+        ['%' + category + '%', '%' + subarea + '%']);
     return result.isNotEmpty
         ? result.map((i) => Indicator.fromMap(i)).toList()
         : [];
