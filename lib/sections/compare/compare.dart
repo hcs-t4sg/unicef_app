@@ -45,6 +45,11 @@ class _ComparePageState extends State<ComparePage> {
 
   Future<double> _getData(String compareBy, String comparisonIndex,
       String subIndex, String subArea) async {
+    bool exists = await SQLiteDbProvider.db
+        .inDatabase(compareBy, comparisonIndex, subIndex, subArea);
+    if (!exists) {
+      return 0;
+    }
     List<Map> data = await SQLiteDbProvider.db
         .getData(compareBy, comparisonIndex, subIndex, subArea);
     try {
@@ -55,7 +60,6 @@ class _ComparePageState extends State<ComparePage> {
     //print("dataVal");
     //print(dataVal);
     return dataVal;
-    //TODO: change int to double
   }
 
   // Creates a graph with countries as ind variable and comparisonIndex as dep variable
@@ -69,11 +73,28 @@ class _ComparePageState extends State<ComparePage> {
       for (String country in _selectedCountries) {
         double number = await _getData(_selectedCompareBy,
             _selectedComparisonIndex, _selectedSubIndex, country);
-        graphData.add(BarSeries(
-            country: country,
-            dataValue: number,
-            barColor: charts.ColorUtil.fromDartColor(
-                Color(int.parse("0xFF" + this._colors[country])))));
+        print(number.toString());
+        if (number == 0) {
+          graphData.add(BarSeries(
+              country: country,
+              dataValue: number,
+              barColor: charts.ColorUtil.fromDartColor(
+                  Color(int.parse("0xFF" + this._colors[country]))),
+              label: "Data is not in dataset"));
+        } else {
+          graphData.add(BarSeries(
+              country: country,
+              dataValue: number,
+              barColor: charts.ColorUtil.fromDartColor(
+                  Color(int.parse("0xFF" + this._colors[country]))),
+              label: number.toString()));
+        }
+        // graphData.add(BarSeries(
+        //     country: country,
+        //     dataValue: number,
+        //     barColor: charts.ColorUtil.fromDartColor(
+        //         Color(int.parse("0xFF" + this._colors[country]))),
+        //     label: number.toString()));
       }
       list.add(Container(
           constraints: BoxConstraints(maxHeight: 500, maxWidth: 350),
@@ -115,11 +136,13 @@ class _ComparePageState extends State<ComparePage> {
     BarSeries(
         country: "Afghanistan",
         dataValue: 23,
-        barColor: charts.ColorUtil.fromDartColor(Colors.red)),
+        barColor: charts.ColorUtil.fromDartColor(Colors.red),
+        label: "23"),
     BarSeries(
         country: "Nepal",
         dataValue: 33,
-        barColor: charts.ColorUtil.fromDartColor(Colors.orange)),
+        barColor: charts.ColorUtil.fromDartColor(Colors.orange),
+        label: "33"),
   ];
 
   void _getCompareBy() async {

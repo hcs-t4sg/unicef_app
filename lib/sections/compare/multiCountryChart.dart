@@ -13,12 +13,12 @@ class MultiCountryChart extends StatelessWidget {
   Widget build(BuildContext context) {
     List<charts.Series<BarSeries, String>> series = [
       charts.Series(
-        id: "horizontal_bar",
-        data: data,
-        domainFn: (BarSeries series, _) => series.country,
-        measureFn: (BarSeries series, _) => series.dataValue,
-        colorFn: (BarSeries series, _) => series.barColor,
-      )
+          id: "horizontal_bar",
+          data: data,
+          domainFn: (BarSeries series, _) => series.country,
+          measureFn: (BarSeries series, _) => series.dataValue,
+          colorFn: (BarSeries series, _) => series.barColor,
+          labelAccessorFn: (BarSeries series, _) => series.label)
     ];
     return charts.BarChart(
       series,
@@ -31,6 +31,7 @@ class MultiCountryChart extends StatelessWidget {
         new charts.ChartTitle(yTitle,
             behaviorPosition: charts.BehaviorPosition.bottom)
       ],
+      barRendererDecorator: new charts.BarLabelDecorator<String>(),
     );
   }
 }
