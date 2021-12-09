@@ -45,6 +45,11 @@ class _ComparePageState extends State<ComparePage> {
 
   Future<double> _getData(String compareBy, String comparisonIndex,
       String subIndex, String subArea) async {
+    bool exists = await SQLiteDbProvider.db
+        .inDatabase(compareBy, comparisonIndex, subIndex, subArea);
+    if (!exists) {
+      return 0;
+    }
     List<Map> data = await SQLiteDbProvider.db
         .getData(compareBy, comparisonIndex, subIndex, subArea);
     try {
@@ -55,7 +60,6 @@ class _ComparePageState extends State<ComparePage> {
     print("dataVal");
     print(dataVal);
     return dataVal;
-    //TODO: change int to double
   }
 
   // Creates a graph with countries as ind variable and comparisonIndex as dep variable

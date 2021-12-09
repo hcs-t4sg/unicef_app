@@ -259,8 +259,8 @@ class SQLiteDbProvider {
 
     // await deleteDatabase(path);
     // Check if the database exists
-    // // Delete database if lingering
-    //await deleteDatabase(path);
+    // Delete database if lingering
+    // await deleteDatabase(path);
     var exists = await databaseExists(path);
 
     if (!exists) {
@@ -363,6 +363,21 @@ class SQLiteDbProvider {
         : [];
   }
 
+  // Boolean for existence
+  Future<bool> inDatabase(String compareBy, String comparisonIndex,
+      String subIndex, String subArea) async {
+    final db = await database;
+    List<Map<String, Object?>> existence = await db.rawQuery(
+        "SELECT COUNT(value) FROM ComparisonValue LEFT JOIN ComparisonIndex USING(ComparisonIndexID) LEFT JOIN CompareBy USING(CompareByID) LEFT JOIN SubComparisonIndex USING(SubComparisonIndexID) LEFT JOIN SubArea USING(SubAreaID) WHERE ComparisonIndexText = '$comparisonIndex' AND CompareByText = \"$compareBy\" AND SubAreaDisplayName = '$subArea' AND SubComparisonIndexText = \"$subIndex\"");
+    Object? test = existence[0]["COUNT(value)"];
+    print("Existence");
+    print(test);
+    if (test == 0) {
+      return false;
+    }
+    return true;
+  }
+
   // Get data value
   Future<List<Map>> getData(String compareBy, String comparisonIndex,
       String subIndex, String subArea) async {
@@ -401,7 +416,7 @@ class SQLiteDbProvider {
   Future<List<Map>> getSubComparisonIndicatorSpecific(String compareBy) async {
     final db = await database;
     return await db.rawQuery(
-        "SELECT SubComparisonIndexText FROM ComparisonValue LEFT JOIN ComparisonIndex USING(ComparisonIndexID) LEFT JOIN CompareBy USING(CompareByID) LEFT JOIN SubComparisonIndex USING(SubComparisonIndexID) LEFT JOIN SubArea USING(SubAreaID) WHERE CompareByText = '$compareBy'");
+        "SELECT SubComparisonIndexText FROM ComparisonValue LEFT JOIN ComparisonIndex USING(ComparisonIndexID) LEFT JOIN CompareBy USING(CompareByID) LEFT JOIN SubComparisonIndex USING(SubComparisonIndexID) LEFT JOIN SubArea USING(SubAreaID) WHERE CompareByText = \"$compareBy\"");
   }
 
   // Get subareas from the database
