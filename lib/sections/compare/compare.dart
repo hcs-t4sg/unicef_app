@@ -36,7 +36,7 @@ class _ComparePageState extends State<ComparePage> {
   List<String> _compareby = [];
   List<String> _comparisonindicators = [];
   List<String> _subareas = [];
-  List _sortBy = ["Greatest to least", "Least to greatest", "Alphabetical"];
+  Map _colors = {};
   List _selectedCountries = ["Bhutan", "Pakistan"];
   String _selectedCompareBy = 'wealth quintile';
   String _selectedComparisonIndex = 'Under-five mortality (#/1,000)';
@@ -57,16 +57,16 @@ class _ComparePageState extends State<ComparePage> {
     } on FormatException {
       dataVal = 0;
     }
-    print("dataVal");
-    print(dataVal);
+    //print("dataVal");
+    //print(dataVal);
     return dataVal;
   }
 
   // Creates a graph with countries as ind variable and comparisonIndex as dep variable
   Future _createGraphs() async {
     List<String> subComparisonList = await _getSubcomparison();
-    print("subcomparisonlist");
-    print(subComparisonList);
+    //print("subcomparisonlist");
+    //print(subComparisonList);
     List<Container> list = [];
     for (String _selectedSubIndex in subComparisonList) {
       List<BarSeries> graphData = [];
@@ -76,7 +76,8 @@ class _ComparePageState extends State<ComparePage> {
         graphData.add(BarSeries(
             country: country,
             dataValue: number,
-            barColor: charts.ColorUtil.fromDartColor(Colors.red)));
+            barColor: charts.ColorUtil.fromDartColor(
+                Color(int.parse("0xFF" + this._colors[country])))));
       }
       list.add(Container(
           constraints: BoxConstraints(maxHeight: 500, maxWidth: 350),
@@ -86,8 +87,8 @@ class _ComparePageState extends State<ComparePage> {
               graphTitle: _selectedSubIndex.capitalize(),
               yTitle: _selectedComparisonIndex)));
     }
-    print("list");
-    print(list);
+    //print("list");
+    //print(list);
     return list;
   }
 
@@ -163,10 +164,12 @@ class _ComparePageState extends State<ComparePage> {
 
   void _getSubareas() async {
     List<Map> subareas = await SQLiteDbProvider.db.getSubareas();
+    Map colors = await SQLiteDbProvider.db.getColors();
     var subareasdynamic = subareas.map((i) => i['SubAreaDisplayName']).toList();
     var subareastring = List<String>.from(subareasdynamic);
     setState(() {
       this._subareas = subareastring;
+      this._colors = colors;
     });
   }
 
@@ -219,12 +222,12 @@ class _ComparePageState extends State<ComparePage> {
                               fontSize: 16,
                               fontWeight: FontWeight.w500)),
                       onChange: (String value, int index) {
-                        print("yeet");
-                        print(value);
+                        //print("yeet");
+                        //print(value);
                         setState(() {
                           this._selectedComparisonIndex = value;
                         });
-                        print(this._selectedComparisonIndex);
+                        //print(this._selectedComparisonIndex);
                       },
                       // TODO: Update onChange() to update the corresponding state variable
                       dropdownButtonStyle: DropdownButtonStyle(
@@ -327,54 +330,6 @@ class _ComparePageState extends State<ComparePage> {
                       .toList(),
                 ),
               ),
-              // Padding(
-              //   padding: const EdgeInsets.all(8.0),
-              //   child: CustomDropdown<int>(
-              //     icon: Icon(Icons.keyboard_arrow_down),
-              //     child: Text('SORT BY',
-              //         style: TextStyle(
-              //             color: Colors.blue,
-              //             fontSize: 16,
-              //             fontWeight: FontWeight.w500)),
-              //     onChange: (int value, int index) => print(value),
-              //     // TODO: Update onChange() to update the corresponding state variable
-              //     dropdownButtonStyle: DropdownButtonStyle(
-              //       mainAxisAlignment: MainAxisAlignment.center,
-              //       padding: EdgeInsets.fromLTRB(15, 2, 10, 2),
-              //       width: 170,
-              //       height: 40,
-              //       elevation: 1,
-              //       backgroundColor: Colors.white,
-              //       primaryColor: Colors.black87,
-              //       constraints: BoxConstraints(
-              //         maxHeight: MediaQuery.of(context).size.height - 15,
-              //       ),
-              //     ),
-              //     dropdownStyle: DropdownStyle(
-              //       constraints: BoxConstraints(
-              //         maxHeight: MediaQuery.of(context).size.height - 15,
-              //       ),
-              //       width: 50,
-              //       offset: Offset(0, 45),
-              //       borderRadius: BorderRadius.circular(8),
-              //       elevation: 6,
-              //       padding: EdgeInsets.all(5),
-              //     ),
-              //     items: _sortBy
-              //         .asMap()
-              //         .entries
-              //         .map(
-              //           (item) => DropdownItem<int>(
-              //             value: item.key + 1,
-              //             child: Padding(
-              //               padding: const EdgeInsets.all(8.0),
-              //               child: Text(item.value),
-              //             ),
-              //           ),
-              //         )
-              //         .toList(),
-              //   ),
-              // ),
               FutureBuilder(
                   future: _createGraphs(),
                   builder: (context, AsyncSnapshot snapshot) {

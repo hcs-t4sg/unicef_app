@@ -384,8 +384,8 @@ class SQLiteDbProvider {
     final db = await database;
     String query =
         "SELECT value FROM ComparisonValue LEFT JOIN ComparisonIndex USING(ComparisonIndexID) LEFT JOIN CompareBy USING(CompareByID) LEFT JOIN SubComparisonIndex USING(SubComparisonIndexID) LEFT JOIN SubArea USING(SubAreaID) WHERE ComparisonIndexText = '$comparisonIndex' AND CompareByText = \"$compareBy\" AND SubAreaDisplayName = '$subArea' AND SubComparisonIndexText = \"$subIndex\"";
-    print("query");
-    print(query);
+    //print("query");
+    //print(query);
     return await db.rawQuery(
         "SELECT value FROM ComparisonValue LEFT JOIN ComparisonIndex USING(ComparisonIndexID) LEFT JOIN CompareBy USING(CompareByID) LEFT JOIN SubComparisonIndex USING(SubComparisonIndexID) LEFT JOIN SubArea USING(SubAreaID) WHERE ComparisonIndexText = '$comparisonIndex' AND CompareByText = \"$compareBy\" AND SubAreaDisplayName = '$subArea' AND SubComparisonIndexText = \"$subIndex\"");
     // TODO: Sanitize for SQL?
@@ -424,5 +424,19 @@ class SQLiteDbProvider {
     final db = await database;
     return await db.rawQuery(
         "SELECT SubAreaDisplayName FROM SubArea ORDER BY SubAreaDisplayName ASC");
+  }
+
+  // Get subareas from the database
+  Future<Map> getColors() async {
+    final db = await database;
+    Map map = {};
+    List<Map> colors = await db.rawQuery(
+        "SELECT SubAreaDisplayName, Color FROM SubArea ORDER BY SubAreaDisplayName ASC");
+
+    for (int i = 0; i < colors.length; i++) {
+      map[colors[i]['SubAreaDisplayName']] = colors[i]['Color'];
+    }
+
+    return map;
   }
 }
