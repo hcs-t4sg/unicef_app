@@ -5,7 +5,11 @@ class BarSeries {
   final String country;
   final double dataValue;
   final charts.Color barColor;
+  final String label;
 
   BarSeries(
-      {required this.country, required this.dataValue, required this.barColor});
+      {required this.country,
+      required this.dataValue,
+      required this.barColor,
+      required this.label});
 }

@@ -18,8 +18,7 @@ class MultiCountryChart extends StatelessWidget {
           domainFn: (BarSeries series, _) => series.country,
           measureFn: (BarSeries series, _) => series.dataValue,
           colorFn: (BarSeries series, _) => series.barColor,
-          labelAccessorFn: (BarSeries series, _) =>
-              '${series.dataValue.toString()}')
+          labelAccessorFn: (BarSeries series, _) => series.label)
     ];
     return charts.BarChart(
       series,
