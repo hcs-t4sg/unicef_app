@@ -37,9 +37,9 @@ class _ComparePageState extends State<ComparePage> {
   List<String> _comparisonindicators = [];
   List<String> _subareas = [];
   Map _colors = {};
-  List _selectedCountries = ["Bhutan", "Pakistan"];
-  String _selectedCompareBy = 'wealth quintile';
-  String _selectedComparisonIndex = 'Under-five mortality (#/1,000)';
+  List _selectedCountries = [];
+  String _selectedCompareBy = 'on select';
+  String _selectedComparisonIndex = 'on select';
   double dataVal = 0;
   List<Container> _list = [];
 
@@ -64,6 +64,20 @@ class _ComparePageState extends State<ComparePage> {
 
   // Creates a graph with countries as ind variable and comparisonIndex as dep variable
   Future _createGraphs() async {
+    if (_selectedCountries.isEmpty) {
+      //display message asking user to select countries
+      List<Text> message = [
+        new Text("Please select countries using top menu.")
+      ];
+      return message;
+    }
+    if (_selectedCompareBy == 'on select' ||
+        _selectedComparisonIndex == 'on select') {
+      List<Text> message = [
+        new Text('Please make selections with dropdown menus.')
+      ];
+      return message;
+    }
     List<String> subComparisonList = await _getSubcomparison();
     //print("subcomparisonlist");
     //print(subComparisonList);
@@ -89,12 +103,6 @@ class _ComparePageState extends State<ComparePage> {
                   Color(int.parse("0xFF" + this._colors[country]))),
               label: number.toString()));
         }
-        // graphData.add(BarSeries(
-        //     country: country,
-        //     dataValue: number,
-        //     barColor: charts.ColorUtil.fromDartColor(
-        //         Color(int.parse("0xFF" + this._colors[country]))),
-        //     label: number.toString()));
       }
       list.add(Container(
           constraints: BoxConstraints(maxHeight: 500, maxWidth: 350),
@@ -202,7 +210,6 @@ class _ComparePageState extends State<ComparePage> {
   }
 
   Widget build(BuildContext context) {
-    // _createGraphs();
     return Scaffold(
       appBar: AppBar(
         title: const Text('Compare'),
@@ -210,6 +217,7 @@ class _ComparePageState extends State<ComparePage> {
       ),
       body: Center(
         child: Container(
+            alignment: Alignment.topCenter,
             width: double.infinity,
             child: SingleChildScrollView(
                 child: Column(children: <Widget>[
@@ -228,7 +236,6 @@ class _ComparePageState extends State<ComparePage> {
                   ),
                 ),
               ),
-
               Container(
                 padding: EdgeInsets.fromLTRB(25, 10, 0, 0),
                 child: Flex(
@@ -297,7 +304,6 @@ class _ComparePageState extends State<ComparePage> {
                   ],
                 ),
               ),
-
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: CustomDropdown<String>(
@@ -365,15 +371,6 @@ class _ComparePageState extends State<ComparePage> {
                       return CircularProgressIndicator();
                     }
                   }),
-              // Container(
-              //     constraints: BoxConstraints(maxHeight: 500, maxWidth: 350),
-              //     margin: EdgeInsets.symmetric(horizontal: 15, vertical: 0),
-              //     child: MultiCountryChart(data: graphData)),
-              // Container(
-              //     constraints: BoxConstraints(maxHeight: 500, maxWidth: 350),
-              //     margin: EdgeInsets.symmetric(horizontal: 15, vertical: 0),
-              //     child: MultiCountryChart(data: graphData)),
-              // Container(child: Column(children: _createGraphs()))
             ]))),
       ),
     );
