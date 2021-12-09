@@ -216,6 +216,7 @@ class _ComparePageState extends State<ComparePage> {
       ),
       body: Center(
         child: Container(
+            alignment: Alignment.topCenter,
             width: double.infinity,
             child: SingleChildScrollView(
                 child: Column(children: <Widget>[
