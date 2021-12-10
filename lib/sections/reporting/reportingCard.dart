@@ -2,8 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import './../../model.dart';
 
+// ReportingCard class
+// Stateless widget that displays report information for a single report
 class ReportingCard extends StatelessWidget {
+  // Default initialized with empty report
   Report _report = Report.empty();
+
+  // Mappings of icon types to actual icons
   Map<String, Icon> icons = {
     'blue':
         Icon(MdiIcons.chevronRightCircleOutline, size: 20, color: Colors.blue),
@@ -12,13 +17,16 @@ class ReportingCard extends StatelessWidget {
     'red': Icon(MdiIcons.closeCircleOutline, size: 20, color: Colors.red),
   };
 
+  // Create ReportingCard where _report is [report]
   ReportingCard(Report report) {
     this._report = report;
   }
 
+  // Build card
   @override
   Widget build(BuildContext context) {
     return Container(
+      // Exterior decoration of card
       decoration: BoxDecoration(
         color: Colors.white,
         border: Border.all(color: Colors.grey),
@@ -27,8 +35,10 @@ class ReportingCard extends StatelessWidget {
         ),
       ),
       margin: EdgeInsets.all(10),
+      // Contents of card
       child: Column(
         children: [
+          // Name of the report
           Container(
             width: double.infinity,
             padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
@@ -44,6 +54,7 @@ class ReportingCard extends StatelessWidget {
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
             ),
           ),
+          // Ratification Date of the report
           Container(
             width: double.infinity,
             padding: EdgeInsets.symmetric(vertical: 5, horizontal: 20),
@@ -62,6 +73,7 @@ class ReportingCard extends StatelessWidget {
               ],
             ),
           ),
+          // Report date of the report
           Container(
             width: double.infinity,
             padding: EdgeInsets.fromLTRB(20, 0, 20, 10),
@@ -78,10 +90,11 @@ class ReportingCard extends StatelessWidget {
                   ),
                 ),
                 Container(
-                    padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
-                    child: (_report.reportstatus != null)
-                        ? icons[_report.reportstatus]
-                        : null),
+                  padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                  child: _report.reportstatus != null
+                      ? icons[_report.reportstatus]
+                      : null,
+                ),
               ],
             ),
           )

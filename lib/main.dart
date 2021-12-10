@@ -43,9 +43,9 @@ class _MyHomePageState extends State<MyHomePage> {
     this._title = title;
   }
 
-  void _onItemTapped(int indexes) {
+  void _onItemTapped(int index) {
     setState(() {
-      _selectedIndex = indexes;
+      _selectedIndex = index;
     });
   }
 
@@ -77,7 +77,7 @@ class _MyHomePageState extends State<MyHomePage> {
             backgroundColor: Colors.blue,
           ),
           BottomNavigationBarItem(
-            icon: Icon(MdiIcons.trophy),
+            icon: Icon(MdiIcons.scaleBalance),
             label: 'Compare',
             backgroundColor: Colors.blue,
           ),
