@@ -6,7 +6,7 @@ const String _twitter_url =
     "https://twitter.com/UNICEFROSA?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor";
 const String _facebook_url = "https://www.facebook.com/UNICEFSouthAsia/";
 const String _site_url = "https://www.unicef.org/rosa/";
-const String _phone = "tel://9805556200";
+const String _phone = "tel:+9779805556200";
 
 class AboutPage extends StatelessWidget {
   void _launchTwitterURL() async {
@@ -22,11 +22,7 @@ class AboutPage extends StatelessWidget {
   }
 
   _launchCaller() async {
-    if (await canLaunch(_phone)) {
-      await launch(_phone);
-    } else {
-      throw 'Could not launch $_phone';
-    }
+    if (!await launch(_phone)) throw 'Could not launch $_phone';
   }
 
   Widget build(BuildContext context) {
