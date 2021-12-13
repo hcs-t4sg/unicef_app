@@ -260,7 +260,7 @@ class SQLiteDbProvider {
     // await deleteDatabase(path);
     // Check if the database exists
     // Delete database if lingering
-    // await deleteDatabase(path);
+    //await deleteDatabase(path);
     var exists = await databaseExists(path);
 
     if (!exists) {

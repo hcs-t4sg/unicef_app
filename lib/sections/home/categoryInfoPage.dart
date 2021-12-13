@@ -62,7 +62,8 @@ class _CategoryInfoPageState extends State<CategoryInfoPage> {
                         indicatorWords[k]
                             .trim()
                             .toLowerCase()
-                            .startsWith(keywords[j])) {
+                            .startsWith(keywords[j]) &&
+                        !_filteredIndicators.contains(_indicators[i])) {
                       _filteredIndicators.add(_indicators[i]);
                       break;
                     }
@@ -81,6 +82,7 @@ class _CategoryInfoPageState extends State<CategoryInfoPage> {
         await SQLiteDbProvider.db.getIndicators(_category, _country);
     setState(() {
       _indicators = indics;
+      _filteredIndicators = _indicators;
     });
   }
 
@@ -108,16 +110,17 @@ class _CategoryInfoPageState extends State<CategoryInfoPage> {
               onPressed: () {
                 setState(() {
                   if (searchBarIcon.icon == Icons.search) {
-                    searchBarIcon = const Icon(Icons.cancel);
-                    searchBar = const ListTile(
+                    searchBarIcon = Icon(Icons.cancel);
+                    searchBar = ListTile(
                       leading: Icon(
                         Icons.search,
                         color: Colors.white,
                         size: 28,
                       ),
                       title: TextField(
+                        controller: _controller,
                         decoration: InputDecoration(
-                          hintText: 'Search for country',
+                          hintText: 'Search for indicator',
                           hintStyle: TextStyle(
                             color: Colors.white,
                             fontSize: 18,
@@ -131,7 +134,8 @@ class _CategoryInfoPageState extends State<CategoryInfoPage> {
                       ),
                     );
                   } else {
-                    searchBarIcon = const Icon(Icons.search);
+                    _controller.clear();
+                    searchBarIcon = Icon(Icons.search);
                     searchBar = Text(widget.country);
                   }
                 });
@@ -202,10 +206,11 @@ class _CategoryInfoPageState extends State<CategoryInfoPage> {
                   )),
               Container(
                 child: ListView(
+                  key: Key(_filteredIndicators.length.toString()),
                   physics: ClampingScrollPhysics(),
                   scrollDirection: Axis.vertical,
                   shrinkWrap: true,
-                  children: _indicators
+                  children: _filteredIndicators
                       .map(
                         (indicator) => CategoryInfo(indicator),
                       )
