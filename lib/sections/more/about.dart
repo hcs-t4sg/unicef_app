@@ -1,7 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+const String _twitter_url =
+    "https://twitter.com/UNICEFROSA?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor";
+const String _facebook_url = "https://www.facebook.com/UNICEFSouthAsia/";
+const String _site_url = "https://www.unicef.org/rosa/";
+const String _phone = "tel://9805556200";
 
 class AboutPage extends StatelessWidget {
+  void _launchTwitterURL() async {
+    if (!await launch(_twitter_url)) throw 'Could not launch $_twitter_url';
+  }
+
+  void _launchFacebookURL() async {
+    if (!await launch(_facebook_url)) throw 'Could not launch $_facebook_url';
+  }
+
+  void _launchSiteURL() async {
+    if (!await launch(_site_url)) throw 'Could not launch $_site_url';
+  }
+
+  _launchCaller() async {
+    if (await canLaunch(_phone)) {
+      await launch(_phone);
+    } else {
+      throw 'Could not launch $_phone';
+    }
+  }
+
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
@@ -58,24 +85,45 @@ class AboutPage extends StatelessWidget {
                       child: Row(
                         children: [
                           Container(
-                            padding: EdgeInsets.all(5),
-                            child: Icon(MdiIcons.facebook,
-                                color: Colors.blue, size: 30),
+                            padding: EdgeInsets.symmetric(
+                                vertical: 5, horizontal: 0),
+                            child: TextButton(
+                              onPressed: _launchFacebookURL,
+                              child: Icon(MdiIcons.facebook,
+                                  color: Colors.blue, size: 30),
+                            ),
                           ),
                           Container(
-                            padding: EdgeInsets.all(5),
-                            child: Icon(MdiIcons.twitter,
-                                color: Colors.blue, size: 30),
+                            padding: EdgeInsets.symmetric(
+                                vertical: 5, horizontal: 0),
+                            child: TextButton(
+                              onPressed: _launchTwitterURL,
+                              style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all<Color>(
+                                        Colors.white),
+                              ),
+                              child: Icon(MdiIcons.twitter,
+                                  color: Colors.blue, size: 30),
+                            ),
                           ),
                           Container(
-                            padding: EdgeInsets.all(5),
-                            child: Icon(MdiIcons.web,
-                                color: Colors.blue, size: 30),
+                            padding: EdgeInsets.symmetric(
+                                vertical: 5, horizontal: 0),
+                            child: TextButton(
+                              onPressed: _launchSiteURL,
+                              child: Icon(MdiIcons.web,
+                                  color: Colors.blue, size: 30),
+                            ),
                           ),
                           Container(
-                            padding: EdgeInsets.all(5),
-                            child: Icon(MdiIcons.phoneOutline,
-                                color: Colors.blue, size: 30),
+                            padding: EdgeInsets.symmetric(
+                                vertical: 5, horizontal: 0),
+                            child: TextButton(
+                              onPressed: _launchCaller,
+                              child: Icon(MdiIcons.phoneOutline,
+                                  color: Colors.blue, size: 30),
+                            ),
                           ),
                         ],
                       ),
